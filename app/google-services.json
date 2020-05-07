@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1061897173936",
+    "firebase_url": "https://tasks-tracker-83df6.firebaseio.com",
+    "project_id": "tasks-tracker-83df6",
+    "storage_bucket": "tasks-tracker-83df6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061897173936:android:751d87c008f8ffd42db475",
+        "android_client_info": {
+          "package_name": "com.g2.taskstracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061897173936-0m6mrs33g5s3la12l4iecr5nhss5421h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g2.taskstracker",
+            "certificate_hash": "0d147e504547ada14932d7f1de39228380cef2d5"
+          }
+        },
+        {
+          "client_id": "1061897173936-c6484oed5klh9r952tuadjn5539p83dp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5dHLGobUvwN0C5NMhGLjLr6oOqFsCMpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061897173936-c6484oed5klh9r952tuadjn5539p83dp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
