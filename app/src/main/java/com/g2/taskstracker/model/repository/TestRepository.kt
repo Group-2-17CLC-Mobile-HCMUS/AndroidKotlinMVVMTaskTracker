@@ -10,14 +10,18 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class TestRepository {
+interface ITestRepo {
+    fun basicReadWrite(): LiveData<String>
+}
+
+class TestRepositoryImp : ITestRepo {
     companion object {
         private const val TAG = "KotlinActivity"
     }
 
     private val data: MutableLiveData<String> = MutableLiveData()
 
-    fun basicReadWrite(): LiveData<String> {
+    override fun basicReadWrite(): LiveData<String> {
         // [START write_message]
         // Write a message to the database
         val database = Firebase.database
