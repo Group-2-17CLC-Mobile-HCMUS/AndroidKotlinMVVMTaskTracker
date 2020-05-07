@@ -7,4 +7,6 @@ import com.g2.taskstracker.model.repository.TestRepository
 class TestViewModel : ViewModel() {
     private val repo = TestRepository()
     val dataText: LiveData<String> = repo.basicReadWrite()
+
+
 }
