@@ -2,6 +2,7 @@
   <dictionary name="phamt">
     <words>
       <w>taskstracker</w>
+      <w>taskstrackermvvm</w>
     </words>
   </dictionary>
 </component>

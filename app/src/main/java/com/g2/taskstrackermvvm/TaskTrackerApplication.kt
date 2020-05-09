@@ -1,4 +1,4 @@
-package com.g2.taskstracker
+package com.g2.taskstrackermvvm
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext

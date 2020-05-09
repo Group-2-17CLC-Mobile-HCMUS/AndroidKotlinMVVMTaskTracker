@@ -5,17 +5,26 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'koin'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\keystore')
+            storePassword 'LalafellPotato62688'
+            keyPassword 'LalafellPotato62688'
+            keyAlias = 'task-tracker-key'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.g2.taskstracker"
+        applicationId "com.g2.taskstrackermvvm"
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -46,8 +55,10 @@ dependencies {
     implementation "com.google.firebase:firebase-database-ktx:19.3.0"
     implementation 'com.google.firebase:firebase-database:19.3.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -1,4 +1,4 @@
-package com.g2.taskstracker.model
+package com.g2.taskstrackermvvm.model
 
 data class User(val name: String, val uid: String) {
     private var mPoints: Int = 0

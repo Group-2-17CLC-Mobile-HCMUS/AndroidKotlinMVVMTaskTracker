@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1061897173936:android:751d87c008f8ffd42db475",
+        "mobilesdk_app_id": "1:1061897173936:android:6999d1862108a7462db475",
         "android_client_info": {
-          "package_name": "com.g2.taskstracker"
+          "package_name": "com.g2.taskstrackermvvm"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1061897173936-0m6mrs33g5s3la12l4iecr5nhss5421h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.g2.taskstracker",
-            "certificate_hash": "0d147e504547ada14932d7f1de39228380cef2d5"
-          }
-        },
         {
           "client_id": "1061897173936-c6484oed5klh9r952tuadjn5539p83dp.apps.googleusercontent.com",
           "client_type": 3

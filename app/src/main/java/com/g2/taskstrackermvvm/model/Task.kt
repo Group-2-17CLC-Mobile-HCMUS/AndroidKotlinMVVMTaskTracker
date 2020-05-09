@@ -1,4 +1,4 @@
-package com.g2.taskstracker.model
+package com.g2.taskstrackermvvm.model
 
 import java.util.*
 

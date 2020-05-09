@@ -1,4 +1,4 @@
-package com.g2.taskstracker
+package com.g2.taskstrackermvvm
 
 import org.junit.Test
 

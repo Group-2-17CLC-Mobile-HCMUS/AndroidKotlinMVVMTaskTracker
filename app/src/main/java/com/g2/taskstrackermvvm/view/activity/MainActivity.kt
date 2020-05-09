@@ -1,11 +1,11 @@
-package com.g2.taskstracker.view.activity
+package com.g2.taskstrackermvvm.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import com.g2.taskstracker.R
-import com.g2.taskstracker.view.fragment.SignInFragment
-import com.g2.taskstracker.view.fragment.TestFragment
+import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.view.fragment.SignInFragment
+import com.g2.taskstrackermvvm.view.fragment.TestFragment
 
 
 
