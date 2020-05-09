@@ -15,6 +15,9 @@ import com.g2.taskstracker.viewmodel.TestViewModel
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.test_fragment2.*
 import kotlinx.android.synthetic.main.test_fragment2.signOutBtn
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class TestFragment : Fragment() {
 
@@ -22,7 +25,7 @@ class TestFragment : Fragment() {
         fun newInstance() = TestFragment()
     }
 
-    private val viewModel = viewModels<TestViewModel>()
+    private val testViewModel: TestViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,7 @@ class TestFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.value.dataText.observe(viewLifecycleOwner, Observer {
+        testViewModel.dataText.observe(viewLifecycleOwner, Observer {
             showText.text = it
         })
     }

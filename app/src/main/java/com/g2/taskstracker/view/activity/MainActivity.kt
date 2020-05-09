@@ -8,9 +8,8 @@ import com.g2.taskstracker.view.fragment.SignInFragment
 import com.g2.taskstracker.view.fragment.TestFragment
 
 
+
 class MainActivity : AppCompatActivity(), SignInFragment.IOnSignedIn {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
