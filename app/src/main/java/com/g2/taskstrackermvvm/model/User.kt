@@ -1,5 +1,7 @@
 package com.g2.taskstrackermvvm.model
 
+import com.google.firebase.database.Exclude
+
 data class User(val name: String, val uid: String) {
     private var mPoints: Int = 0
 
@@ -28,5 +30,6 @@ data class User(val name: String, val uid: String) {
 
     fun addTag(tag: Tag) = mTags.add(tag)
     fun removeTag(tag: Tag) = mTags.remove(tag)
+
 
 }
