@@ -16,7 +16,7 @@ interface ITestRepo {
 
 class TestRepositoryImp : ITestRepo {
     companion object {
-        private const val TAG = "KotlinActivity"
+        private const val TAG = "com.g2.taskstrackermvvm.model.repository.test"
     }
 
     private val data: MutableLiveData<String> = MutableLiveData()
@@ -24,29 +24,29 @@ class TestRepositoryImp : ITestRepo {
     override fun basicReadWrite(): LiveData<String> {
         // [START write_message]
         // Write a message to the database
-        val database = Firebase.database
-        Log.d(TAG, "Db is: $database")
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!" + UUID.randomUUID())
-        // [END write_message]
-
-        // [START read_message]
-        // Read from the database
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                data.value = dataSnapshot.value as String
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })
-        // [END read_message]
-
+//        val database = Firebase.database
+//        Log.d(TAG, "Db is: $database")
+//        val myRef = database.getReference("message")
+//
+//        myRef.setValue("Hello, World!" + UUID.randomUUID())
+//        // [END write_message]
+//
+//        // [START read_message]
+//        // Read from the database
+//        myRef.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                data.value = dataSnapshot.value as String
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException())
+//            }
+//        })
+//        // [END read_message]
+//
         return data
     }
 
