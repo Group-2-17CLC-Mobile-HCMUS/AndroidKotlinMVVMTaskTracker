@@ -3,11 +3,13 @@ package com.g2.taskstrackermvvm.model.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.g2.taskstrackermvvm.model.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.time.Instant
 import java.util.*
 
 interface ITestRepo {
@@ -48,6 +50,26 @@ class TestRepositoryImp : ITestRepo {
 //        // [END read_message]
 //
         return data
+    }
+
+}
+
+interface ITestListRepo {
+    fun getTaskList() : LiveData<List<Task>>
+}
+
+class TestListRepoImp : ITestListRepo {
+    private val dummyData : MutableLiveData<List<Task>> = MutableLiveData()
+
+    override fun getTaskList(): LiveData<List<Task>> {
+        dummyData.value = mutableListOf(
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc")
+        )
+
+        return dummyData
     }
 
 }
