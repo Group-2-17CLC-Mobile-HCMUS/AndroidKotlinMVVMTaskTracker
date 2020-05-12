@@ -11,6 +11,7 @@ val appModule = module {
     single<TestRepositoryImp> { TestRepositoryImp() }
     single<IUserRepo> { UserRepositoryImp() }
     single<ITestListRepo> { TestListRepoImp() }
-    viewModel { TestViewModel(get(), get()) }
+    single<ITagRepo> { TagRepositoryImp() }
+    viewModel { TestViewModel(get(), get(), get()) }
     viewModel { HomeListViewModel(get()) }
 }

@@ -51,8 +51,9 @@ class TestFragment : Fragment() {
         testViewModel.dataText.observe(viewLifecycleOwner, Observer {
             showText.text = it
         })
-        //testViewModel.addUserTest()
-        testViewModel.updateUserTest()
+        testViewModel.addUserTest()
+        testViewModel.testAddTag()
+//        testViewModel.updateUserTest()
     }
 
 }
