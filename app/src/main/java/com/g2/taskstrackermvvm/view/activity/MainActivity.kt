@@ -14,15 +14,15 @@ class MainActivity : AppCompatActivity(), SignInFragment.IOnSignedIn {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
         supportFragmentManager.commit {
             add(R.id.frag_container, SignInFragment())
         }
     }
 
     override fun onSignedIn(uid: String) {
-        supportFragmentManager.commit {
-            replace(R.id.frag_container, TestFragment())
-        }
+        val homeScreenIntent = HomeScreenActivity.newInstance(this)
+        startActivity(homeScreenIntent)
     }
 
 }
