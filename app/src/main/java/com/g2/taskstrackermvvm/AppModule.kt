@@ -2,6 +2,7 @@ package com.g2.taskstrackermvvm
 
 import com.g2.taskstrackermvvm.model.repository.*
 import com.g2.taskstrackermvvm.viewmodel.HomeListViewModel
+import com.g2.taskstrackermvvm.viewmodel.SignInViewModel
 import com.g2.taskstrackermvvm.viewmodel.TestViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -14,4 +15,5 @@ val appModule = module {
     single<ITagRepo> { TagRepositoryImp() }
     viewModel { TestViewModel(get(), get(), get()) }
     viewModel { HomeListViewModel(get()) }
+    viewModel { SignInViewModel(get()) }
 }
