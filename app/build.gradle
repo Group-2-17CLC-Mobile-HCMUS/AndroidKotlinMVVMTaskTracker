@@ -5,14 +5,14 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'koin'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('D:\\keystore')
-            storePassword 'LalafellPotato62688'
-            keyPassword 'LalafellPotato62688'
-            keyAlias = 'task-tracker-key'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('D:\\keystore')
+//            storePassword 'LalafellPotato62688'
+//            keyPassword 'LalafellPotato62688'
+//            keyAlias = 'task-tracker-key'
+//        }
+//    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -24,7 +24,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.release
+//        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -66,6 +66,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.2.4"
 
 
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     // Koin AndroidX Scope features
     implementation "org.koin:koin-androidx-scope:$koin_version"
     // Koin AndroidX ViewModel features
