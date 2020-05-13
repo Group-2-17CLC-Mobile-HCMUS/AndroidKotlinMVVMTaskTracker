@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.viewmodel.SignInViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignInFragment : Fragment() {
 
@@ -20,12 +22,13 @@ class SignInFragment : Fragment() {
         fun onSignedIn(uid: String)
     }
 
+    private val viewModel: SignInViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_sign_in, container, false)
     }
 
@@ -42,14 +45,11 @@ class SignInFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //Init
         providers = listOf<AuthUI.IdpConfig>(
             AuthUI.IdpConfig.GoogleBuilder().build()
             //AuthUI.IdpConfig.PhoneBuilder().build()
         )
-
-
     }
 
     private fun showSignInOptions() {
@@ -71,8 +71,8 @@ class SignInFragment : Fragment() {
                 val user = FirebaseAuth.getInstance().currentUser
                 Toast.makeText(context, "" + user!!.email, Toast.LENGTH_SHORT).show()
 
+                viewModel.addCurrentUser()
                 (activity as IOnSignedIn).onSignedIn(user.uid)
-
             } else {
                 Toast.makeText(context, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
             }
