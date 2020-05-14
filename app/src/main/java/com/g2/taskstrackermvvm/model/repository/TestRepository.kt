@@ -62,24 +62,24 @@ class TestListRepoImp : ITestListRepo {
     private val dummyData : MutableLiveData<List<Task>> = MutableLiveData()
 
     override fun getTaskList(): LiveData<List<Task>> {
-        dummyData.value = mutableListOf(
-            Task(title = "testTitle01", desc = "testDesc01",
-                priority = Task.Priority.High,
-                created = Date(2020, 2, 10),
-                dueDate = Date(2020,3,5)),
-            Task(title = "testTitle02", desc = "testDesc02",
-                priority = Task.Priority.High,
-                created = Date(2020, 2, 10),
-                dueDate = Date(2020,3,5)),
-            Task(title = "testTitle03", desc = "testDesc03",
-                priority = Task.Priority.High,
-                created = Date(2020, 2, 10),
-                dueDate = Date(2020,3,5)),
-            Task(title = "testTitle04", desc = "testDesc04",
-                priority = Task.Priority.High,
-                created = Date(2020, 2, 10),
-                dueDate = Date(2020,3,5))
-        )
+//        dummyData.value = mutableListOf(
+//            Task(title = "testTitle01", desc = "testDesc01",
+//                priority = Task.Priority.High,
+//                created = Date(2020, 2, 10),
+//                dueDate = Date(2020,3,5)),
+//            Task(title = "testTitle02", desc = "testDesc02",
+//                priority = Task.Priority.High,
+//                created = Date(2020, 2, 10),
+//                dueDate = Date(2020,3,5)),
+//            Task(title = "testTitle03", desc = "testDesc03",
+//                priority = Task.Priority.High,
+//                created = Date(2020, 2, 10),
+//                dueDate = Date(2020,3,5)),
+//            Task(title = "testTitle04", desc = "testDesc04",
+//                priority = Task.Priority.High,
+//                created = Date(2020, 2, 10),
+//                dueDate = Date(2020,3,5))
+//        )
 
         return dummyData
     }

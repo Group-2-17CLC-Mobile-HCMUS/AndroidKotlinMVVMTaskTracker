@@ -59,6 +59,7 @@ class TestFragment : Fragment() {
             var textViewer = ""
             for (item in it) {
                 textViewer += item.toString() + "\n"
+                testViewModel.setTag(item.id, "test")
             }
             showText.text = textViewer
         })

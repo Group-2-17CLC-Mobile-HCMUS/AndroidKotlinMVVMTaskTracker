@@ -1,28 +1,31 @@
 package com.g2.taskstrackermvvm.model
 
+import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 
 @IgnoreExtraProperties
-data class Task constructor(val title: String,
+data class Task constructor(@get:Exclude var id: String,
+                            val title: String,
                             val desc: String,
                             val priority: Priority,
                             val created: Date,
                             val dueDate: Date,
-                            val status: Status = Status.Todo) {
+                            val status: Status = Status.Todo,
+                            @get:Exclude val tagIds: MutableList<String> = mutableListOf(),
+                            @get:Exclude val subTasks : MutableList<SubTask> = mutableListOf()
+) {
 
-    constructor() : this("", "", Priority.Low, Date(), Date())
-
-//    private val mTagIds = mutableListOf<Int>()
-    private val mSubTasks = mutableListOf<SubTask>()
+    constructor() : this("","", "", Priority.Low, Date(), Date())
 
     override fun toString(): String {
-        return title + "\n" + desc + "\n" + priority.name + "\n" +
-                created.toString() + "\n" + dueDate.toString() + "\n" + status.name
+        return "$id\n$title"
     }
 
-    val subtasks : List<SubTask>
-        get() = mSubTasks
+    fun addTag(id: String) {
+        tagIds.add(id)
+    }
+
 //
 //    fun changeTitle(newTitle: String) = Task(time, newTitle, detail)
 //    fun changeDetail(newDetail: String) = Task(time, title, newDetail)
@@ -46,8 +49,6 @@ data class Task constructor(val title: String,
     class SubTask(val title: String) {
         var status: SubTaskStatus = SubTaskStatus.UNFINISHED
     }
-
-    fun addSubTask(title: String) = mSubTasks.add(SubTask(title))
 
     enum class SubTaskStatus {
         UNFINISHED,
