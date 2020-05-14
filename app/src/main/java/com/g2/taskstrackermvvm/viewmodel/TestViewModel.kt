@@ -23,6 +23,10 @@ class TestViewModel(private val repo: TestRepositoryImp,
         userRepo.updateUser(testPts)
     }
 
+    fun setTag(taskId: String, tagId: String) {
+        taskRepo.setTag(taskId, tagId)
+    }
+
     fun addTaskTest() {
         taskRepo.addTask(title = "title02", desc = "desc02",
             priority = Task.Priority.Low,
