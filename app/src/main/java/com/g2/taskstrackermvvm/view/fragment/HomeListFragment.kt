@@ -69,7 +69,7 @@ class HomeListFragment() : Fragment() {
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
             holder.itemView.apply {
                 titleText.text = data[position].title
-                descText.text = data[position].detail
+                descText.text = data[position].desc
             }
         }
 
