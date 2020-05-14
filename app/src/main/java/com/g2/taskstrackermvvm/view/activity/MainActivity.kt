@@ -21,8 +21,12 @@ class MainActivity : AppCompatActivity(), SignInFragment.IOnSignedIn {
     }
 
     override fun onSignedIn(uid: String) {
-        val homeScreenIntent = HomeScreenActivity.newInstance(this)
-        startActivity(homeScreenIntent)
+//        val homeScreenIntent = HomeScreenActivity.newInstance(this)
+//        startActivity(homeScreenIntent)
+
+        supportFragmentManager.commit {
+            replace(R.id.frag_container, TestFragment())
+        }
     }
 
 }
