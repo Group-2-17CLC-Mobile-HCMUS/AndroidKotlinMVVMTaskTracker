@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 interface IUserRepo {
-    fun addUser(point: Int)
+    fun addUser()
     fun updateUser(newPoint: Int)
 
 }
@@ -23,7 +23,7 @@ class UserRepositoryImp : IUserRepo {
         private const val TAG = "com.g2.taskstrackermvvm.model.repository.user"
     }
 
-    override fun addUser(point: Int) {
+    override fun addUser() {
         val database = Firebase.database
         val userRef = database.getReference("users")
 

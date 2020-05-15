@@ -44,12 +44,24 @@ class TestFragment : Fragment() {
                     }
             }
         }
+
+        test_add_task_btn.setOnClickListener {
+            context?.let {
+                testViewModel.addTaskTest()
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        testViewModel.dataText.observe(viewLifecycleOwner, Observer {
-            showText.text = it
+        testViewModel.listTaskData.observe(viewLifecycleOwner, Observer {
+            showText.text = null
+            var textViewer = ""
+            for (item in it) {
+                textViewer += item.toString() + "\n"
+                testViewModel.setTag(item.id, "test")
+            }
+            showText.text = textViewer
         })
         testViewModel.addUserTest()
         testViewModel.testAddTag()

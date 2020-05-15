@@ -1,22 +1,37 @@
 package com.g2.taskstrackermvvm.model
 
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 
-data class Task constructor(val time: Date, val title: String, val detail: String, val id: Int = nextId++) {
-    companion object {
-        private var nextId = 0;
+@IgnoreExtraProperties
+data class Task constructor(@get:Exclude var id: String,
+                            val title: String,
+                            val desc: String,
+                            val priority: Priority,
+                            val created: Date,
+                            val dueDate: Date,
+                            val status: Status = Status.Todo,
+                            @get:Exclude val tagIds: MutableList<String> = mutableListOf(),
+                            @get:Exclude val subTasks : MutableList<SubTask> = mutableListOf()
+) {
+
+    constructor() : this("","", "", Priority.Low, Date(), Date())
+
+    override fun toString(): String {
+        return "$id\n$title"
     }
-    private val mTagIds = mutableListOf<Int>()
-    private val mSubTasks = mutableListOf<SubTask>()
 
-    val subtasks : List<SubTask>
-        get() = mSubTasks
+    fun addTag(id: String) {
+        tagIds.add(id)
+    }
 
-    fun changeTitle(newTitle: String) = Task(time, newTitle, detail, id)
-    fun changeDetail(newDetail: String) = Task(time, title, newDetail, id)
-
-    fun addTag(tagId: Int) = mTagIds.add(tagId)
-    fun removeTag(tagId: Int) = mTagIds.remove(tagId)
+//
+//    fun changeTitle(newTitle: String) = Task(time, newTitle, detail)
+//    fun changeDetail(newDetail: String) = Task(time, title, newDetail)
+//
+//    fun addTag(tagId: Int) = mTagIds.add(tagId)
+//    fun removeTag(tagId: Int) = mTagIds.remove(tagId)
 
     enum class Status {
         Todo,
@@ -34,8 +49,6 @@ data class Task constructor(val time: Date, val title: String, val detail: Strin
     class SubTask(val title: String) {
         var status: SubTaskStatus = SubTaskStatus.UNFINISHED
     }
-
-    fun addSubTask(title: String) = mSubTasks.add(SubTask(title))
 
     enum class SubTaskStatus {
         UNFINISHED,
