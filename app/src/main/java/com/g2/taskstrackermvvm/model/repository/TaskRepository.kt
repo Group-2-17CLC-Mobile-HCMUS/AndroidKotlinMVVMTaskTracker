@@ -16,6 +16,7 @@ interface ITaskRepo {
     fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date)
     fun getListTask() : LiveData<List<Task>>
     fun setTag(taskId: String, tagId: String)
+    fun removeTag(taskId: String, tagId: String)
 }
 
 class TaskRepositoryImp : ITaskRepo {
@@ -103,4 +104,18 @@ class TaskRepositoryImp : ITaskRepo {
         }
 
     }
+
+    override fun removeTag(taskId: String, tagId: String) {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val taskRef = database.getReference("tasks")
+        val tagRef = database.getReference("tags")
+
+        if (user != null) {
+            taskRef.child(user.uid).child(taskId).child(tagId).setValue(null)
+            tagRef.child(user.uid).child(tagId).child(taskId).setValue(null)
+        }
+    }
+
+
 }
