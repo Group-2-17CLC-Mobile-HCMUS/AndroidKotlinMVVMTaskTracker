@@ -11,14 +11,14 @@ import com.g2.taskstrackermvvm.model.repository.TestRepositoryImp
 import java.util.*
 import kotlin.random.Random
 
-class TestViewModel(private val repo: TestRepositoryImp, private val userRepo: IUserRepo, private val tagsRepo: ITagRepo) : ViewModel() {
 class TestViewModel(private val repo: TestRepositoryImp,
                     private val userRepo: IUserRepo,
-                    private val taskRepo: ITaskRepo) : ViewModel() {
+                    private val taskRepo: ITaskRepo,
+                    private val tagRepo: ITagRepo) : ViewModel() {
     val dataText: LiveData<String> = repo.basicReadWrite()
 
     fun addUserTest() {
-        userRepo.addUser(0)
+        userRepo.addUser()
     }
 
     fun updateUserTest() {
@@ -27,7 +27,8 @@ class TestViewModel(private val repo: TestRepositoryImp,
     }
 
     fun testAddTag() {
-        tagsRepo.createTag("Test", Tag.Color.RED)
+        tagRepo.createTag("Test", Tag.Color.RED)
+    }
 
     fun setTag(taskId: String, tagId: String) {
         taskRepo.setTag(taskId, tagId)
@@ -41,7 +42,6 @@ class TestViewModel(private val repo: TestRepositoryImp,
     }
 
     val listTaskData: LiveData<List<Task>> = taskRepo.getListTask()
-}
 }
 
 

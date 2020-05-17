@@ -64,7 +64,7 @@ class TestFragment : Fragment() {
             showText.text = textViewer
         })
         testViewModel.addUserTest()
-        testViewModel.testAddTag()
+//        testViewModel.testAddTag()
 //        testViewModel.updateUserTest()
     }
 
