@@ -9,11 +9,10 @@ import org.koin.dsl.module
 
 @JvmField
 val appModule = module {
-    single<TestRepositoryImp> { TestRepositoryImp() }
     single<IUserRepo> { UserRepositoryImp() }
-    single<ITestListRepo> { TestListRepoImp() }
     single<ITaskRepo> { TaskRepositoryImp() }
+    single<ITagRepo> { TagRepositoryImp() }
     viewModel { TestViewModel(get(), get(), get()) }
-    viewModel { HomeListViewModel(get()) }
+//    viewModel { HomeListViewModel(get()) }
     viewModel { SignInViewModel(get()) }
 }
