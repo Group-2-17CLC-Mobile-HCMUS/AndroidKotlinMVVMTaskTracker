@@ -62,6 +62,12 @@ class TestListRepoImp : ITestListRepo {
     private val dummyData : MutableLiveData<List<Task>> = MutableLiveData()
 
     override fun getTaskList(): LiveData<List<Task>> {
+        dummyData.value = mutableListOf(
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc"),
+            Task(Date.from(Instant.now()), "Test", "TestDesc")
+        )
 //        dummyData.value = mutableListOf(
 //            Task(title = "testTitle01", desc = "testDesc01",
 //                priority = Task.Priority.High,

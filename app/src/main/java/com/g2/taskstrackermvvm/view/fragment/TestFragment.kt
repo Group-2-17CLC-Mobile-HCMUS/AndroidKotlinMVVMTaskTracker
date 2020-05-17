@@ -63,10 +63,9 @@ class TestFragment : Fragment() {
             }
             showText.text = textViewer
         })
-        //testViewModel.addUserTest()
-        //testViewModel.updateUserTest()
-        //testViewModel.addTaskTest()
-
+        testViewModel.addUserTest()
+        testViewModel.testAddTag()
+//        testViewModel.updateUserTest()
     }
 
 }
