@@ -7,4 +7,6 @@
     <string name="taskListBtn">Task List</string>
     <string name="username_hint">Username</string>
     <string name="google_sign_in">Sign in with Google</string>
+    <string name="description_hint_text">Description:</string>
+    <string name="comment_hint_text">Write a comment...</string>
 </resources>
