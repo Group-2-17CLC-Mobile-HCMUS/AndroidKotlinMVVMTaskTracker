@@ -1,13 +1,19 @@
 package com.g2.taskstrackermvvm.model
 
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Exclude
 
-data class Tag(val id: String, val name: String, val color: Color, val bindedTask: List<String>?) {
+data class Tag constructor(
+    @get:Exclude var id: String,
+    var name: String,
+    var color: Color,
+    @get:Exclude val bindedTaskId: MutableList<String>?
+) {
+
+    constructor() : this("", "", Color.RED, mutableListOf())
+
+    fun addBindedTask(taskId: String) {
+        bindedTaskId?.add(taskId)
+    }
 
     enum class Color(val rbg: Int) {
         RED(0xFF0000),
