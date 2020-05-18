@@ -3,17 +3,17 @@ package com.g2.taskstrackermvvm.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.g2.taskstrackermvvm.model.Tag
-import com.g2.taskstrackermvvm.model.repository.ITagRepo
 import com.g2.taskstrackermvvm.model.Task
+import com.g2.taskstrackermvvm.model.repository.ITagRepo
 import com.g2.taskstrackermvvm.model.repository.ITaskRepo
 import com.g2.taskstrackermvvm.model.repository.IUserRepo
 import java.util.*
-import kotlin.random.Random
 
 class TestViewModel(
-                    private val userRepo: IUserRepo,
-                    private val taskRepo: ITaskRepo,
-                    private val tagRepo: ITagRepo) : ViewModel() {
+    private val userRepo: IUserRepo,
+    private val taskRepo: ITaskRepo,
+    private val tagRepo: ITagRepo
+) : ViewModel() {
 
     fun addUserTest() {
         userRepo.addUser()
@@ -33,15 +33,28 @@ class TestViewModel(
     }
 
     fun addTaskTest() {
-        taskRepo.addTask(title = "title02", desc = "desc02",
+        taskRepo.addTask(
+            title = "title02", desc = "desc02",
             priority = Task.Priority.Low,
             created = Date(2020, 3, 12),
-            dueDate = Date(2020,3,5))
+            dueDate = Date(2020, 3, 5)
+        )
     }
 
     val listTaskData: LiveData<List<Task>> = taskRepo.getListTask()
 
     val listTagData: LiveData<List<Tag>> = tagRepo.getTagsList()
+
+    fun testDeleteTag() {
+        tagRepo.deleteTag(
+            Tag(
+                "-M7_yqv2ve6bb_ixvZVV",
+                "test",
+                Tag.Color.RED,
+                mutableListOf("-M7H56-rsACzf_PiXe_A", "-M7H5606Iy-UxWbg3Dw7")
+            )
+        )
+    }
 }
 
 

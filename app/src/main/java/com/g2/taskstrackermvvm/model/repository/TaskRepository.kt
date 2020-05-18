@@ -25,6 +25,7 @@ class TaskRepositoryImp : ITaskRepo {
     }
 
     private val listTask: MutableLiveData<List<Task>> = MutableLiveData()
+    private var isListFetched = false
 
     override fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date) {
         val database = Firebase.database
@@ -39,6 +40,8 @@ class TaskRepositoryImp : ITaskRepo {
     }
 
     override fun getListTask() : LiveData<List<Task>> {
+        if (isListFetched)
+            return listTask
         val database = Firebase.database
         val user = FirebaseAuth.getInstance().currentUser
         val list = mutableListOf<Task>()
@@ -67,6 +70,7 @@ class TaskRepositoryImp : ITaskRepo {
             }
         })
 
+        isListFetched = true
         return listTask
     }
 

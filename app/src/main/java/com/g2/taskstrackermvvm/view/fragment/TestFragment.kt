@@ -47,33 +47,34 @@ class TestFragment : Fragment() {
 
         test_add_task_btn.setOnClickListener {
             context?.let {
-                testViewModel.testAddTag()
+//                testViewModel.testAddTag()
+//                    testViewModel.testDeleteTag()
             }
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+//        testViewModel.testAddTag()
 //        testViewModel.listTaskData.observe(viewLifecycleOwner, Observer {
 //            showText.text = null
 //            var textViewer = ""
 //            for (item in it) {
 //                textViewer += item.toString() + "\n"
-//                testViewModel.setTag(item.id, "test")
+//                testViewModel.setTag(item.id, "-M7_yqv2ve6bb_ixvZVV")
 //            }
 //            showText.text = textViewer
 //        })
         testViewModel.addUserTest()
 
-        testViewModel.listTagData.observe(viewLifecycleOwner, Observer {
-            var text = ""
-            for (item in it) {
-                text += "${item.id}\n"
-            }
-            showText.text = text
-        })
+//        testViewModel.listTagData.observe(viewLifecycleOwner, Observer {
+//            var text = ""
+//            for (item in it) {
+//                text += "${item.id}\n"
+//            }
+//            showText.text = text
+//        })
 
-//        testViewModel.testAddTag()
 //        testViewModel.updateUserTest()
     }
 
