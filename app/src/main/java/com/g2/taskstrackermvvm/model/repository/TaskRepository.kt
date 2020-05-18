@@ -14,6 +14,8 @@ import java.util.*
 
 interface ITaskRepo {
     fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date)
+    fun updateTask(newTask: Task)
+    fun getTaskDetail(taskId: String) : LiveData<Task>
     fun getListTask() : LiveData<List<Task>>
     fun setTag(taskId: String, tagId: String)
     fun removeTag(taskId: String, tagId: String)
@@ -35,7 +37,55 @@ class TaskRepositoryImp : ITaskRepo {
         if (user != null) {
             taskRef.child(user.uid).push().setValue(task)
         }
+    }
 
+    override fun updateTask(newTask: Task) {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val taskRef = database.getReference("tasks")
+
+        if (user != null) {
+            val childTaskRef = taskRef.child(user.uid).child(newTask.id)
+            childTaskRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (!snapshot.exists()) {
+                        childTaskRef.child("title").setValue(newTask.title)
+                        childTaskRef.child("desc").setValue(newTask.desc)
+                        childTaskRef.child("priority").setValue(newTask.priority)
+                        childTaskRef.child("status").setValue(newTask.status)
+                        childTaskRef.child("dueDate").setValue(newTask.dueDate)
+                    }
+                }
+            })
+        }
+    }
+
+    override fun getTaskDetail(taskId: String): LiveData<Task> {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val taskRef = database.getReference("tasks")
+        val taskDetail : MutableLiveData<Task> = MutableLiveData()
+
+        if (user != null) {
+            val childTaskRef = taskRef.child(user.uid).child(taskId)
+            childTaskRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+
+                override fun onDataChange(taskSnapshot: DataSnapshot) {
+                    val task = taskSnapshot.getValue(Task::class.java)
+                    if (task != null) {
+                        taskDetail.value = task
+                    }
+                }
+            })
+        }
+        return taskDetail
     }
 
     override fun getListTask() : LiveData<List<Task>> {
