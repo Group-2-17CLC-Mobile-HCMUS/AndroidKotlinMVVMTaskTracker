@@ -6,13 +6,13 @@ data class Tag constructor(
     @get:Exclude var id: String,
     var name: String,
     var color: Color,
-    @get:Exclude val bindedTaskId: MutableList<String>?
+    @get:Exclude val bindedTaskId: MutableList<String> = mutableListOf()
 ) {
 
     constructor() : this("", "", Color.RED, mutableListOf())
 
     fun addBindedTask(taskId: String) {
-        bindedTaskId?.add(taskId)
+        bindedTaskId.add(taskId)
     }
 
     enum class Color(val rbg: Int) {

@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity(), SignInFragment.IOnSignedIn {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportActionBar?.hide()
         supportFragmentManager.commit {
             add(R.id.frag_container, SignInFragment())
         }
