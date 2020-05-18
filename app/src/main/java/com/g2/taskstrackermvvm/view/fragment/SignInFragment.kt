@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.g2.taskstrackermvvm.R
@@ -17,10 +18,6 @@ import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignInFragment : Fragment() {
-
-    interface IOnSignedIn {
-        fun onSignedIn(uid: String)
-    }
 
     private val viewModel: SignInViewModel by viewModel()
 
@@ -72,7 +69,7 @@ class SignInFragment : Fragment() {
                 Toast.makeText(context, "" + user!!.email, Toast.LENGTH_SHORT).show()
 
                 viewModel.addCurrentUser()
-                (activity as IOnSignedIn).onSignedIn(user.uid)
+                findNavController().navigate(R.id.action_signInFragment_to_testFragment)
             } else {
                 Toast.makeText(context, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
             }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 
 import com.g2.taskstrackermvvm.R
@@ -39,6 +40,7 @@ class TestFragment : Fragment() {
                 AuthUI.getInstance().signOut(it1)
                     .addOnCompleteListener {
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
                     }
                     .addOnFailureListener { e -> Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                     }
@@ -56,15 +58,14 @@ class TestFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 //        testViewModel.testAddTag()
-//        testViewModel.listTaskData.observe(viewLifecycleOwner, Observer {
-//            showText.text = null
-//            var textViewer = ""
-//            for (item in it) {
-//                textViewer += item.toString() + "\n"
-//                testViewModel.setTag(item.id, "-M7_yqv2ve6bb_ixvZVV")
-//            }
-//            showText.text = textViewer
-//        })
+        testViewModel.listTaskData.observe(viewLifecycleOwner, Observer {
+            showText.text = null
+            var textViewer = ""
+            for (item in it) {
+                textViewer += item.toString() + "\n"
+            }
+            showText.text = textViewer
+        })
         testViewModel.addUserTest()
 
 //        testViewModel.listTagData.observe(viewLifecycleOwner, Observer {
