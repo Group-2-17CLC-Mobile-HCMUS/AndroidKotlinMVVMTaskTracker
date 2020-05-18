@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#292929">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="369dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:foregroundTint="#ffffff"
+        android:inputType="textPersonName"
+        android:text="Task_name"
+        android:textColor="#ffffff"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="369dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:foregroundTint="#ffffff"
+        android:inputType="textPersonName"
+        android:text="Task_id"
+        android:textColor="#ffffff"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="87dp" />
+
+    <TextView
+        android:id="@+id/task_description"
+        android:layout_width="379dp"
+        android:layout_height="144dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginBottom="20dp"
+        android:background="#808080"
+        android:text="@string/description_hint_text"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/comment_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="538dp"
+        android:background="@drawable/button_background"/>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:text="CREATE"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        tools:layout_editor_absoluteY="539dp"
+        android:background="@drawable/button_background"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

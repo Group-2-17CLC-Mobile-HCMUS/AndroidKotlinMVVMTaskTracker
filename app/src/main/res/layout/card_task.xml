@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_alignParentBottom="true">
+    android:layout_alignParentBottom="true"
+    android:background="#808080">
 <RelativeLayout android:layout_width="match_parent"
     android:orientation="horizontal"
     android:layout_gravity="top"
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Task1"
+        android:textColor="#FFFFFF"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:textColor="#FFFFFF"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at elit sed nulla egestas maximus eu et odio. Fusce facilisis luctus ullamcorper. Vivamus tempor semper mattis. Fusce nec ante eget leo efficitur tincidunt et pretium dolor.">
     </TextView>
 </LinearLayout>
