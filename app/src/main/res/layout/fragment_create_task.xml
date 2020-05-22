@@ -14,24 +14,21 @@
         android:layout_marginEnd="26dp"
         android:ems="10"
         android:foregroundTint="#ffffff"
-        android:hint="@string/task_name"
         android:inputType="textPersonName"
+        android:text="Task_name"
         android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/taskDescEditText"
+    <TextView
+        android:id="@+id/task_description"
         android:layout_width="379dp"
         android:layout_height="144dp"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="#808080"
-        android:gravity="start"
-        android:hint="@string/description_hint_text"
-        android:lines="4"
-        android:maxLines="4"
+        android:hint="Description"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,26 +37,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cancelCreateTaskBtn"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="54dp"
         android:background="@drawable/button_background"
         android:text="CANCEL"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_description" />
 
     <Button
-        android:id="@+id/createTaskBtn"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
+        android:layout_marginTop="54dp"
         android:layout_marginEnd="75dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/button_background"
         android:text="CREATE"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button" />
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/task_description" />
 </androidx.constraintlayout.widget.ConstraintLayout>

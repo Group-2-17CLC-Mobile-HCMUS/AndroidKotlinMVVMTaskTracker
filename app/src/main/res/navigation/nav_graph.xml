@@ -3,20 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signInFragment">
-
+    app:startDestination="@id/homeFragment">
     <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.g2.taskstrackermvvm.view.fragment.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        android:id="@+id/homeFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.HomeFragment"
+        android:label="HomeFragment" >
         <action
-            android:id="@+id/action_signInFragment_to_testFragment"
-            app:destination="@id/testFragment" />
+            android:id="@+id/action_homeFragment_to_createTaskFragment"
+            app:destination="@id/createTaskFragment"
+            app:enterAnim="@anim/fragment_fade_enter" />
     </fragment>
     <fragment
-        android:id="@+id/testFragment"
-        android:name="com.g2.taskstrackermvvm.view.fragment.TestFragment"
-        android:label="test_fragment2"
-        tools:layout="@layout/test_fragment2" />
+        android:id="@+id/createTaskFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.CreateTaskFragment"
+        android:label="CreateTaskFragment" >
+        <action
+            android:id="@+id/action_createTaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

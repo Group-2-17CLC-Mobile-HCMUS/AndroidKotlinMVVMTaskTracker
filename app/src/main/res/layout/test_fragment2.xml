@@ -23,6 +23,6 @@
         android:id="@+id/test_add_task_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Task" />
+        android:text="Test Nav" />
 
 </LinearLayout>

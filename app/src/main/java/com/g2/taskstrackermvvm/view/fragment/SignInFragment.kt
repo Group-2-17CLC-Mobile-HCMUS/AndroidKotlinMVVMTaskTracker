@@ -14,6 +14,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.viewmodel.SignInViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,6 +28,10 @@ class SignInFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_in, container, false)
+    }
+
+    interface IOnSignIn {
+        fun onSignIn()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,7 +74,8 @@ class SignInFragment : Fragment() {
                 Toast.makeText(context, "" + user!!.email, Toast.LENGTH_SHORT).show()
 
                 viewModel.addCurrentUser()
-                findNavController().navigate(R.id.action_signInFragment_to_testFragment)
+
+                (activity as IOnSignIn).onSignIn()
             } else {
                 Toast.makeText(context, "" + response!!.error!!.message, Toast.LENGTH_SHORT).show()
             }
