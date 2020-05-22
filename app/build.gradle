@@ -77,5 +77,6 @@ dependencies {
     implementation "org.koin:koin-androidx-fragment:$koin_version"
     // Koin AndroidX Experimental features
     implementation "org.koin:koin-androidx-ext:$koin_version"
+    implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
     implementation 'com.google.android.material:material:1.1.0'
 }

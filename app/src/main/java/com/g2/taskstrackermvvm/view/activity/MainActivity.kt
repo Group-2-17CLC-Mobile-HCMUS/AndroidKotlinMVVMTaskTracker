@@ -12,7 +12,7 @@ import com.g2.taskstrackermvvm.view.fragment.TestFragment
 class MainActivity : AppCompatActivity(), SignInFragment.IOnSignedIn {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.pie_chart)
 
         supportFragmentManager.commit {
             add(R.id.frag_container, SignInFragment())
