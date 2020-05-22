@@ -1,7 +1,8 @@
 package com.g2.taskstrackermvvm
 
 import com.g2.taskstrackermvvm.model.repository.*
-import com.g2.taskstrackermvvm.viewmodel.HomeListViewModel
+import com.g2.taskstrackermvvm.viewmodel.CreateTaskViewModel
+import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import com.g2.taskstrackermvvm.viewmodel.SignInViewModel
 import com.g2.taskstrackermvvm.viewmodel.TestViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -15,4 +16,6 @@ val appModule = module {
     viewModel { TestViewModel(get(), get(), get()) }
 //    viewModel { HomeListViewModel(get()) }
     viewModel { SignInViewModel(get()) }
+    viewModel { HomeViewModel(get()) }
+    viewModel { CreateTaskViewModel(get()) }
 }
