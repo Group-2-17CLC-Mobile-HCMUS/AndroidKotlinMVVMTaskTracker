@@ -47,13 +47,13 @@ class TaskRepositoryImp : ITaskRepo {
 
         if (user != null) {
             val childTaskRef = taskRef.child(user.uid).child(newTask.id)
-            childTaskRef.addValueEventListener(object : ValueEventListener {
+            childTaskRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (!snapshot.exists()) {
+                    if (snapshot.exists()) {
                         childTaskRef.child("title").setValue(newTask.title)
                         childTaskRef.child("desc").setValue(newTask.desc)
                         childTaskRef.child("priority").setValue(newTask.priority)

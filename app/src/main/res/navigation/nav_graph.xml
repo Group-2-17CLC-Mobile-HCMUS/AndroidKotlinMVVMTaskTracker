@@ -21,4 +21,9 @@
             android:id="@+id/action_createTaskFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/taskStatusChartFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.TaskStatusChartFragment"
+        android:label="fragment_task_status_chart"
+        tools:layout="@layout/fragment_task_status_chart" />
 </navigation>
