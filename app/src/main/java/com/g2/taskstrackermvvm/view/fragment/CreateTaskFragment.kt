@@ -35,6 +35,7 @@ class CreateTaskFragment : Fragment() {
             if (titleEditText.text.toString() == "") {
                 Toast.makeText(context, "Title is empty", Toast.LENGTH_SHORT).show()
             } else {
+
                 viewModel.addTask(
                     title = titleEditText.text.toString(),
                     desc = taskDescEditText.text.toString()
