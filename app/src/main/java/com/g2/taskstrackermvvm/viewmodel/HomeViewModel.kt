@@ -7,7 +7,7 @@ import com.g2.taskstrackermvvm.model.repository.ITaskRepo
 class HomeViewModel(val taskRepo: ITaskRepo) : ViewModel() {
     val tasks = taskRepo.getListTask()
 
-    fun updateTask(task: Task) {
-        taskRepo.
-    }
+    fun updateTask(task: Task) =
+        taskRepo.updateTask(task)
+
 }

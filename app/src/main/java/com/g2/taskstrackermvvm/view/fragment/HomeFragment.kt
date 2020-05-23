@@ -1,7 +1,7 @@
 package com.g2.taskstrackermvvm.view.fragment
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
             Task.Status.Done -> targetTask.status = Task.Status.Todo
         }
 
-        viewModel.
+        viewModel.updateTask(targetTask)
     }
 
     override fun onCreateView(
