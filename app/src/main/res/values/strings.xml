@@ -10,4 +10,8 @@
     <string name="description_hint_text">Description:</string>
     <string name="comment_hint_text">Write a comment...</string>
     <string name="task_name">Task name</string>
+    <string name="tasks_menu_item_title">Tasks</string>
+    <string name="tags_menu_item_title">Tags</string>
+    <string name="charts_menu_item_title">Charts</string>
+    <string name="sign_out_menu_item_title">Sign out</string>
 </resources>

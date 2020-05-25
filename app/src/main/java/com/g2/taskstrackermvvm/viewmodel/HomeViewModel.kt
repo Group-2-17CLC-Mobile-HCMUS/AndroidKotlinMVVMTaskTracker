@@ -10,4 +10,6 @@ class HomeViewModel(val taskRepo: ITaskRepo) : ViewModel() {
     fun updateTask(task: Task) =
         taskRepo.updateTask(task)
 
+    fun removeTask(task: Task) = taskRepo.removeTask(task)
+
 }
