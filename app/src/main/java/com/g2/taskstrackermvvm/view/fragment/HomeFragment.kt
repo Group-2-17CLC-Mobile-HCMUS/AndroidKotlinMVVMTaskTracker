@@ -1,7 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +21,15 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
-    private val taskAdapter: TaskAdapter = TaskAdapter(data, this::updateTaskStatus)
+    private val taskAdapter: TaskAdapter = TaskAdapter(data, ::updateTaskStatus, ::removeTask)
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    private fun removeTask(pos: Int) {
+        viewModel.removeTask(data[pos])
     }
 
     private fun updateTaskStatus(pos: Int) {
@@ -77,7 +80,11 @@ class HomeFragment : Fragment() {
     }
 
 
-    class TaskAdapter(private val data: List<Task>, private val updateTaskStatus: (Int) -> Unit) :
+    class TaskAdapter(
+        private val data: List<Task>,
+        private val updateTaskStatus: (Int) -> Unit,
+        private val removeTask: (Int) -> Unit
+    ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
         class TaskViewHolder(val v: View) : RecyclerView.ViewHolder(v)
@@ -96,6 +103,18 @@ class HomeFragment : Fragment() {
             holder.v.status.text = data[position].status.toString()
             holder.v.status.setOnClickListener {
                 updateTaskStatus(position)
+            }
+            holder.v.setOnCreateContextMenuListener { contextMenu, _, _ ->
+                contextMenu.apply {
+                    add("Modify").setOnMenuItemClickListener {
+                        print("Modify $position")
+                        true
+                    }
+                    add("Remove").setOnMenuItemClickListener {
+                        removeTask(position)
+                        true
+                    }
+                }
             }
         }
     }
