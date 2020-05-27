@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navController = findNavController(R.id.frag_container)
         val appBarConfig = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.taskStatusChartFragment),
+            setOf(R.id.homeFragment, R.id.taskStatusChartFragment, R.id.tagsFragment),
             main_activity_layout
         )
         toolbar.setupWithNavController(navController, appBarConfig)

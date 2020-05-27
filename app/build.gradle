@@ -81,7 +81,8 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
     implementation 'com.google.android.material:material:1.1.0'
 
-    def nav_version = '2.3.0-beta01'
+    def nav_version = "2.3.0-beta01"
+
 
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -94,4 +95,6 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'co.lujun:androidtagview:1.1.7'
 }
