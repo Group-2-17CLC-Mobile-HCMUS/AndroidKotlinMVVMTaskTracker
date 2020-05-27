@@ -17,6 +17,7 @@ interface ITagRepo {
     fun deleteTag(tag: Tag)
     fun getTagsList(): LiveData<List<Tag>>
     fun updateTag(tag: Tag)
+    fun getTagById(id: String) : Tag?
 }
 
 class TagRepositoryImp : ITagRepo {
@@ -106,5 +107,14 @@ class TagRepositoryImp : ITagRepo {
                 }
             })
         }
+    }
+
+    override fun getTagById(id: String) : Tag? {
+        val tags = listTags.value ?: return null
+        for (tag in tags) {
+            if (tag.id == id)
+                return tag
+        }
+        return null
     }
 }

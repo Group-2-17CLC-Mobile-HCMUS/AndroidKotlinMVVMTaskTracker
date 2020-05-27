@@ -13,7 +13,7 @@ val appModule = module {
     viewModel { TestViewModel(get(), get(), get()) }
 //    viewModel { HomeListViewModel(get()) }
     viewModel { SignInViewModel(get()) }
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
     viewModel { CreateTaskViewModel(get()) }
     viewModel { TaskStatusChartViewModel(get()) }
     viewModel { TagsViewModel(get()) }
