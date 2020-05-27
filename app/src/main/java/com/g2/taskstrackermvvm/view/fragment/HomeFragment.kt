@@ -21,13 +21,27 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
-    private val taskAdapter: TaskAdapter = TaskAdapter(data)
+    private val taskAdapter: TaskAdapter = TaskAdapter(data, ::updateTaskStatus, ::removeTask)
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    private fun removeTask(pos: Int) {
+        viewModel.removeTask(data[pos])
+    }
+
+    private fun updateTaskStatus(pos: Int) {
+        val targetTask = data[pos]
+        when (targetTask.status) {
+            Task.Status.Todo -> targetTask.status = Task.Status.Doing
+            Task.Status.Doing -> targetTask.status = Task.Status.Done
+            Task.Status.Done -> targetTask.status = Task.Status.Todo
+        }
+
+        viewModel.updateTask(targetTask)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +60,6 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
         taskListRecyclerView.apply {
             layoutManager = layoutM
@@ -67,7 +80,11 @@ class HomeFragment : Fragment() {
     }
 
 
-    class TaskAdapter(private val data: List<Task>) :
+    class TaskAdapter(
+        private val data: List<Task>,
+        private val updateTaskStatus: (Int) -> Unit,
+        private val removeTask: (Int) -> Unit
+    ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
         class TaskViewHolder(val v: View) : RecyclerView.ViewHolder(v)
@@ -85,7 +102,19 @@ class HomeFragment : Fragment() {
             holder.v.descText.text = data[position].desc
             holder.v.status.text = data[position].status.toString()
             holder.v.status.setOnClickListener {
-                
+                updateTaskStatus(position)
+            }
+            holder.v.setOnCreateContextMenuListener { contextMenu, _, _ ->
+                contextMenu.apply {
+                    add("Modify").setOnMenuItemClickListener {
+                        print("Modify $position")
+                        true
+                    }
+                    add("Remove").setOnMenuItemClickListener {
+                        removeTask(position)
+                        true
+                    }
+                }
             }
         }
     }

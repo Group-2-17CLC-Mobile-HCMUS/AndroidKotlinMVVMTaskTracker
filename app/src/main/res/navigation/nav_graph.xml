@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/taskStatusChartFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.g2.taskstrackermvvm.view.fragment.HomeFragment"
-        android:label="HomeFragment" >
+        android:name="com.g2.taskstrackermvvm.view.fragment.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_createTaskFragment"
             app:destination="@id/createTaskFragment"
-            app:enterAnim="@anim/fragment_fade_enter" />
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/createTaskFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.CreateTaskFragment"
-        android:label="CreateTaskFragment" >
+        android:label="Create new task" >
         <action
             android:id="@+id/action_createTaskFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -24,6 +25,11 @@
     <fragment
         android:id="@+id/taskStatusChartFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.TaskStatusChartFragment"
-        android:label="fragment_task_status_chart"
+        android:label="Status chart"
         tools:layout="@layout/fragment_task_status_chart" />
+    <fragment
+        android:id="@+id/tagsFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.TagsFragment"
+        android:label="Tags"
+        tools:layout="@layout/fragment_tags" />
 </navigation>

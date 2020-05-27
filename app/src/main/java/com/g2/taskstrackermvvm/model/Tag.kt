@@ -20,4 +20,8 @@ data class Tag constructor(
         GREEN(0x00FF00),
         BLUE(0x0000FF)
     }
+
+    override fun toString(): String {
+        return name
+    }
 }
