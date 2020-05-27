@@ -1,0 +1,48 @@
+package com.g2.taskstrackermvvm.view.activity
+import android.os.Bundle
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.g2.taskstrackermvvm.R
+import kotlinx.android.synthetic.main.report_chart_screen.*
+
+class ChartActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+
+var type = arrayOf("Status", "Day", "Month","Year")
+
+    var spinner: Spinner? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.report_chart_screen)
+        spinner = this.chart
+        spinner!!.setOnItemSelectedListener(this)
+
+        // Create an ArrayAdapter using a simple spinner layout and languages array
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, type)
+        // Set layout to use when the list of choices appear
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set Adapter to Spinner
+        spinner!!.setAdapter(aa)
+
+    }
+
+    override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
+        var tmp =  type[position].toString();
+        if (tmp == "Status")
+        {
+            var fragment :Fragment?=null
+            if (fragment != null)
+            {val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.status_pie_chart,fragment)
+            transaction.commit()
+            }
+        }
+    }
+
+    override fun onNothingSelected(arg0: AdapterView<*>) {
+
+    }
+}
