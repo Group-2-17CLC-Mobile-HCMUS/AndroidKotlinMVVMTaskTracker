@@ -16,4 +16,5 @@ val appModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { CreateTaskViewModel(get()) }
     viewModel { TaskStatusChartViewModel(get()) }
+    viewModel { TagsViewModel(get()) }
 }

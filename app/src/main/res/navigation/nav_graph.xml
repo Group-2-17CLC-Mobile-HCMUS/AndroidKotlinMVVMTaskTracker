@@ -27,4 +27,9 @@
         android:name="com.g2.taskstrackermvvm.view.fragment.TaskStatusChartFragment"
         android:label="Status chart"
         tools:layout="@layout/fragment_task_status_chart" />
+    <fragment
+        android:id="@+id/tagsFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.TagsFragment"
+        android:label="Tags"
+        tools:layout="@layout/fragment_tags" />
 </navigation>
