@@ -10,4 +10,10 @@
     <string name="description_hint_text">Description:</string>
     <string name="comment_hint_text">Write a comment...</string>
     <string name="task_name">Task name</string>
+    <string-array name="spinner_fragment">
+        <item>Status</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
 </resources>
