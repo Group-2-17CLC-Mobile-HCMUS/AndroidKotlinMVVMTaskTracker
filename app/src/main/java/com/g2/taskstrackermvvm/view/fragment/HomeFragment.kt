@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.card_task.view.*
@@ -21,11 +23,16 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
-    private val taskAdapter: TaskAdapter = TaskAdapter(data, ::updateTaskStatus, ::removeTask)
+    private val taskAdapter: TaskAdapter =
+        TaskAdapter(data, ::updateTaskStatus, ::removeTask, ::getTagById)
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    private fun getTagById(id: String) : Tag? {
+        return viewModel.getTagById(id)
     }
 
     private fun removeTask(pos: Int) {
@@ -83,7 +90,8 @@ class HomeFragment : Fragment() {
     class TaskAdapter(
         private val data: List<Task>,
         private val updateTaskStatus: (Int) -> Unit,
-        private val removeTask: (Int) -> Unit
+        private val removeTask: (Int) -> Unit,
+        private val getTag: (String) -> Tag?
     ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -104,6 +112,37 @@ class HomeFragment : Fragment() {
             holder.v.status.setOnClickListener {
                 updateTaskStatus(position)
             }
+            val tags = data[position].tagIds.map { id -> getTag(id) }
+            val tagNames = tags.map { tag -> tag!!.name }
+            val tagColors = tags.map { tag ->
+                when (tag!!.color) {
+                    Tag.Color.RED -> intArrayOf(
+                        0xffff5131.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.BLUE -> intArrayOf(
+                        0xff768fff.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.GREEN -> intArrayOf(
+                        0xff5efc82.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    else -> intArrayOf(
+                        0xffaeaeae.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                }
+            }
+            holder.v.task_tags_container.setTags(tagNames, tagColors)
             holder.v.setOnCreateContextMenuListener { contextMenu, _, _ ->
                 contextMenu.apply {
                     add("Modify").setOnMenuItemClickListener {
