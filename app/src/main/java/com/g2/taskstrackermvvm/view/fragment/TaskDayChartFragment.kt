@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_task_status_chart.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -45,8 +46,11 @@ class TaskDayChartFragment : Fragment() {
                 val current = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val formatted = current.format(formatter)
+
                 for (item in it) {
-                    if (item.created.toString() == formatted) {
+                    val tmp = item.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().toString()
+                    val dateItem = tmp.substring(0,10)
+                    if (dateItem == formatted) {
                         when (item.status) {
                             Task.Status.Todo -> ++todo
                             Task.Status.Doing -> ++doing
@@ -80,4 +84,5 @@ class TaskDayChartFragment : Fragment() {
         fun newInstance() =
             TaskDayChartFragment()
     }
+
 }
