@@ -16,6 +16,7 @@ import java.util.*
 interface ISubTaskRepo {
     fun addSubTask(name:String, taskId: String)
     fun getListSubTask(taskId: String) : LiveData<List<SubTask>>
+    fun removeSubTask(taskId: String, subTaskId: String)
 }
 
 class SubTaskRepositoryImp : ISubTaskRepo {
@@ -26,11 +27,13 @@ class SubTaskRepositoryImp : ISubTaskRepo {
     override fun addSubTask(name: String, taskId: String) {
         val database = Firebase.database
         val user = FirebaseAuth.getInstance().currentUser
-        val taskRef = database.getReference("tasks")
+        //val userID = user.uid
+        val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
+
 
         val subTask = SubTask(name)
         if (user != null) {
-            taskRef.child(user.uid).child(taskId).push().setValue(subTask)
+            subTaskRef.child(user.uid).child(taskId).push().setValue(subTask)
         }
     }
 
@@ -64,5 +67,17 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         return listSubTask
     }
 
+    override fun removeSubTask(taskId: String, subTaskId: String) {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val taskRef = database.getReference("tasks")
+        //val userID = user.uid
+        val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
 
+
+        if (user != null) {
+            subTaskRef.child(subTaskId).setValue(null)
+
+        }
+    }
 }
