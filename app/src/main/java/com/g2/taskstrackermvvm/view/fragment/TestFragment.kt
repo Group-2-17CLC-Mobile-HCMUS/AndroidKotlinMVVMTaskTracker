@@ -1,18 +1,18 @@
 package com.g2.taskstrackermvvm.view.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
-
 import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.view.activity.MainActivity
 import com.g2.taskstrackermvvm.viewmodel.TestViewModel
 import kotlinx.android.synthetic.main.test_fragment2.*
-import kotlinx.android.synthetic.main.test_fragment2.signOutBtn
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -39,34 +39,44 @@ class TestFragment : Fragment() {
                 AuthUI.getInstance().signOut(it1)
                     .addOnCompleteListener {
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
                     }
-                    .addOnFailureListener { e -> Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    .addOnFailureListener { e ->
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                     }
+                (activity as MainActivity).popToPreviousActivity()
             }
         }
 
         test_add_task_btn.setOnClickListener {
             context?.let {
-                testViewModel.addTaskTest()
+                //findNavController().navigate(R.id.action_testFragment_to_calendarFragment)
             }
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+//        testViewModel.testAddTag()
         testViewModel.listTaskData.observe(viewLifecycleOwner, Observer {
             showText.text = null
             var textViewer = ""
             for (item in it) {
                 textViewer += item.toString() + "\n"
-                testViewModel.setTag(item.id, "test")
             }
             showText.text = textViewer
         })
-        //testViewModel.addUserTest()
-        //testViewModel.updateUserTest()
-        //testViewModel.addTaskTest()
+        testViewModel.addUserTest()
 
+//        testViewModel.listTagData.observe(viewLifecycleOwner, Observer {
+//            var text = ""
+//            for (item in it) {
+//                text += "${item.id}\n"
+//            }
+//            showText.text = text
+//        })
+
+//        testViewModel.updateUserTest()
     }
 
 }

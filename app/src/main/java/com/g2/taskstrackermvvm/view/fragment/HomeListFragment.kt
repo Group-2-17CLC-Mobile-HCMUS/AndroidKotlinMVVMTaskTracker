@@ -48,11 +48,11 @@ class HomeListFragment() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.data.observe(viewLifecycleOwner, Observer {
-            data.clear()
-            data.addAll(it)
-            viewAdapter.notifyDataSetChanged()
-        })
+//        viewModel.data.observe(viewLifecycleOwner, Observer {
+//            data.clear()
+//            data.addAll(it)
+//            viewAdapter.notifyDataSetChanged()
+//        })
     }
 
     class CustomAdapter(private val data: List<Task>) :

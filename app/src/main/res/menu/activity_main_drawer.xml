@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/nav_item_group">
+        <item
+            android:id="@+id/homeFragment"
+            android:title="@string/tasks_menu_item_title" />
+        <item
+            android:id="@+id/tagsFragment"
+            android:title="@string/tags_menu_item_title" />
+        <item
+            android:id="@+id/taskStatusChartFragment"
+            android:title="@string/charts_menu_item_title" />
+    </group>
+    <group android:id="@+id/functional_item_group">
+        <item
+            android:id="@+id/sign_out_item"
+            android:title="@string/sign_out_menu_item_title"/>
+    </group>
+</menu>
