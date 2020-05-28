@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.viewmodel.ChartsFragmentViewModel
 
@@ -40,6 +41,19 @@ class ChartsFragment : Fragment() {
                 }
                 if (choosed == "Day") {
                     val view = layoutInflater.inflate(R.layout.fragment_task_day_chart, null)
+                    view.day_pie_chart.apply {
+                        TaskDayChartFragment()
+                    }
+                }
+                if (choosed == "Month") {
+                    val view = layoutInflater.inflate(R.layout.fragment_task_month_chart, null)
+                    view.day_pie_chart.apply {
+                        TaskDayChartFragment()
+                    }
+
+                }
+                if (choosed == "Year") {
+                    val view = layoutInflater.inflate(R.layout.fragment_task_year_chart, null)
                     view.day_pie_chart.apply {
                         TaskDayChartFragment()
                     }
