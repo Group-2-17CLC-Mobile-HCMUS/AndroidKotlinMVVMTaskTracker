@@ -15,7 +15,6 @@ import co.lujun.androidtagview.TagView
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.viewmodel.TagsViewModel
-import kotlinx.android.synthetic.main.dialog_create_new_tag.*
 import kotlinx.android.synthetic.main.dialog_create_new_tag.view.*
 import kotlinx.android.synthetic.main.fragment_tags.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,7 +61,10 @@ class TagsFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            viewModel.addTag(v.tag_name_edit_text.text.toString(), v.select_color_spinner.selectedItem as Tag.Color)
+                            viewModel.addTag(
+                                v.tag_name_edit_text.text.toString(),
+                                v.select_color_spinner.selectedItem as Tag.Color
+                            )
                         }
                     }
                     setNegativeButton(R.string.cancel) { dialog, _ ->
@@ -119,6 +121,43 @@ class TagsFragment : Fragment() {
                 }
 
                 override fun onTagClick(position: Int, text: String?) {
+                    activity?.let { act ->
+                        val builder = AlertDialog.Builder(act)
+                        val inflater = requireActivity().layoutInflater;
+                        val v = inflater.inflate(R.layout.dialog_create_new_tag, null)
+                        val item = listOf(Tag.Color.RED, Tag.Color.BLUE, Tag.Color.GREEN)
+                        v.select_color_spinner.apply {
+                            adapter = ArrayAdapter(
+                                requireActivity(),
+                                android.R.layout.simple_spinner_dropdown_item,
+                                item
+                            )
+                            setSelection(item.indexOf(it[position].color))
+                        }
+                        v.tag_name_edit_text.setText(it[position].name)
+                        builder.apply {
+                            setView(v)
+                            setTitle(R.string.update_tag_dialog_title)
+                            setPositiveButton(R.string.update_tag_dialog_pos_btn) { _, _ ->
+                                if (v.tag_name_edit_text.text.toString() == "") {
+                                    Toast.makeText(
+                                        context,
+                                        "The name must not be empty",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    it[position].name = v.tag_name_edit_text.text.toString()
+                                    it[position].color = v.select_color_spinner.selectedItem as Tag.Color
+                                    viewModel.updateTag(it[position])
+                                }
+                            }
+                            setNegativeButton(R.string.cancel) { dialog, _ ->
+                                dialog.cancel()
+                            }
+                        }
+                        builder.create().show()
+                    }
+
                 }
 
                 override fun onTagCrossClick(position: Int) {

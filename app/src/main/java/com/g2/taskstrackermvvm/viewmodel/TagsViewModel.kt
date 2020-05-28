@@ -16,4 +16,6 @@ class TagsViewModel(private val tagsRepo: ITagRepo) : ViewModel() {
     fun addTag(name: String, color: Tag.Color) {
         tagsRepo.createTag(name, color)
     }
+
+    fun updateTag(tag: Tag) = tagsRepo.updateTag(tag)
 }
