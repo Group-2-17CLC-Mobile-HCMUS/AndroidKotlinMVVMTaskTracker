@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import org.koin.ext.getScopeId
 import java.util.*
 
 interface ISubTaskRepo {
@@ -74,10 +75,33 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         //val userID = user.uid
         val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
 
-
         if (user != null) {
             subTaskRef.child(subTaskId).setValue(null)
-
         }
     }
+
+    override fun updateTask(newSubTask: SubTask, subTaskId: String, taskId: String) {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
+        //
+
+        if (user != null) {
+            val childSubTaskRef = subTaskRef.child(subTaskId)
+            childSubTaskRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                   // Log.w(newSubTask, "loadPost:onCancelled", databaseError.toException())
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        childSubTaskRef.child("name").setValue(newSubTask.name)
+                        childSubTaskRef.child("status").setValue(newSubTask.status)
+
+                    }
+                }
+            })
+        }
+    }
+
 }
