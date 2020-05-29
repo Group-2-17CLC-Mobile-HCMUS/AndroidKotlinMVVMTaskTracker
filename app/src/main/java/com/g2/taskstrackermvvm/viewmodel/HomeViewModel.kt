@@ -21,4 +21,8 @@ class HomeViewModel(
     fun getTagById(id: String): Tag? {
         return tagRepo.getTagById(id)
     }
+
+    fun setTag(taskId: String, tagId: String) {
+        taskRepo.setTag(taskId, tagId)
+    }
 }

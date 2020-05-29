@@ -13,6 +13,7 @@
         android:layout_margin="0dp"
         android:padding="10dp"
         app:tag_clickable="true"
+        android:background="#292929"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

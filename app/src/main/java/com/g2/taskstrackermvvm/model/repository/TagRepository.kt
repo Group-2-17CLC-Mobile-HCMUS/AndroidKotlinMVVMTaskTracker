@@ -73,7 +73,7 @@ class TagRepositoryImp : ITagRepo {
                     val tag = tagSnapshot.getValue(Tag::class.java)
                     if (tag != null) {
                         tag.id = tagSnapshot.key.toString()
-                        for (task in tagSnapshot.child("tags").children) {
+                        for (task in tagSnapshot.child("tasks").children) {
                             task.key?.let { tag.addBindedTask(it) }
                         }
                         list.add(tag)
