@@ -8,6 +8,10 @@
             android:id="@+id/tagsFragment"
             android:title="@string/tags_menu_item_title" />
         <item
+            android:id="@+id/updateUserProfileFragment"
+            android:title="@string/update_profile"
+            />
+        <item
             android:id="@+id/taskStatusChartFragment"
             android:title="@string/charts_menu_item_title" />
     </group>

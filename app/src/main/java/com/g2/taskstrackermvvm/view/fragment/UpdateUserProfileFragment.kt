@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.g2.taskstrackermvvm.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.fragment_update_user_profile.*
+import kotlinx.android.synthetic.main.fragment_update_user_profile.view.*
 
 class UpdateUserProfileFragment : Fragment() {
 
@@ -28,7 +30,8 @@ class UpdateUserProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_update_user_profile, container, false)
         if (user != null) {
-            view.findViewById<EditText>(R.id.usernameEditText).setText(user.displayName)
+            view.usernameEditText.setText(user.displayName)
+            view.emailTextView.text = user.email
         }
         return view
     }
@@ -43,7 +46,25 @@ class UpdateUserProfileFragment : Fragment() {
                     val newUsername = usernameEditText.text.toString()
                     val profile = UserProfileChangeRequest.Builder()
                     profile.displayName = newUsername
-                    user.updateProfile(profile.build())
+                    user.updateProfile(profile.build()).addOnSuccessListener {
+                        AlertDialog.Builder(activity).apply {
+                            setTitle("Update Success")
+                            setMessage("Display name has been successfully updated!")
+                            setPositiveButton("Ok") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            create()
+                        }.show()
+                    }.addOnFailureListener {
+                        AlertDialog.Builder(activity).apply {
+                            setTitle("Update Failure")
+                            setMessage("Update failed with exception ${it.message}")
+                            setPositiveButton("Ok") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            create()
+                        }.show()
+                    }
                 }
 
             }
