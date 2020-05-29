@@ -79,7 +79,7 @@ class SignInActivity : AppCompatActivity(), SignInFragment.IOnSignIn {
 //        } catch (e: Exception) {
 //            Log.w("Signin", "NetworkCallback for Wi-fi was not registered or already unregistered")
 //        }
-        Firebase.database.setPersistenceEnabled(true)
+//        Firebase.database.setPersistenceEnabled(true)
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {

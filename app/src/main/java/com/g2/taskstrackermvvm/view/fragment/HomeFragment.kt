@@ -1,5 +1,7 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +12,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import co.lujun.androidtagview.TagContainerLayout
+import co.lujun.androidtagview.TagView
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.card_task.view.*
+import kotlinx.android.synthetic.main.dialog_select_tag.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.task_item_recycler_view_home.view.descText
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,16 +28,20 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
-    private val taskAdapter: TaskAdapter =
-        TaskAdapter(data, ::updateTaskStatus, ::removeTask, ::getTagById)
+    private var tagsData: MutableList<Tag> = mutableListOf()
+    private lateinit var taskAdapter: TaskAdapter
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    private fun getTagById(id: String) : Tag? {
+    private fun getTagById(id: String): Tag? {
         return viewModel.getTagById(id)
+    }
+
+    private fun setTag(taskId: String, tagId: String) {
+        viewModel.setTag(taskId, tagId)
     }
 
     private fun removeTask(pos: Int) {
@@ -68,6 +77,17 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        taskAdapter =
+            TaskAdapter(
+                activity,
+                data,
+                tagsData,
+                ::updateTaskStatus,
+                ::removeTask,
+                ::getTagById,
+                ::setTag
+            )
+
         taskListRecyclerView.apply {
             layoutManager = layoutM
             adapter = taskAdapter
@@ -75,8 +95,11 @@ class HomeFragment : Fragment() {
         viewModel.tasks.observe(viewLifecycleOwner, Observer {
             data.clear()
             data.addAll(it)
-            print(data)
             taskAdapter.notifyDataSetChanged()
+        })
+        viewModel.tags.observe(viewLifecycleOwner, Observer {
+            tagsData.clear()
+            tagsData.addAll(it)
         })
     }
 
@@ -88,10 +111,13 @@ class HomeFragment : Fragment() {
 
 
     class TaskAdapter(
+        private val context: Context?,
         private val data: List<Task>,
+        private val tagsData: List<Tag>,
         private val updateTaskStatus: (Int) -> Unit,
         private val removeTask: (Int) -> Unit,
-        private val getTag: (String) -> Tag?
+        private val getTag: (String) -> Tag?,
+        private val setTag: (String, String) -> Unit
     ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -113,9 +139,9 @@ class HomeFragment : Fragment() {
                 updateTaskStatus(position)
             }
             val tags = data[position].tagIds.map { id -> getTag(id) }
-            val tagNames = tags.map { tag -> tag!!.name }
+            val tagNames = tags.map { tag -> tag?.name }
             val tagColors = tags.map { tag ->
-                when (tag!!.color) {
+                when (tag?.color) {
                     Tag.Color.RED -> intArrayOf(
                         0xffff5131.toInt(),
                         Color.BLACK,
@@ -145,6 +171,82 @@ class HomeFragment : Fragment() {
             holder.v.task_tags_container.setTags(tagNames, tagColors)
             holder.v.setOnCreateContextMenuListener { contextMenu, _, _ ->
                 contextMenu.apply {
+                    add("Set Tag").setOnMenuItemClickListener {
+                        val v =
+                            LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
+
+                        val tagsContainer: TagContainerLayout = v.select_tag_container
+                        tagsContainer.backgroundColor = Color.WHITE
+
+                        val tagNames = tagsData.map { tag -> tag.name }
+                        val tagColors = tagsData.map { tag ->
+                            when (tag.color) {
+                                Tag.Color.RED -> intArrayOf(
+                                    0xffff5131.toInt(),
+                                    Color.BLACK,
+                                    Color.BLACK,
+                                    Color.YELLOW
+                                )
+                                Tag.Color.BLUE -> intArrayOf(
+                                    0xff768fff.toInt(),
+                                    Color.BLACK,
+                                    Color.BLACK,
+                                    Color.YELLOW
+                                )
+                                Tag.Color.GREEN -> intArrayOf(
+                                    0xff5efc82.toInt(),
+                                    Color.BLACK,
+                                    Color.BLACK,
+                                    Color.YELLOW
+                                )
+                                else -> intArrayOf(
+                                    0xffaeaeae.toInt(),
+                                    Color.BLACK,
+                                    Color.BLACK,
+                                    Color.YELLOW
+                                )
+                            }
+                        }
+
+                        tagsContainer.setTags(tagNames, tagColors)
+
+                        var tagPos = 0
+                        var selectedTag: TagView? = null
+                        tagsContainer.setOnTagClickListener(object : TagView.OnTagClickListener {
+                            override fun onSelectedTagDrag(position: Int, text: String?) {
+                            }
+
+                            override fun onTagLongClick(position: Int, text: String?) {
+                            }
+
+                            override fun onTagClick(position: Int, text: String?) {
+                                selectedTag?.setTagBorderColor(
+                                    Color.BLACK
+                                )
+                                selectedTag = tagsContainer.getTagView(position)
+                                tagPos = position
+                                selectedTag?.setTagBorderColor(
+                                    Color.YELLOW
+                                )
+                            }
+
+                            override fun onTagCrossClick(position: Int) {
+                            }
+                        })
+                        AlertDialog.Builder(context).apply {
+                            setView(v)
+                            setTitle("Select Tag")
+                            setPositiveButton("Set") { _, _ ->
+                                setTag(data[position].id, tagsData[tagPos].id)
+                            }
+                            setNegativeButton("Cancel") { dialog, _ ->
+                                dialog.cancel()
+                            }
+                            create()
+                        }.show()
+
+                        true
+                    }
                     add("Modify").setOnMenuItemClickListener {
                         print("Modify $position")
                         true
