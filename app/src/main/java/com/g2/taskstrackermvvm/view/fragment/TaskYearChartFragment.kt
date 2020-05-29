@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,6 @@ import com.g2.taskstrackermvvm.viewmodel.TaskStatusChartViewModel
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import kotlinx.android.synthetic.main.fragment_task_month_chart.*
 import kotlinx.android.synthetic.main.fragment_task_year_chart.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
@@ -43,8 +43,10 @@ class TaskYearChartFragment : Fragment() {
                 val currentYear = LocalDateTime.now().year.toString()
 
                 for (item in it) {
-                    val tmp = item.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().toString()
-                    val itemYear = tmp.substring(0,4)
+                    val tmp =
+                        item.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+                            .toString()
+                    val itemYear = tmp.substring(0, 4)
 
                     if (currentYear == itemYear) {
                         when (item.status) {
@@ -66,6 +68,8 @@ class TaskYearChartFragment : Fragment() {
                     PieEntry(perDone.toFloat(), "Done")
                 )
                 val dataset = PieDataSet(entries, "Year")
+                val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
+                dataset.colors = colors
                 val data = PieData(dataset)
                 year_pie_chart.data = data
                 year_pie_chart.invalidate()

@@ -12,7 +12,7 @@
             android:title="@string/update_profile"
             />
         <item
-            android:id="@+id/taskStatusChartFragment"
+            android:id="@+id/chartsFragment"
             android:title="@string/charts_menu_item_title" />
     </group>
     <group android:id="@+id/functional_item_group">
