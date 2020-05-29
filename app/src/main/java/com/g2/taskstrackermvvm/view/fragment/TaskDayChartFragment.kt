@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -70,6 +71,8 @@ class TaskDayChartFragment : Fragment() {
                     PieEntry(perDone.toFloat(), "Done")
                 )
                 val dataset = PieDataSet(entries, "Day")
+                val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
+                dataset.colors = colors
                 val data = PieData(dataset)
                 day_pie_chart.data = data
                 day_pie_chart.invalidate()

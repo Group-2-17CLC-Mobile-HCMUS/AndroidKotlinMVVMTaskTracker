@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfig = AppBarConfiguration(
             setOf(
                 R.id.homeFragment,
-                R.id.taskStatusChartFragment,
+                R.id.chartsFragment,
                 R.id.tagsFragment,
                 R.id.updateUserProfileFragment
             ),

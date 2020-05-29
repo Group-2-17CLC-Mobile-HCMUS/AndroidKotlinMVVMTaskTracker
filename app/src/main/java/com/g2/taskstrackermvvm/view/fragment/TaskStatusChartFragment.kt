@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,8 @@ class TaskStatusChartFragment : Fragment() {
                     PieEntry(perDone.toFloat(), "Done")
                 )
                 val dataset = PieDataSet(entries, "Status")
+                val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
+                dataset.colors = colors
                 val data = PieData(dataset)
                 status_pie_chart.data = data
                 status_pie_chart.invalidate()

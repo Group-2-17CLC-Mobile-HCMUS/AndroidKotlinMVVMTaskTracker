@@ -24,11 +24,6 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/taskStatusChartFragment"
-        android:name="com.g2.taskstrackermvvm.view.fragment.TaskStatusChartFragment"
-        android:label="Status chart"
-        tools:layout="@layout/fragment_task_status_chart" />
-    <fragment
         android:id="@+id/tagsFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.TagsFragment"
         android:label="Tags"
@@ -38,4 +33,8 @@
         android:name="com.g2.taskstrackermvvm.view.fragment.UpdateUserProfileFragment"
         android:label="Update Profile"
         tools:layout="@layout/fragment_update_user_profile" />
+    <fragment
+        android:id="@+id/chartsFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.ChartsFragment"
+        android:label="Charts" />
 </navigation>
