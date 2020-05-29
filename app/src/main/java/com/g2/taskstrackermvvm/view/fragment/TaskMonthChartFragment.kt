@@ -72,6 +72,7 @@ class TaskMonthChartFragment : Fragment() {
                 val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
                 dataset.colors = colors
                 val data = PieData(dataset)
+                data.setValueTextSize(12f)
                 month_pie_chart.data = data
                 month_pie_chart.invalidate()
 

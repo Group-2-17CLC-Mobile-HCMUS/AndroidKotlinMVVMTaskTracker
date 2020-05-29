@@ -71,6 +71,7 @@ class TaskYearChartFragment : Fragment() {
                 val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
                 dataset.colors = colors
                 val data = PieData(dataset)
+                data.setValueTextSize(12f)
                 year_pie_chart.data = data
                 year_pie_chart.invalidate()
 

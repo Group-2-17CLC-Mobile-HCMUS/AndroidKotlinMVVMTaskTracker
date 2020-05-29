@@ -51,6 +51,7 @@ class TaskDayChartFragment : Fragment() {
                 for (item in it) {
                     val tmp = item.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().toString()
                     val dateItem = tmp.substring(0,10)
+
                     if (dateItem == formatted) {
                         when (item.status) {
                             Task.Status.Todo -> ++todo
@@ -74,6 +75,7 @@ class TaskDayChartFragment : Fragment() {
                 val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
                 dataset.colors = colors
                 val data = PieData(dataset)
+                data.setValueTextSize(12f)
                 day_pie_chart.data = data
                 day_pie_chart.invalidate()
 

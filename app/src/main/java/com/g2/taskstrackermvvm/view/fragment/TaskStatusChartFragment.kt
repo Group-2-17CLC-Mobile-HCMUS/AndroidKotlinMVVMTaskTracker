@@ -61,6 +61,7 @@ class TaskStatusChartFragment : Fragment() {
                 val colors = listOf<Int>(Color.RED, Color.GREEN, Color.BLUE)
                 dataset.colors = colors
                 val data = PieData(dataset)
+                data.setValueTextSize(12f)
                 status_pie_chart.data = data
                 status_pie_chart.invalidate()
 
