@@ -10,7 +10,7 @@
         android:id="@+id/taskListRecyclerView"
         android:layout_width="382dp"
         android:layout_height="538dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
