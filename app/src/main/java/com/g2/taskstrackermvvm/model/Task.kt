@@ -46,12 +46,5 @@ data class Task constructor(@get:Exclude var id: String,
         Low
     }
 
-    class SubTask(val title: String) {
-        var status: SubTaskStatus = SubTaskStatus.UNFINISHED
-    }
 
-    enum class SubTaskStatus {
-        UNFINISHED,
-        FINISH
-    }
 }
