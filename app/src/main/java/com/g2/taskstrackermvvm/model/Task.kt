@@ -26,6 +26,10 @@ data class Task constructor(@get:Exclude var id: String,
         tagIds.add(id)
     }
 
+    fun addSubtask(subtask: SubTask) {
+        subTasks.add(subtask)
+    }
+
 //
 //    fun changeTitle(newTitle: String) = Task(time, newTitle, detail)
 //    fun changeDetail(newDetail: String) = Task(time, title, newDetail)

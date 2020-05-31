@@ -21,7 +21,7 @@ interface ISubTaskRepo {
 class SubTaskRepositoryImp : ISubTaskRepo {
 
     companion object {
-        val TAG = "com.g2.taskstrackermvvm.model.repository.SubTaskRepositoryImp"
+        const val TAG = "com.g2.taskstrackermvvm.model.repository.SubTaskRepositoryImp"
     }
 
     private val listSubTask: MutableLiveData<List<SubTask>> = MutableLiveData()
@@ -33,9 +33,9 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
 
 
-        val subTask = SubTask(name)
         if (user != null) {
-            subTaskRef.child(user.uid).child(taskId).push().setValue(subTask)
+            val singleSubTaskRef = subTaskRef.child(user.uid).child(taskId).push()
+            val subTask = singleSubTaskRef.key?.let { SubTask(it, name) }
         }
     }
 
@@ -51,10 +51,11 @@ class SubTaskRepositoryImp : ISubTaskRepo {
                 list.clear()
                 for (subTaskSnapshot in dataSnapshot.children) {
                     val subTask = subTaskSnapshot.getValue(SubTask::class.java)
-                    if (subTask != null) {
-                        subTask.name = subTaskSnapshot.key.toString()
-
-                        list.add(subTask)
+                    subTask?.let {
+                        subTaskSnapshot.key?.let { it1 ->
+                            it.id = it1
+                            list.add(it)
+                        }
                     }
                 }
                 listSubTask.value = list
@@ -62,7 +63,7 @@ class SubTaskRepositoryImp : ISubTaskRepo {
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w("Failed to read value.", error.toException())
+                Log.w(TAG, "db error ${error.toException()}")
             }
         })
 
