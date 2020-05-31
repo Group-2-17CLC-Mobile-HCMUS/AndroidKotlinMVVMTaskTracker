@@ -4,24 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g2.taskstrackermvvm.model.SubTask
-import com.g2.taskstrackermvvm.model.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import org.koin.ext.getScopeId
-import java.util.*
 
 interface ISubTaskRepo {
-    fun addSubTask(name:String, taskId: String)
-    fun getListSubTask(taskId: String) : LiveData<List<SubTask>>
+    fun addSubTask(name: String, taskId: String)
+    fun getListSubTask(taskId: String): LiveData<List<SubTask>>
     fun removeSubTask(taskId: String, subTaskId: String)
+    fun updateTask(newSubTask: SubTask, subTaskId: String, taskId: String)
 }
 
 class SubTaskRepositoryImp : ISubTaskRepo {
 
+    companion object {
+        val TAG = "com.g2.taskstrackermvvm.model.repository.SubTaskRepositoryImp"
+    }
 
     private val listSubTask: MutableLiveData<List<SubTask>> = MutableLiveData()
 
@@ -48,7 +49,7 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         subTaskUidRef?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
-                for ( subTaskSnapshot in dataSnapshot.children ) {
+                for (subTaskSnapshot in dataSnapshot.children) {
                     val subTask = subTaskSnapshot.getValue(SubTask::class.java)
                     if (subTask != null) {
                         subTask.name = subTaskSnapshot.key.toString()
@@ -61,7 +62,7 @@ class SubTaskRepositoryImp : ISubTaskRepo {
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w( "Failed to read value.", error.toException())
+                Log.w("Failed to read value.", error.toException())
             }
         })
 
@@ -90,14 +91,13 @@ class SubTaskRepositoryImp : ISubTaskRepo {
             val childSubTaskRef = subTaskRef.child(subTaskId)
             childSubTaskRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
-                   // Log.w(newSubTask, "loadPost:onCancelled", databaseError.toException())
+                    Log.w(TAG, "loadPost:onCancelled ${databaseError.message}")
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         childSubTaskRef.child("name").setValue(newSubTask.name)
                         childSubTaskRef.child("status").setValue(newSubTask.status)
-
                     }
                 }
             })

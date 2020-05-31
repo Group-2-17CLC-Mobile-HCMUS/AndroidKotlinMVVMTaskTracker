@@ -48,6 +48,11 @@ class HomeFragment : Fragment() {
         viewModel.removeTask(data[pos])
     }
 
+    private fun navigateToItemDetail(taskId: String) {
+        val direction = HomeFragmentDirections.actionHomeFragmentToUpdateTaskFragment(taskId)
+        findNavController().navigate(direction)
+    }
+
     private fun updateTaskStatus(pos: Int) {
         val targetTask = data[pos]
         when (targetTask.status) {
@@ -69,6 +74,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        search_view.setIconifiedByDefault(false)
+
+
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createTaskFragment)
         }
@@ -85,7 +93,8 @@ class HomeFragment : Fragment() {
                 ::updateTaskStatus,
                 ::removeTask,
                 ::getTagById,
-                ::setTag
+                ::setTag,
+                ::navigateToItemDetail
             )
 
         taskListRecyclerView.apply {
@@ -117,7 +126,8 @@ class HomeFragment : Fragment() {
         private val updateTaskStatus: (Int) -> Unit,
         private val removeTask: (Int) -> Unit,
         private val getTag: (String) -> Tag?,
-        private val setTag: (String, String) -> Unit
+        private val setTag: (String, String) -> Unit,
+        private val navDetail: (String) -> Unit
     ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -248,7 +258,7 @@ class HomeFragment : Fragment() {
                         true
                     }
                     add("Modify").setOnMenuItemClickListener {
-                        print("Modify $position")
+                        navDetail(data[position].id)
                         true
                     }
                     add("Remove").setOnMenuItemClickListener {

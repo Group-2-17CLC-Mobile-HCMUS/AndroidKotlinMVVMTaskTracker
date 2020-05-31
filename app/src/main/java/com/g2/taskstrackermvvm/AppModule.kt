@@ -10,6 +10,7 @@ val appModule = module {
     single<IUserRepo> { UserRepositoryImp() }
     single<ITaskRepo> { TaskRepositoryImp() }
     single<ITagRepo> { TagRepositoryImp() }
+    single<ISubTaskRepo> { SubTaskRepositoryImp() }
     viewModel { TestViewModel(get(), get(), get()) }
 //    viewModel { HomeListViewModel(get()) }
     viewModel { SignInViewModel(get()) }
@@ -17,4 +18,5 @@ val appModule = module {
     viewModel { CreateTaskViewModel(get()) }
     viewModel { TaskStatusChartViewModel(get()) }
     viewModel { TagsViewModel(get()) }
+    viewModel { UpdateTaskViewModel(get(), get(), get()) }
 }
