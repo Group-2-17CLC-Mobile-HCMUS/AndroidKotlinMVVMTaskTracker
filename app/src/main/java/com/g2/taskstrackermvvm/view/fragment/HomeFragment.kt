@@ -80,18 +80,12 @@ class HomeFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //get item id to handle item clicks
-        val id = item!!.itemId
         //handle item clicks
-        if (id == R.id.action_filter){
-            //do your action here, im just showing toast
-            Toast.makeText(activity, "Filter", Toast.LENGTH_SHORT).show()
+        when (item.itemId) {
+            R.id.action_filter-> false
+            R.id.action_sort-> false
+            else-> true
         }
-        if (id == R.id.action_sort){
-            //do your action here, im just showing toast
-            Toast.makeText(activity, "Sort", Toast.LENGTH_SHORT).show()
-        }
-
         return super.onOptionsItemSelected(item)
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {

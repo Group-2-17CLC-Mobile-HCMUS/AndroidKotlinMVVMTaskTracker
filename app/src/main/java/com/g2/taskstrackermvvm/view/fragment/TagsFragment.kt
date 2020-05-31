@@ -41,12 +41,10 @@ class TagsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //get item id to handle item clicks
-        val id = item!!.itemId
         //handle item clicks
-        if (id == R.id.action_tag_filter){
-            //do your action here, im just showing toast
-            Toast.makeText(activity, "Filter", Toast.LENGTH_SHORT).show()
+        when (item.itemId) {
+            R.id.action_tag_filter-> false
+            else-> true
         }
 
         return super.onOptionsItemSelected(item)
