@@ -9,11 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.model.SubTask
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.UpdateTaskViewModel
 import kotlinx.android.synthetic.main.fragment_update_task.*
+import kotlinx.android.synthetic.main.subtask_card.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UpdateTaskFragment : Fragment() {
@@ -21,6 +25,11 @@ class UpdateTaskFragment : Fragment() {
     val args: UpdateTaskFragmentArgs by navArgs()
     private lateinit var task: LiveData<Task>
     private val status = listOf<Task.Status>(Task.Status.Todo, Task.Status.Doing, Task.Status.Done)
+
+
+    private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+    private lateinit var subTaskAdapter: SubtaskAdapter
+    private val subTasks: MutableList<SubTask> = mutableListOf()
 
     private val viewModel: UpdateTaskViewModel by viewModel()
 
@@ -35,6 +44,16 @@ class UpdateTaskFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_update_task, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        subTaskAdapter = SubtaskAdapter(subTasks)
+
+        subtasksView.apply {
+            layoutManager = layoutM
+            adapter = subTaskAdapter
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         task = viewModel.getTask(args.taskId)
@@ -44,6 +63,9 @@ class UpdateTaskFragment : Fragment() {
             tasknameEditText.text = it.title.toEditable()
             descEditText.text = it.desc.toEditable()
             statusSpinner.setSelection(status.indexOf(it.status))
+            subTasks.clear()
+            subTasks.addAll(it.subTasks)
+            subTaskAdapter.notifyDataSetChanged()
         })
     }
 
@@ -51,6 +73,29 @@ class UpdateTaskFragment : Fragment() {
         @JvmStatic
         fun newInstance() =
             UpdateTaskFragment()
+    }
+
+    class SubtaskAdapter(private val subtaskData: List<SubTask>) :
+        RecyclerView.Adapter<SubtaskAdapter.ViewHolder>() {
+        class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val v =
+                LayoutInflater.from(parent.context).inflate(R.layout.subtask_card, parent, false)
+            return ViewHolder(v)
+        }
+
+        override fun getItemCount(): Int = subtaskData.size
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.v.apply {
+                subtask_status_cb.isChecked = when (subtaskData[position].status) {
+                    SubTask.Status.UNFINISHED -> false
+                    SubTask.Status.FINISH -> true
+                }
+                subtask_name_text.text = subtaskData[position].name.toEditable()
+            }
+        }
     }
 }
 
