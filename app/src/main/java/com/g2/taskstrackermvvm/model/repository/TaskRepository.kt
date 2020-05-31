@@ -3,9 +3,9 @@ package com.g2.taskstrackermvvm.model.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.g2.taskstrackermvvm.model.SubTask
 import com.g2.taskstrackermvvm.model.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -89,6 +89,20 @@ class TaskRepositoryImp : ITaskRepo {
                 override fun onDataChange(taskSnapshot: DataSnapshot) {
                     val task = taskSnapshot.getValue(Task::class.java)
                     if (task != null) {
+                        task.id = taskSnapshot.key.toString()
+                        for (tag in taskSnapshot.child("tags").children) {
+                            tag.key?.let { task.addTag(it) }
+                        }
+                        for (subtask in taskSnapshot.child("subTasks").children) {
+                            subtask.key?.let {
+                                subtask.getValue(SubTask::class.java)?.let { it1 ->
+                                    it1.id = it
+                                    task.addSubtask(
+                                        it1
+                                    )
+                                }
+                            }
+                        }
                         taskDetail.value = task
                     }
                 }
@@ -115,6 +129,16 @@ class TaskRepositoryImp : ITaskRepo {
                         task.id = taskSnapshot.key.toString()
                         for (tag in taskSnapshot.child("tags").children) {
                             tag.key?.let { task.addTag(it) }
+                        }
+                        for (subtask in taskSnapshot.child("subTasks").children) {
+                            subtask.key?.let {
+                                subtask.getValue(SubTask::class.java)?.let { it1 ->
+                                    it1.id = it
+                                    task.addSubtask(
+                                        it1
+                                    )
+                                }
+                            }
                         }
                         list.add(task)
                     }
@@ -193,6 +217,4 @@ class TaskRepositoryImp : ITaskRepo {
             }
         }
     }
-
-
 }

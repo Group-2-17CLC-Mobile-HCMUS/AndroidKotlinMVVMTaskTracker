@@ -92,8 +92,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subtasksView"
             android:layout_width="383dp"
-            android:layout_height="283dp"
-            android:layout_marginTop="380dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="352dp"
+            android:background="#292929"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintHeight_max="300dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
