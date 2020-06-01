@@ -170,6 +170,25 @@ class UpdateTaskFragment : Fragment() {
             }
         }
 
+        tasknameEditText.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    currentTask?.let {
+                        currentTask?.title = tasknameEditText.text.toString()
+                        viewModel.updateTask(currentTask)
+                    }
+                }
+            }
+
+        descEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                currentTask?.let {
+                    currentTask?.desc = descEditText.text.toString()
+                    viewModel.updateTask(currentTask)
+                }
+            }
+        }
+
         task.observe(viewLifecycleOwner, Observer { it ->
             currentTask = it
             tasknameEditText.text = it.title.toEditable()
