@@ -165,11 +165,11 @@ class HomeFragment : Fragment() {
             holder.v.status.setOnClickListener {
                 updateTaskStatus(position)
             }
-            val tags = data[position].tagIds.map { id -> getTag(id) }
-            tags.filterNotNull()
-            val tagNames = tags.map { tag -> tag?.name }
+            var tags = data[position].tagIds.map { id -> getTag(id) }
+            tags = tags.filterNotNull()
+            val tagNames = tags.map { tag -> tag.name }
             val tagColors = tags.map { tag ->
-                when (tag?.color) {
+                when (tag.color) {
                     Tag.Color.RED -> intArrayOf(
                         0xffff5131.toInt(),
                         Color.BLACK,

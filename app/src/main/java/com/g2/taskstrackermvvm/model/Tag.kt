@@ -24,4 +24,8 @@ data class Tag constructor(
     override fun toString(): String {
         return name
     }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Tag && other.id == id
+    }
 }
