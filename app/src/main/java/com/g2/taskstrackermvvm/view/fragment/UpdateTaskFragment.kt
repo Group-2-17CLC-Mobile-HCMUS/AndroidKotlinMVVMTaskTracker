@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.view.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.model.SubTask
+import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.UpdateTaskViewModel
@@ -22,16 +24,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UpdateTaskFragment : Fragment() {
 
-    val args: UpdateTaskFragmentArgs by navArgs()
+    private val args: UpdateTaskFragmentArgs by navArgs()
     private lateinit var task: LiveData<Task>
     private val status = listOf<Task.Status>(Task.Status.Todo, Task.Status.Doing, Task.Status.Done)
-
 
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
     private lateinit var subTaskAdapter: SubtaskAdapter
     private val subTasks: MutableList<SubTask> = mutableListOf()
 
     private val viewModel: UpdateTaskViewModel by viewModel()
+
+    private fun rmSubtaskFromTask(id: String) {
+        viewModel.rmSubtask(args.taskId, id)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +51,7 @@ class UpdateTaskFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        subTaskAdapter = SubtaskAdapter(subTasks)
+        subTaskAdapter = SubtaskAdapter(subTasks, ::rmSubtaskFromTask)
 
         subtasksView.apply {
             layoutManager = layoutM
@@ -66,6 +71,38 @@ class UpdateTaskFragment : Fragment() {
             subTasks.clear()
             subTasks.addAll(it.subTasks)
             subTaskAdapter.notifyDataSetChanged()
+            val tags = it.tagIds.map { id -> viewModel.getTag(id) }
+            tags.filterNotNull()
+            val tagsName = tags.map { tag -> tag?.name }
+            val tagsColor = tags.map { tag ->
+                when (tag?.color) {
+                    Tag.Color.RED -> intArrayOf(
+                        0xffff5131.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.BLUE -> intArrayOf(
+                        0xff768fff.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.GREEN -> intArrayOf(
+                        0xff5efc82.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    else -> intArrayOf(
+                        0xffaeaeae.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                }
+            }
+            task_tags_container.setTags(tagsName, tagsColor)
         })
     }
 
@@ -75,7 +112,10 @@ class UpdateTaskFragment : Fragment() {
             UpdateTaskFragment()
     }
 
-    class SubtaskAdapter(private val subtaskData: List<SubTask>) :
+    class SubtaskAdapter(
+        private val subtaskData: List<SubTask>,
+        private val rmSubtask: (String) -> Unit
+    ) :
         RecyclerView.Adapter<SubtaskAdapter.ViewHolder>() {
         class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
 
@@ -94,6 +134,9 @@ class UpdateTaskFragment : Fragment() {
                     SubTask.Status.FINISH -> true
                 }
                 subtask_name_text.text = subtaskData[position].name.toEditable()
+                subtask_rm_btn.setOnClickListener {
+                    rmSubtask(subtaskData[position].id)
+                }
             }
         }
     }

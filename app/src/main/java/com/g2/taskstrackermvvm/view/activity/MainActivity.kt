@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
@@ -41,9 +42,11 @@ class MainActivity : AppCompatActivity() {
             ),
             main_activity_layout
         )
-        toolbar.setupWithNavController(navController, appBarConfig)
-        nav_view.setupWithNavController(navController)
 
+        setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(navController, appBarConfig)
+
+        nav_view.setupWithNavController(navController)
         nav_view.menu.findItem(R.id.sign_out_item).apply {
             val s = SpannableString(title)
             s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
@@ -74,9 +77,15 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.nav_host_fragment_container)
+        return NavigationUI.navigateUp(navController, main_activity_layout)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_container)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+//        val navController = findNavController(R.id.nav_host_fragment_container)
+//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun signOut(): Boolean {

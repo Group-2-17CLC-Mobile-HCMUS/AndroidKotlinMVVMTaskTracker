@@ -5,12 +5,34 @@
     <group android:id="@+id/list_option_item_group">
         <item
             android:id="@+id/action_filter"
-            android:title="Filter" />
+            android:title="@string/filter"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item
+                    android:id="@+id/item_filter_todo"
+                    android:title="By ToDo" />
+                <item
+                    android:id="@+id/item_filter_doing"
+                    android:title="By Doing" />
+                <item
+                    android:id="@+id/item_filter_done"
+                    android:title="By Done" />
+            </menu>
+        </item>
 
         <item
             android:id="@+id/action_sort"
-            android:title="Sort"
-            app:showAsAction="always" />
+            android:title="@string/sort"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item
+                    android:id="@+id/item_sort_title"
+                    android:title="By Title" />
+                <item
+                    android:id="@+id/item_sort_due_date"
+                    android:title="By Due Date" />
+            </menu>
+        </item>
     </group>
 
 
