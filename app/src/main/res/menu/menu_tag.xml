@@ -5,7 +5,8 @@
     <group android:id="@+id/list_option_item_group">
         <item
             android:id="@+id/action_tag_filter"
-            android:title="Filter" />
+            android:title="@string/filter"
+            app:showAsAction="collapseActionView" />
     </group>
 
 

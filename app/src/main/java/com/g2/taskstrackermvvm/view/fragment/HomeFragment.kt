@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -33,7 +32,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     private fun getTagById(id: String): Tag? {
@@ -68,6 +66,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -83,19 +82,23 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater!!.inflate(R.menu.menu_home, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_home, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //handle item clicks
-        when (item.itemId) {
-            R.id.action_filter-> false
-            R.id.action_sort-> false
-            else-> true
+        return when (item.itemId) {
+            R.id.action_filter -> true
+            R.id.action_sort -> true
+            else -> true
         }
-        return super.onOptionsItemSelected(item)
+//        return NavigationUI.onNavDestinationSelected(
+//            item,
+//            requireView().findNavController()
+//        ) || super.onOptionsItemSelected(item)
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -163,6 +166,7 @@ class HomeFragment : Fragment() {
                 updateTaskStatus(position)
             }
             val tags = data[position].tagIds.map { id -> getTag(id) }
+            tags.filterNotNull()
             val tagNames = tags.map { tag -> tag?.name }
             val tagColors = tags.map { tag ->
                 when (tag?.color) {

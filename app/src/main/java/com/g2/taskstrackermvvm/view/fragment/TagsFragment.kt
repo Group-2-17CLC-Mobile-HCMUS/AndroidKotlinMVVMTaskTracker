@@ -24,7 +24,6 @@ class TagsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -32,22 +31,21 @@ class TagsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_tags, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater!!.inflate(R.menu.menu_tag, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_tag, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //handle item clicks
-        when (item.itemId) {
-            R.id.action_tag_filter-> false
-            else-> true
-        }
-
-        return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_tag_filter -> true
+            else -> true
+        } || super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -161,7 +159,8 @@ class TagsFragment : Fragment() {
                                     ).show()
                                 } else {
                                     it[position].name = v.tag_name_edit_text.text.toString()
-                                    it[position].color = v.select_color_spinner.selectedItem as Tag.Color
+                                    it[position].color =
+                                        v.select_color_spinner.selectedItem as Tag.Color
                                     viewModel.updateTag(it[position])
                                 }
                             }
