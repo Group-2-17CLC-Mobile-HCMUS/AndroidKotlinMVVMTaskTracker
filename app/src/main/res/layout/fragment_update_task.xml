@@ -12,7 +12,7 @@
         tools:context=".view.fragment.UpdateTaskFragment">
 
         <co.lujun.androidtagview.TagContainerLayout
-            android:id="@+id/task_tags_container"
+            android:id="@+id/task_tags_container_update_task"
             android:layout_width="383dp"
             android:layout_height="57dp"
             android:layout_marginTop="232dp"
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/tasknameEditText"
+            android:id="@+id/titleEditText_update_task"
             android:layout_width="384dp"
             android:layout_height="39dp"
             android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/descEditText"
+            android:id="@+id/descEditText_update_task"
             android:layout_width="383dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="140dp"
@@ -89,21 +89,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="364dp"
             android:text="@string/subtask"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/subtasksView"
+            android:id="@+id/subtasksView_update_task"
             android:layout_width="383dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="352dp"
+            android:layout_marginTop="390dp"
             android:background="#292929"
             app:layout_constrainedHeight="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="300dp"
+            app:layout_constraintHorizontal_bias="0.607"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -111,8 +112,8 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="600dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="592dp"
             android:text="@string/status"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +134,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/statusSpinner"
+            android:id="@+id/statusSpinner_update_task"
             android:layout_width="171dp"
             android:layout_height="31dp"
             android:layout_marginTop="620dp"
@@ -154,7 +155,7 @@
             android:textColor="#4CAF50"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_tags_container" />
+            app:layout_constraintTop_toBottomOf="@+id/task_tags_container_update_task" />
 
         <Button
             android:id="@+id/removeTagBtn"
@@ -167,7 +168,7 @@
             android:textColor="#FF0000"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_tags_container" />
+            app:layout_constraintTop_toBottomOf="@+id/task_tags_container_update_task" />
 
         <Button
             android:id="@+id/addSubtaskBtn"
@@ -180,6 +181,28 @@
             android:textColor="#4CAF50"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtasksView" />
+            app:layout_constraintTop_toBottomOf="@+id/subtasksView_update_task" />
+
+        <TextView
+            android:id="@+id/dueDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="496dp"
+            android:text="Due Date:"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dueDate_update_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="524dp"
+            android:text="Choose Date"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
