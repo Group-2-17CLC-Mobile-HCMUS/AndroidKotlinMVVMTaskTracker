@@ -275,7 +275,7 @@ class HomeFragment : Fragment() {
 
                         true
                     }
-                    add("Modify").setOnMenuItemClickListener {
+                    add("Detail").setOnMenuItemClickListener {
                         navDetail(data[position].id)
                         true
                     }

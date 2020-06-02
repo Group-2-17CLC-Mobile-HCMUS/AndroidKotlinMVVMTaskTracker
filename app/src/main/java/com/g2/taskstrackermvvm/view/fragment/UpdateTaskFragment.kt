@@ -24,6 +24,7 @@ import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.UpdateTaskViewModel
 import kotlinx.android.synthetic.main.dialog_select_tag.view.*
 import kotlinx.android.synthetic.main.fragment_update_task.*
+import kotlinx.android.synthetic.main.fragment_update_task.view.*
 import kotlinx.android.synthetic.main.subtask_card.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,6 +41,8 @@ class UpdateTaskFragment : Fragment() {
     private val selectableTags: MutableList<Tag> = mutableListOf()
     private val bindedTag: MutableList<Tag> = mutableListOf()
     private val viewModel: UpdateTaskViewModel by viewModel()
+    private var isEditable: Boolean = false
+
     private fun rmSubtaskFromTask(id: String) {
         viewModel.rmSubtask(args.taskId, id)
     }
@@ -52,12 +55,40 @@ class UpdateTaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_update_task, container, false)
+        val v = inflater.inflate(R.layout.fragment_update_task, container, false)
+        v.tasknameEditText.isEnabled = false
+        v.descEditText.isEnabled = false
+        v.addTagBtn.visibility = View.GONE
+        v.removeTagBtn.visibility = View.GONE
+        v.addSubtaskBtn.visibility = View.GONE
+        v.statusSpinner.isEnabled = false
+        return v
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         subTaskAdapter = SubtaskAdapter(subTasks, ::rmSubtaskFromTask)
+
+        updateButton.setOnClickListener {
+            if (isEditable) {
+                tasknameEditText.isEnabled = false
+                descEditText.isEnabled = false
+                addTagBtn.visibility = View.GONE
+                removeTagBtn.visibility = View.GONE
+                addSubtaskBtn.visibility = View.GONE
+                statusSpinner.isEnabled = false
+                updateButton.setText(R.string.update)
+            } else {
+                tasknameEditText.isEnabled = true
+                descEditText.isEnabled = true
+                addTagBtn.visibility = View.VISIBLE
+                removeTagBtn.visibility = View.VISIBLE
+                addSubtaskBtn.visibility = View.VISIBLE
+                statusSpinner.isEnabled = true
+                updateButton.setText(R.string.view)
+            }
+            isEditable = !isEditable
+        }
 
         subtasksView.apply {
             layoutManager = layoutM
@@ -258,6 +289,13 @@ class UpdateTaskFragment : Fragment() {
     ) :
         RecyclerView.Adapter<SubtaskAdapter.ViewHolder>() {
 
+        private var isSubtaskRemovable: Boolean = false
+
+        fun setSubtaskRemovable(flag: Boolean) {
+            isSubtaskRemovable = flag
+            notifyDataSetChanged()
+        }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val v =
                 LayoutInflater.from(parent.context).inflate(R.layout.subtask_card, parent, false)
@@ -275,6 +313,7 @@ class UpdateTaskFragment : Fragment() {
                 subtask_rm_btn.setOnClickListener {
                     rmSubtask(subtaskData[position].id)
                 }
+                subtask_rm_btn.visibility = if (isSubtaskRemovable) View.VISIBLE else View.GONE
             }
         }
 

@@ -36,6 +36,7 @@
     <string name="name">Name</string>
     <string name="task_name_2">Task Name:</string>
     <string name="status">Status:</string>
-    <string name="update">UPDATE</string>
+    <string name="update">Update Mode</string>
+    <string name="view">View Mode</string>
     <string name="add">Add</string>
 </resources>
