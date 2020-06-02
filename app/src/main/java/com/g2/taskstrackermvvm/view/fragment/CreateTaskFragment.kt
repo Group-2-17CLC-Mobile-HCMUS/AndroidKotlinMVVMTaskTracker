@@ -34,16 +34,16 @@ class CreateTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createTaskBtn.setOnClickListener {
-            if (titleEditText.text.toString() == "") {
-                Toast.makeText(context, "Title is empty", Toast.LENGTH_SHORT).show()
-            } else {
-
-                viewModel.addTask(
-                    title = titleEditText.text.toString(),
-                    desc = taskDescEditText.text.toString()
-                )
-                findNavController().navigateUp()
-            }
+//            if (titleEditText.text.toString() == "") {
+//                Toast.makeText(context, "Title is empty", Toast.LENGTH_SHORT).show()
+//            } else {
+//
+//                viewModel.addTask(
+//                    title = titleEditText.text.toString(),
+//                    desc = taskDescEditText.text.toString()
+//                )
+//                findNavController().navigateUp()
+//            }
         }
         cancelCreateTaskBtn.setOnClickListener {
             findNavController().navigateUp()
