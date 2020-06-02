@@ -56,12 +56,12 @@ class UpdateTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_update_task, container, false)
-        v.tasknameEditText.isEnabled = false
-        v.descEditText.isEnabled = false
+        v.titleEditText_update_task.isEnabled = false
+        v.descEditText_update_task.isEnabled = false
         v.addTagBtn.visibility = View.GONE
         v.removeTagBtn.visibility = View.GONE
         v.addSubtaskBtn.visibility = View.GONE
-        v.statusSpinner.isEnabled = false
+        v.statusSpinner_update_task.isEnabled = false
         return v
     }
 
@@ -71,26 +71,26 @@ class UpdateTaskFragment : Fragment() {
 
         updateButton.setOnClickListener {
             if (isEditable) {
-                tasknameEditText.isEnabled = false
-                descEditText.isEnabled = false
+                titleEditText_update_task.isEnabled = false
+                descEditText_update_task.isEnabled = false
                 addTagBtn.visibility = View.GONE
                 removeTagBtn.visibility = View.GONE
                 addSubtaskBtn.visibility = View.GONE
-                statusSpinner.isEnabled = false
+                statusSpinner_update_task.isEnabled = false
                 updateButton.setText(R.string.update)
             } else {
-                tasknameEditText.isEnabled = true
-                descEditText.isEnabled = true
+                titleEditText_update_task.isEnabled = true
+                descEditText_update_task.isEnabled = true
                 addTagBtn.visibility = View.VISIBLE
                 removeTagBtn.visibility = View.VISIBLE
                 addSubtaskBtn.visibility = View.VISIBLE
-                statusSpinner.isEnabled = true
+                statusSpinner_update_task.isEnabled = true
                 updateButton.setText(R.string.view)
             }
             isEditable = !isEditable
         }
 
-        subtasksView.apply {
+        subtasksView_update_task.apply {
             layoutManager = layoutM
             adapter = subTaskAdapter
         }
@@ -182,39 +182,40 @@ class UpdateTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         task = viewModel.getTask(args.taskId)
-        statusSpinner.adapter =
+        statusSpinner_update_task.adapter =
             context?.let { ArrayAdapter(it, R.layout.status_spinner_item, status) }
-        statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                currentTask?.let {
-                    currentTask?.status = status[position]
-                    viewModel.updateTask(currentTask)
+        statusSpinner_update_task.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
-            }
-        }
 
-        tasknameEditText.onFocusChangeListener =
-            View.OnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
                     currentTask?.let {
-                        currentTask?.title = tasknameEditText.text.toString()
+                        currentTask?.status = status[position]
                         viewModel.updateTask(currentTask)
                     }
                 }
             }
 
-        descEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        titleEditText_update_task.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    currentTask?.let {
+                        currentTask?.title = titleEditText_update_task.text.toString()
+                        viewModel.updateTask(currentTask)
+                    }
+                }
+            }
+
+        descEditText_update_task.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 currentTask?.let {
-                    currentTask?.desc = descEditText.text.toString()
+                    currentTask?.desc = descEditText_update_task.text.toString()
                     viewModel.updateTask(currentTask)
                 }
             }
@@ -222,9 +223,9 @@ class UpdateTaskFragment : Fragment() {
 
         task.observe(viewLifecycleOwner, Observer { it ->
             currentTask = it
-            tasknameEditText.text = it.title.toEditable()
-            descEditText.text = it.desc.toEditable()
-            statusSpinner.setSelection(status.indexOf(it.status))
+            titleEditText_update_task.text = it.title.toEditable()
+            descEditText_update_task.text = it.desc.toEditable()
+            statusSpinner_update_task.setSelection(status.indexOf(it.status))
             subTasks.clear()
             subTasks.addAll(it.subTasks)
             subTaskAdapter.notifyDataSetChanged()
@@ -270,7 +271,7 @@ class UpdateTaskFragment : Fragment() {
                 }
             }
 
-            task_tags_container.setTags(tagsName, tagsColor)
+            task_tags_container_update_task.setTags(tagsName, tagsColor)
         })
         viewModel.tagList.observe(viewLifecycleOwner, Observer {
             tagsData.clear()
