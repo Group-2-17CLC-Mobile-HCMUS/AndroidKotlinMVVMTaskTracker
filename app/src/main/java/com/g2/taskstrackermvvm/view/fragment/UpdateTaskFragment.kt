@@ -97,7 +97,7 @@ class UpdateTaskFragment : Fragment() {
 
         addTagBtn.setOnClickListener {
             val v =
-                LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
+            LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
 
             val tagsContainer: TagContainerLayout = v.select_tag_container
             tagsContainer.backgroundColor = Color.WHITE
@@ -273,6 +273,7 @@ class UpdateTaskFragment : Fragment() {
 
             task_tags_container_update_task.setTags(tagsName, tagsColor)
         })
+
         viewModel.tagList.observe(viewLifecycleOwner, Observer {
             tagsData.clear()
             tagsData.addAll(it)
