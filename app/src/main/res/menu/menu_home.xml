@@ -9,14 +9,17 @@
             app:showAsAction="collapseActionView">
             <menu>
                 <item
+                    android:id="@+id/item_filter_none"
+                    android:title="@string/none" />
+                <item
                     android:id="@+id/item_filter_todo"
-                    android:title="By ToDo" />
+                    android:title="@string/by_todo" />
                 <item
                     android:id="@+id/item_filter_doing"
-                    android:title="By Doing" />
+                    android:title="@string/by_doing" />
                 <item
                     android:id="@+id/item_filter_done"
-                    android:title="By Done" />
+                    android:title="@string/by_done" />
             </menu>
         </item>
 
@@ -27,10 +30,10 @@
             <menu>
                 <item
                     android:id="@+id/item_sort_title"
-                    android:title="By Title" />
+                    android:title="@string/by_title" />
                 <item
                     android:id="@+id/item_sort_due_date"
-                    android:title="By Due Date" />
+                    android:title="@string/by_due_date" />
             </menu>
         </item>
     </group>

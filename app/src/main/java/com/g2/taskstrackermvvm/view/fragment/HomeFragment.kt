@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -24,12 +25,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
+
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
     private var tagsData: MutableList<Tag> = mutableListOf()
     private lateinit var taskAdapter: TaskAdapter
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -74,7 +75,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_view.setIconifiedByDefault(false)
+        search_view.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createTaskFragment)
@@ -89,8 +100,30 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //handle item clicks
         return when (item.itemId) {
-            R.id.action_filter -> true
-            R.id.action_sort -> true
+            R.id.item_filter_none -> {
+                viewModel.applyFilter(HomeViewModel.FilterMode.NONE)
+                true
+            }
+            R.id.item_filter_todo -> {
+                viewModel.applyFilter(HomeViewModel.FilterMode.TODO)
+                true
+            }
+            R.id.item_filter_doing -> {
+                viewModel.applyFilter(HomeViewModel.FilterMode.DOING)
+                true
+            }
+            R.id.item_filter_done -> {
+                viewModel.applyFilter(HomeViewModel.FilterMode.DONE)
+                true
+            }
+            R.id.item_sort_due_date -> {
+                viewModel.applySort(HomeViewModel.SortMode.DUE)
+                true
+            }
+            R.id.item_sort_title -> {
+                viewModel.applySort(HomeViewModel.SortMode.TITLE)
+                true
+            }
             else -> true
         }
 //        return NavigationUI.onNavDestinationSelected(
@@ -129,13 +162,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            HomeFragment()
-    }
-
-
     class TaskAdapter(
         private val context: Context?,
         private val data: List<Task>,
@@ -148,8 +174,6 @@ class HomeFragment : Fragment() {
     ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-        class TaskViewHolder(val v: View) : RecyclerView.ViewHolder(v)
-
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
             val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.card_task, parent, false) as View
@@ -157,7 +181,6 @@ class HomeFragment : Fragment() {
         }
 
         override fun getItemCount(): Int = data.size
-
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
             holder.v.taskNameText.text = data[position].title
             holder.v.descText.text = data[position].desc
@@ -286,5 +309,13 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+        class TaskViewHolder(val v: View) : RecyclerView.ViewHolder(v)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            HomeFragment()
     }
 }

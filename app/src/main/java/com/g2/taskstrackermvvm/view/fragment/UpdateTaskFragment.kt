@@ -183,7 +183,7 @@ class UpdateTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         task = viewModel.getTask(args.taskId)
         statusSpinner.adapter =
-            context?.let { ArrayAdapter(it, R.layout.support_simple_spinner_dropdown_item, status) }
+            context?.let { ArrayAdapter(it, R.layout.status_spinner_item, status) }
         statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }

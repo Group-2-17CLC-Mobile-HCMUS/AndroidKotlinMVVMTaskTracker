@@ -42,11 +42,11 @@ class CreateTaskFragment : Fragment() {
                     title = titleEditText.text.toString(),
                     desc = taskDescEditText.text.toString()
                 )
-                findNavController().popBackStack()
+                findNavController().navigateUp()
             }
         }
         cancelCreateTaskBtn.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
     }
 
