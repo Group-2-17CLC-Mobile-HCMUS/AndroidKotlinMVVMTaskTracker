@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.g2.taskstrackermvvm.R
@@ -27,6 +26,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

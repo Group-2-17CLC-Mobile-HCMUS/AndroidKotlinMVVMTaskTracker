@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/updateTaskFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.UpdateTaskFragment"
-        android:label="UpdateTaskFragment" >
+        android:label="Detail" >
         <argument
             android:name="taskId"
             app:argType="string" />

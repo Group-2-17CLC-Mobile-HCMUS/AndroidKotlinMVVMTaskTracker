@@ -36,6 +36,14 @@
     <string name="name">Name</string>
     <string name="task_name_2">Task Name:</string>
     <string name="status">Status:</string>
-    <string name="update">UPDATE</string>
+    <string name="update">Update Mode</string>
+    <string name="view">View Mode</string>
     <string name="add">Add</string>
+    <string name="all">All</string>
+    <string name="by_todo">By ToDo</string>
+    <string name="by_doing">By Doing</string>
+    <string name="by_done">By Done</string>
+    <string name="by_title">By Title</string>
+    <string name="by_due_date">By Due Date</string>
+    <string name="none">None</string>
 </resources>
