@@ -2,13 +2,18 @@ package com.g2.taskstrackermvvm.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.MenuItem
+import android.view.View
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.get
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
@@ -18,9 +23,11 @@ import com.g2.taskstrackermvvm.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
+import kotlinx.android.synthetic.main.switch_theme.*
 
 
 class MainActivity : AppCompatActivity() {
+    private var darkTheme =  false;
     companion object {
         fun startActivity(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -31,19 +38,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val navController = findNavController(R.id.frag_container)
         val appBarConfig = AppBarConfiguration(
             setOf(
                 R.id.homeFragment,
                 R.id.chartsFragment,
                 R.id.tagsFragment,
-                R.id.updateUserProfileFragment
+                R.id.updateUserProfileFragment,
+                R.id.switch_theme
             ),
             main_activity_layout
         )
+
+
+//            if (!switch.isChecked) {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//            } else {
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//            }
+
+
+
         toolbar.setupWithNavController(navController, appBarConfig)
         nav_view.setupWithNavController(navController)
-
+//        nav_view.menu.findItem(R.id.switch_theme_item).apply {
+//            setOnMenuItemClickListener { changeTheme() }
+//        }
         nav_view.menu.findItem(R.id.sign_out_item).apply {
             val s = SpannableString(title)
             s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
@@ -59,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             val navHeader = nav_view.getHeaderView(0)
             navHeader.nav_header_email.text = it.email
             navHeader.nav_header_display_name.text = it.displayName
+
         }
 
 
@@ -74,10 +96,28 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.switch_theme_item)
+        {
+            val switch = this.findViewById<Switch>(R.id.switch_theme)
+            darkTheme = !darkTheme
+            print(darkTheme.toString())
+            switch.isChecked = darkTheme
+            switch?.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+            }
+        }
+
         val navController = findNavController(R.id.nav_host_fragment_container)
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+
     }
+
+
 
     private fun signOut(): Boolean {
         AuthUI.getInstance().signOut(this)
@@ -90,9 +130,25 @@ class MainActivity : AppCompatActivity() {
             }
         return true
     }
-
+//    private fun ChangeTheme(): Boolean {
+//        val switch = this.findViewById<Switch>(R.id.switch_theme)
+//        darkTheme = !switch.isChecked
+//        switch.isChecked = darkTheme
+//        if (!darkTheme) {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//        } else {
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        }
+//        return true
+//    }
     fun popToPreviousActivity() {
         finish()
     }
 
 }
+
+
+
+
+
+
