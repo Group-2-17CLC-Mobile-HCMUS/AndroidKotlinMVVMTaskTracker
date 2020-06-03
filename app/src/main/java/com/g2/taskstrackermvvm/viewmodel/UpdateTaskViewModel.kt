@@ -2,6 +2,7 @@ package com.g2.taskstrackermvvm.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.g2.taskstrackermvvm.model.SubTask
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.model.repository.ISubTaskRepo
@@ -31,5 +32,7 @@ class UpdateTaskViewModel(
         }
     }
 
+    fun addSubtask(name: String, taskId: String) = subtaskRepo.addSubTask(name, taskId)
+    fun updateSubtask(taskId: String, subtask: SubTask) = subtaskRepo.updateTask(subtask, taskId)
     fun rmSubtask(taskId: String, subtaskId: String) = subtaskRepo.removeSubTask(taskId, subtaskId)
 }

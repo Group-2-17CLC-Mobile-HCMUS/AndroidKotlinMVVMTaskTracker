@@ -1,8 +1,11 @@
 package com.g2.taskstrackermvvm.view.fragment
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.format.DateFormat.is24HourFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +25,13 @@ import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.UpdateTaskViewModel
+import kotlinx.android.synthetic.main.dialog_add_subtask.view.*
 import kotlinx.android.synthetic.main.dialog_select_tag.view.*
 import kotlinx.android.synthetic.main.fragment_update_task.*
 import kotlinx.android.synthetic.main.fragment_update_task.view.*
 import kotlinx.android.synthetic.main.subtask_card.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class UpdateTaskFragment : Fragment() {
 
@@ -45,6 +50,10 @@ class UpdateTaskFragment : Fragment() {
 
     private fun rmSubtaskFromTask(id: String) {
         viewModel.rmSubtask(args.taskId, id)
+    }
+
+    private fun updateSubtask(subtask: SubTask) {
+        viewModel.updateSubtask(args.taskId, subtask)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +76,11 @@ class UpdateTaskFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        subTaskAdapter = SubtaskAdapter(subTasks, ::rmSubtaskFromTask)
+        subTaskAdapter = SubtaskAdapter(
+            subTasks,
+            ::rmSubtaskFromTask,
+            ::updateSubtask
+        )
 
         updateButton.setOnClickListener {
             if (isEditable) {
@@ -78,6 +91,8 @@ class UpdateTaskFragment : Fragment() {
                 addSubtaskBtn.visibility = View.GONE
                 statusSpinner_update_task.isEnabled = false
                 updateButton.setText(R.string.update)
+                subTaskAdapter.setSubtaskRemovable(false)
+                isEditable = false
             } else {
                 titleEditText_update_task.isEnabled = true
                 descEditText_update_task.isEnabled = true
@@ -86,8 +101,9 @@ class UpdateTaskFragment : Fragment() {
                 addSubtaskBtn.visibility = View.VISIBLE
                 statusSpinner_update_task.isEnabled = true
                 updateButton.setText(R.string.view)
+                subTaskAdapter.setSubtaskRemovable(true)
+                isEditable = true
             }
-            isEditable = !isEditable
         }
 
         subtasksView_update_task.apply {
@@ -97,7 +113,7 @@ class UpdateTaskFragment : Fragment() {
 
         addTagBtn.setOnClickListener {
             val v =
-            LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
+                LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
 
             val tagsContainer: TagContainerLayout = v.select_tag_container
             tagsContainer.backgroundColor = Color.WHITE
@@ -177,6 +193,52 @@ class UpdateTaskFragment : Fragment() {
                 create()
             }.show()
         }
+
+        addSubtaskBtn.setOnClickListener {
+            val v = LayoutInflater.from(context).inflate(R.layout.dialog_add_subtask, null)
+            AlertDialog.Builder(context).apply {
+                setView(v)
+                setTitle("Add Subtask")
+                setPositiveButton(R.string.add) { dialog, _ ->
+                    viewModel.addSubtask(v.subtask_name_edit_text.text.toString(), args.taskId)
+                    dialog.dismiss()
+                }
+                setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                create()
+            }.show()
+        }
+
+        dueDate_update_task.setOnClickListener {
+            if (!isEditable)
+                return@setOnClickListener
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val hour = c.get(Calendar.HOUR_OF_DAY)
+            val min = c.get(Calendar.MINUTE)
+            val sec = c.get(Calendar.SECOND)
+            val selectedDate = Date()
+            activity?.let { activity ->
+                DatePickerDialog(activity, { _, year, monthOfYear, dayOfMonth ->
+                    selectedDate.apply {
+                        this.year = year
+                        this.month = monthOfYear
+                        this.date = dayOfMonth
+                        TimePickerDialog(activity, { _, hourOfDay, min ->
+                            selectedDate.hours = hourOfDay
+                            selectedDate.minutes = min
+                            currentTask?.let { task ->
+                                task.dueDate = selectedDate
+                                viewModel.updateTask(task)
+                            }
+                        }, hour, min, is24HourFormat(activity)).show()
+                    }
+                }, year, month, day).show()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -226,6 +288,7 @@ class UpdateTaskFragment : Fragment() {
             titleEditText_update_task.text = it.title.toEditable()
             descEditText_update_task.text = it.desc.toEditable()
             statusSpinner_update_task.setSelection(status.indexOf(it.status))
+            dueDate_update_task.text = it.dueDate.toString().toEditable()
             subTasks.clear()
             subTasks.addAll(it.subTasks)
             subTaskAdapter.notifyDataSetChanged()
@@ -287,7 +350,8 @@ class UpdateTaskFragment : Fragment() {
 
     class SubtaskAdapter(
         private val subtaskData: List<SubTask>,
-        private val rmSubtask: (String) -> Unit
+        private val rmSubtask: (String) -> Unit,
+        private val updateSubtask: (SubTask) -> Unit
     ) :
         RecyclerView.Adapter<SubtaskAdapter.ViewHolder>() {
 
@@ -307,15 +371,26 @@ class UpdateTaskFragment : Fragment() {
         override fun getItemCount(): Int = subtaskData.size
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.v.apply {
-                subtask_status_cb.isChecked = when (subtaskData[position].status) {
-                    SubTask.Status.UNFINISHED -> false
-                    SubTask.Status.FINISH -> true
+                subtask_status_cb.apply {
+                    isChecked = when (subtaskData[position].status) {
+                        SubTask.Status.UNFINISHED -> false
+                        SubTask.Status.FINISH -> true
+                    }
+                    setOnCheckedChangeListener { buttonView, isChecked ->
+                        updateSubtask(subtaskData[position].apply {
+                            status =
+                                if (!isChecked) SubTask.Status.UNFINISHED else SubTask.Status.FINISH
+                        })
+                    }
+                    visibility = if (isSubtaskRemovable) View.VISIBLE else View.GONE
                 }
                 subtask_name_text.text = subtaskData[position].name.toEditable()
-                subtask_rm_btn.setOnClickListener {
-                    rmSubtask(subtaskData[position].id)
+                subtask_rm_btn.apply {
+                    setOnClickListener {
+                        rmSubtask(subtaskData[position].id)
+                    }
+                    visibility = if (isSubtaskRemovable) View.VISIBLE else View.GONE
                 }
-                subtask_rm_btn.visibility = if (isSubtaskRemovable) View.VISIBLE else View.GONE
             }
         }
 

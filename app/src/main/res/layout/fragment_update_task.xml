@@ -124,7 +124,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="94dp"
             android:layout_height="46dp"
-            android:layout_marginTop="700dp"
+            android:layout_marginTop="735dp"
             android:text="@string/update"
             android:textColor="#673AB7"
             android:textSize="14sp"
@@ -188,21 +188,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="496dp"
+            android:layout_marginTop="16dp"
             android:text="Due Date:"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/statusSpinner_update_task" />
 
-        <TextView
+        <EditText
             android:id="@+id/dueDate_update_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="524dp"
-            android:text="Choose Date"
+            android:layout_marginTop="8dp"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:hint="@string/choose_date"
             android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/dueDateTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
