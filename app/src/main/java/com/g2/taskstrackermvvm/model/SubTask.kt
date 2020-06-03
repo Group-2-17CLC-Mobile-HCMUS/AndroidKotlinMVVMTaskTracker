@@ -7,7 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class SubTask constructor(
     @get:Exclude var id: String,
     var name: String,
-    val status: Status = Status.UNFINISHED
+    var status: Status = Status.UNFINISHED
 ) {
 
     constructor() : this("", "")

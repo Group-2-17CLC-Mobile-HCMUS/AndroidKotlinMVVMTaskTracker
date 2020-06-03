@@ -15,7 +15,7 @@ interface ISubTaskRepo {
     fun addSubTask(name: String, taskId: String)
     fun getListSubTask(taskId: String): LiveData<List<SubTask>>
     fun removeSubTask(taskId: String, subTaskId: String)
-    fun updateTask(newSubTask: SubTask, subTaskId: String, taskId: String)
+    fun updateTask(subtask: SubTask, taskId: String)
 }
 
 class SubTaskRepositoryImp : ISubTaskRepo {
@@ -29,13 +29,15 @@ class SubTaskRepositoryImp : ISubTaskRepo {
     override fun addSubTask(name: String, taskId: String) {
         val database = Firebase.database
         val user = FirebaseAuth.getInstance().currentUser
-        //val userID = user.uid
         val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
 
 
         if (user != null) {
-            val singleSubTaskRef = subTaskRef.child(user.uid).child(taskId).push()
-            val subTask = singleSubTaskRef.key?.let { SubTask(it, name) }
+            val singleSubTaskRef = subTaskRef.push()
+            singleSubTaskRef.key?.let {
+                val subtask = SubTask(it, name)
+                singleSubTaskRef.setValue(subtask)
+            }
         }
     }
 
@@ -82,14 +84,14 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         }
     }
 
-    override fun updateTask(newSubTask: SubTask, subTaskId: String, taskId: String) {
+    override fun updateTask(subTask: SubTask, taskId: String) {
         val database = Firebase.database
         val user = FirebaseAuth.getInstance().currentUser
         val subTaskRef = database.getReference("tasks/${user?.uid}/$taskId/subTasks")
         //
 
         if (user != null) {
-            val childSubTaskRef = subTaskRef.child(subTaskId)
+            val childSubTaskRef = subTaskRef.child(subTask.id)
             childSubTaskRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w(TAG, "loadPost:onCancelled ${databaseError.message}")
@@ -97,8 +99,8 @@ class SubTaskRepositoryImp : ISubTaskRepo {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        childSubTaskRef.child("name").setValue(newSubTask.name)
-                        childSubTaskRef.child("status").setValue(newSubTask.status)
+                        childSubTaskRef.child("name").setValue(subTask.name)
+                        childSubTaskRef.child("status").setValue(subTask.status)
                     }
                 }
             })
