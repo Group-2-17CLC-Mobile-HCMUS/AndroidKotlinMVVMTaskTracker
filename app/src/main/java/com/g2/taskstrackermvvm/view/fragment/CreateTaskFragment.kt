@@ -1,12 +1,16 @@
 package com.g2.taskstrackermvvm.view.fragment
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -15,12 +19,17 @@ import androidx.recyclerview.widget.RecyclerView
 import co.lujun.androidtagview.TagContainerLayout
 import co.lujun.androidtagview.TagView
 import com.g2.taskstrackermvvm.R
+import com.g2.taskstrackermvvm.model.SubTask
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
+import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.CreateTaskViewModel
 import kotlinx.android.synthetic.main.create_new_task.*
+import kotlinx.android.synthetic.main.dialog_add_subtask.view.*
 import kotlinx.android.synthetic.main.dialog_select_tag.view.*
+import kotlinx.android.synthetic.main.subtask_card.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 
 class CreateTaskFragment : Fragment() {
@@ -31,7 +40,19 @@ class CreateTaskFragment : Fragment() {
     private val selectableTags: MutableList<Tag> = mutableListOf()
     private val bindedTag: MutableList<Tag> = mutableListOf()
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+    private val subtasks: MutableList<SubTask> = mutableListOf()
+    private lateinit var subtaskAdapter: SubtaskAdapter
+    private val selectedDate: Date = Date()
 
+    private fun removeSubtask(pos: Int) {
+        subtasks.removeAt(pos)
+        subtaskAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateSubtaskStatus(pos: Int, status: SubTask.Status) {
+        subtasks[pos].status = status
+        subtaskAdapter.notifyDataSetChanged()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +71,25 @@ class CreateTaskFragment : Fragment() {
 
         statusSpinner_create_task.adapter =
             context?.let { ArrayAdapter(it, R.layout.status_spinner_item, status) }
+
+        add_subtask_btn.setOnClickListener {
+            val v = LayoutInflater.from(context).inflate(R.layout.dialog_add_subtask, null)
+            AlertDialog.Builder(context).apply {
+                setView(v)
+                setTitle("Add Subtask")
+                setPositiveButton(R.string.add) { dialog, _ ->
+                    val subtask = SubTask()
+                    subtask.name = v.subtask_name_edit_text.text.toString()
+                    subtasks.add(subtask)
+                    subtaskAdapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
+                setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                create()
+            }.show()
+        }
 
         addTagBtn2.setOnClickListener {
             val v =
@@ -161,6 +201,31 @@ class CreateTaskFragment : Fragment() {
             }.show()
         }
 
+        due_date_edit_text.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+            val hour = c.get(Calendar.HOUR_OF_DAY)
+            val min = c.get(Calendar.MINUTE)
+            val sec = c.get(Calendar.SECOND)
+
+            activity?.let { activity ->
+                DatePickerDialog(activity, { _, year, monthOfYear, dayOfMonth ->
+                    selectedDate.apply {
+                        this.year = year
+                        this.month = monthOfYear
+                        this.date = dayOfMonth
+                        TimePickerDialog(activity, { _, hourOfDay, min ->
+                            selectedDate.hours = hourOfDay
+                            selectedDate.minutes = min
+                            due_date_edit_text.text = selectedDate.toString().toEditable()
+                        }, hour, min, DateFormat.is24HourFormat(activity)).show()
+                    }
+                }, year, month, day).show()
+            }
+        }
+
         viewModel.tagList.observe(viewLifecycleOwner, Observer {
             tagsData.clear()
             tagsData.addAll(it)
@@ -171,21 +236,80 @@ class CreateTaskFragment : Fragment() {
             }
         })
 
+        subtaskAdapter = SubtaskAdapter(
+            subtasks,
+            ::removeSubtask,
+            ::updateSubtaskStatus
+        )
+
+        subtasksView_create_task.apply {
+            layoutManager = layoutM
+            adapter = subtaskAdapter
+        }
+
         createTaskBtn.setOnClickListener {
-//            if (titleEditText.text.toString() == "") {
-//                Toast.makeText(context, "Title is empty", Toast.LENGTH_SHORT).show()
-//            } else {
-//
-//                viewModel.addTask(
-//                    title = titleEditText.text.toString(),
-//                    desc = taskDescEditText.text.toString()
-//                )
-//                findNavController().navigateUp()
-//            }
+            if (titleEditText_create_task.text.toString() == "") {
+                Toast.makeText(context, "Title is empty", Toast.LENGTH_SHORT).show()
+            } else {
+                val task = Task()
+                task.title = titleEditText_create_task.text.toString()
+                task.desc = descEditText_create_task.text.toString()
+                task.status = statusSpinner_create_task.selectedItem as Task.Status
+                bindedTag.forEach {
+                    task.addTag(it.id)
+                }
+                subtasks.forEach {
+                    task.addSubtask(it)
+                }
+
+                viewModel.createNewTask(
+                    task
+                )
+                findNavController().navigateUp()
+            }
         }
         cancelCreateTaskBtn.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    class SubtaskAdapter(
+        private val subtaskData: MutableList<SubTask>,
+        private val rmSubtask: (Int) -> Unit,
+        private val updateSubtask: (Int, SubTask.Status) -> Unit
+    ) :
+        RecyclerView.Adapter<SubtaskAdapter.ViewHolder>() {
+
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val v =
+                LayoutInflater.from(parent.context).inflate(R.layout.subtask_card, parent, false)
+            return ViewHolder(v)
+        }
+
+        override fun getItemCount(): Int = subtaskData.size
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.v.apply {
+                subtask_status_cb.apply {
+                    isChecked = when (subtaskData[position].status) {
+                        SubTask.Status.UNFINISHED -> false
+                        SubTask.Status.FINISH -> true
+                    }
+                    setOnCheckedChangeListener { buttonView, isChecked ->
+                        updateSubtask(
+                            position,
+                            if (isChecked) SubTask.Status.FINISH else SubTask.Status.UNFINISHED
+                        )
+                    }
+                }
+                subtask_name_text.text = subtaskData[position].name.toEditable()
+                subtask_rm_btn.setOnClickListener {
+                    rmSubtask(position)
+                }
+            }
+        }
+
+        class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
     }
 
     companion object {

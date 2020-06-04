@@ -39,11 +39,20 @@ class TaskRepositoryImp : ITaskRepo {
 
         if (user != null) {
             val newTaskId = taskRef.child(user.uid).push().key
-            if (newTaskId != null) {
-                taskRef.child(user.uid).child(newTaskId).setValue(newTask)
+            newTaskId?.let { taskId ->
+                newTask.id = newTaskId
+                taskRef.child(user.uid).child(taskId).setValue(newTask)
+                newTask.tagIds.forEach { tagId ->
+                    taskRef.child(user.uid).child(taskId).child("tags").child(tagId).setValue(true)
+                }
+                newTask.subTasks.forEach { subtask ->
+                    taskRef.child(user.uid).child(taskId).child("subTasks").push().key?.let {
+                        subtask.id = it
+                        taskRef.child(user.uid).child(taskId).child("subTasks").child(subtask.id)
+                            .setValue(subtask)
+                    }
+                }
             }
-            newTaskId?.let { taskRef.child(user.uid).child(it).child("subTasks").setValue(newTask.subTasks) }
-            newTaskId?.let { taskRef.child(user.uid).child(it).child("tags").setValue(newTask.tagIds) }
         }
     }
 

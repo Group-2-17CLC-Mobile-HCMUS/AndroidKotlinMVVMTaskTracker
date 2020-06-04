@@ -47,4 +47,5 @@
     <string name="by_due_date">By Due Date</string>
     <string name="none">None</string>
     <string name="choose_date">Choose Date</string>
+    <string name="due_date">Due Date:</string>
 </resources>

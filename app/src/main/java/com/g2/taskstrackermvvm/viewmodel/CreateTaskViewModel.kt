@@ -18,6 +18,7 @@ class CreateTaskViewModel(
     val tagList: LiveData<List<Tag>>
         get() = mTagList
 
+    fun createNewTask(task: Task) = taskRepo.createTask(task)
 
     fun addTask(title: String, desc: String) {
         taskRepo.addTask(title, desc, Task.Priority.Low, Date(), Date())

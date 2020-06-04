@@ -1,36 +1,38 @@
 package com.g2.taskstrackermvvm.view.fragment
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import co.lujun.androidtagview.TagContainerLayout
-import co.lujun.androidtagview.TagView
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.card_task.view.*
-import kotlinx.android.synthetic.main.dialog_select_tag.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.task_item_recycler_view_home.view.descText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
-
-
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
     private var tagsData: MutableList<Tag> = mutableListOf()
     private lateinit var taskAdapter: TaskAdapter
     private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+    private val searchMode = listOf(
+        HomeViewModel.SearchMode.TITLE,
+        HomeViewModel.SearchMode.TAG
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -75,17 +77,50 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_view.setIconifiedByDefault(false)
+        search_view.findViewById<TextView>(R.id.search_src_text).apply {
+            setTextColor(resources.getColor(R.color.text_color, context.theme))
+        }
+        search_view.findViewById<ImageView>(R.id.search_button).apply {
+            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+        }
+        search_view.findViewById<ImageView>(R.id.search_close_btn).apply {
+            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+        }
+        search_view.findViewById<ImageView>(R.id.search_mag_icon).apply {
+            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+        }
+
         search_view.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                viewModel.applySearch(searchMode[search_mode_spinner.selectedItemPosition], query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.applySearch(searchMode[search_mode_spinner.selectedItemPosition], newText)
                 return true
             }
         })
+
+        search_mode_spinner.apply {
+            adapter = ArrayAdapter(context, R.layout.status_spinner_item, searchMode)
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    viewModel.applySearch(HomeViewModel.SearchMode.TITLE, null)
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val key = if (search_view.query.isEmpty()) null else search_view.query
+                    viewModel.applySearch(searchMode[position], key?.toString())
+                }
+            }
+        }
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createTaskFragment)
@@ -139,11 +174,11 @@ class HomeFragment : Fragment() {
             TaskAdapter(
                 activity,
                 data,
-                tagsData,
+                //tagsData,
                 ::updateTaskStatus,
                 ::removeTask,
                 ::getTagById,
-                ::setTag,
+                //::setTag,
                 ::navigateToItemDetail
             )
 
@@ -165,11 +200,11 @@ class HomeFragment : Fragment() {
     class TaskAdapter(
         private val context: Context?,
         private val data: List<Task>,
-        private val tagsData: List<Tag>,
+        //private val tagsData: List<Tag>,
         private val updateTaskStatus: (Int) -> Unit,
         private val removeTask: (Int) -> Unit,
         private val getTag: (String) -> Tag?,
-        private val setTag: (String, String) -> Unit,
+        //private val setTag: (String, String) -> Unit,
         private val navDetail: (String) -> Unit
     ) :
         RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -222,82 +257,82 @@ class HomeFragment : Fragment() {
             holder.v.task_tags_container.setTags(tagNames, tagColors)
             holder.v.setOnCreateContextMenuListener { contextMenu, _, _ ->
                 contextMenu.apply {
-                    add("Set Tag").setOnMenuItemClickListener {
-                        val v =
-                            LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
-
-                        val tagsContainer: TagContainerLayout = v.select_tag_container
-                        tagsContainer.backgroundColor = Color.WHITE
-
-                        val tagNames = tagsData.map { tag -> tag.name }
-                        val tagColors = tagsData.map { tag ->
-                            when (tag.color) {
-                                Tag.Color.RED -> intArrayOf(
-                                    0xffff5131.toInt(),
-                                    Color.BLACK,
-                                    Color.BLACK,
-                                    Color.YELLOW
-                                )
-                                Tag.Color.BLUE -> intArrayOf(
-                                    0xff768fff.toInt(),
-                                    Color.BLACK,
-                                    Color.BLACK,
-                                    Color.YELLOW
-                                )
-                                Tag.Color.GREEN -> intArrayOf(
-                                    0xff5efc82.toInt(),
-                                    Color.BLACK,
-                                    Color.BLACK,
-                                    Color.YELLOW
-                                )
-                                else -> intArrayOf(
-                                    0xffaeaeae.toInt(),
-                                    Color.BLACK,
-                                    Color.BLACK,
-                                    Color.YELLOW
-                                )
-                            }
-                        }
-
-                        tagsContainer.setTags(tagNames, tagColors)
-
-                        var tagPos = 0
-                        var selectedTag: TagView? = null
-                        tagsContainer.setOnTagClickListener(object : TagView.OnTagClickListener {
-                            override fun onSelectedTagDrag(position: Int, text: String?) {
-                            }
-
-                            override fun onTagLongClick(position: Int, text: String?) {
-                            }
-
-                            override fun onTagClick(position: Int, text: String?) {
-                                selectedTag?.setTagBorderColor(
-                                    Color.BLACK
-                                )
-                                selectedTag = tagsContainer.getTagView(position)
-                                tagPos = position
-                                selectedTag?.setTagBorderColor(
-                                    Color.YELLOW
-                                )
-                            }
-
-                            override fun onTagCrossClick(position: Int) {
-                            }
-                        })
-                        AlertDialog.Builder(context).apply {
-                            setView(v)
-                            setTitle("Select Tag")
-                            setPositiveButton("Set") { _, _ ->
-                                setTag(data[position].id, tagsData[tagPos].id)
-                            }
-                            setNegativeButton("Cancel") { dialog, _ ->
-                                dialog.cancel()
-                            }
-                            create()
-                        }.show()
-
-                        true
-                    }
+//                    add("Set Tag").setOnMenuItemClickListener {
+//                        val v =
+//                            LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
+//
+//                        val tagsContainer: TagContainerLayout = v.select_tag_container
+//                        tagsContainer.backgroundColor = Color.WHITE
+//
+//                        val tagNames = tagsData.map { tag -> tag.name }
+//                        val tagColors = tagsData.map { tag ->
+//                            when (tag.color) {
+//                                Tag.Color.RED -> intArrayOf(
+//                                    0xffff5131.toInt(),
+//                                    Color.BLACK,
+//                                    Color.BLACK,
+//                                    Color.YELLOW
+//                                )
+//                                Tag.Color.BLUE -> intArrayOf(
+//                                    0xff768fff.toInt(),
+//                                    Color.BLACK,
+//                                    Color.BLACK,
+//                                    Color.YELLOW
+//                                )
+//                                Tag.Color.GREEN -> intArrayOf(
+//                                    0xff5efc82.toInt(),
+//                                    Color.BLACK,
+//                                    Color.BLACK,
+//                                    Color.YELLOW
+//                                )
+//                                else -> intArrayOf(
+//                                    0xffaeaeae.toInt(),
+//                                    Color.BLACK,
+//                                    Color.BLACK,
+//                                    Color.YELLOW
+//                                )
+//                            }
+//                        }
+//
+//                        tagsContainer.setTags(tagNames, tagColors)
+//
+//                        var tagPos = 0
+//                        var selectedTag: TagView? = null
+//                        tagsContainer.setOnTagClickListener(object : TagView.OnTagClickListener {
+//                            override fun onSelectedTagDrag(position: Int, text: String?) {
+//                            }
+//
+//                            override fun onTagLongClick(position: Int, text: String?) {
+//                            }
+//
+//                            override fun onTagClick(position: Int, text: String?) {
+//                                selectedTag?.setTagBorderColor(
+//                                    Color.BLACK
+//                                )
+//                                selectedTag = tagsContainer.getTagView(position)
+//                                tagPos = position
+//                                selectedTag?.setTagBorderColor(
+//                                    Color.YELLOW
+//                                )
+//                            }
+//
+//                            override fun onTagCrossClick(position: Int) {
+//                            }
+//                        })
+//                        AlertDialog.Builder(context).apply {
+//                            setView(v)
+//                            setTitle("Select Tag")
+//                            setPositiveButton("Set") { _, _ ->
+//                                setTag(data[position].id, tagsData[tagPos].id)
+//                            }
+//                            setNegativeButton("Cancel") { dialog, _ ->
+//                                dialog.cancel()
+//                            }
+//                            create()
+//                        }.show()
+//
+//                        true
+//                    }
                     add("Detail").setOnMenuItemClickListener {
                         navDetail(data[position].id)
                         true

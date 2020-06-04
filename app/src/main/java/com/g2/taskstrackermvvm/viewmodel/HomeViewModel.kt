@@ -37,13 +37,33 @@ class HomeViewModel(
         DUE
     }
 
+    enum class SearchMode {
+        TITLE {
+            override fun toString(): String {
+                return "Title"
+            }
+        },
+        TAG {
+            override fun toString(): String {
+                return "Tag"
+            }
+        }
+    }
+
     private var currentFilter = FilterMode.NONE
     private var currentSort = SortMode.DUE
+    private var currentSearch = SearchMode.TITLE
+    private var currentSearchKey: String? = null
 
     init {
         tasks.addSource(tasksData) { result: List<Task>? ->
             result?.let {
-                tasks.value = sort(filter(it, currentFilter), currentSort)
+                tasks.value =
+                    search(
+                        sort(filter(it, currentFilter), currentSort),
+                        currentSearch,
+                        currentSearchKey
+                    )
             }
         }
     }
@@ -55,19 +75,52 @@ class HomeViewModel(
     }
 
     private fun sort(data: List<Task>, sortMode: SortMode): List<Task> {
-        return data.sortedWith(compareBy(Task::title))
+        return when (sortMode) {
+            SortMode.TITLE -> data.sortedWith(compareBy(Task::title))
+            SortMode.DUE -> data.sortedWith(compareBy(Task::dueDate))
+        }
+    }
+
+    private fun search(data: List<Task>, searchMode: SearchMode, key: String?): List<Task> {
+        if (key != null && key.isNotEmpty()) {
+            return data.filter { task ->
+                when (searchMode) {
+                    SearchMode.TITLE -> {
+                        task.title.contains(key, true)
+                    }
+                    SearchMode.TAG -> {
+                        task.tagIds.map {
+                            getTagById(it)?.name
+                        }.any {
+                            it?.contains(key, false) ?: false
+                        }
+                    }
+                }
+            }
+        } else {
+            return data
+        }
     }
 
     fun applyFilter(FilterMode: FilterMode) = tasksData.value?.let {
-        tasks.value = sort(filter(it, FilterMode), currentSort)
+        tasks.value =
+            search(sort(filter(it, FilterMode), currentSort), currentSearch, currentSearchKey)
     }.also {
         currentFilter = FilterMode
     }
 
     fun applySort(sortMode: SortMode) = tasksData.value?.let {
-        tasks.value = sort(filter(it, currentFilter), sortMode)
+        tasks.value =
+            search(sort(filter(it, currentFilter), sortMode), currentSearch, currentSearchKey)
     }.also {
         currentSort = sortMode
+    }
+
+    fun applySearch(searchMode: SearchMode, key: String?) = tasksData.value?.let {
+        tasks.value = search(sort(filter(it, currentFilter), currentSort), searchMode, key)
+    }.also {
+        currentSearch = searchMode
+        currentSearchKey = key
     }
 
     fun updateTask(task: Task) =
