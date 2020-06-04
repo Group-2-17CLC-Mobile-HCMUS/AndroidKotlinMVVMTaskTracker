@@ -9,8 +9,7 @@
             android:title="@string/tags_menu_item_title" />
         <item
             android:id="@+id/updateUserProfileFragment"
-            android:title="@string/update_profile"
-            />
+            android:title="@string/update_profile" />
         <item
             android:id="@+id/chartsFragment"
             android:title="@string/charts_menu_item_title" />
@@ -18,6 +17,6 @@
     <group android:id="@+id/functional_item_group">
         <item
             android:id="@+id/sign_out_item"
-            android:title="@string/sign_out_menu_item_title"/>
+            android:title="@string/sign_out_menu_item_title" />
     </group>
 </menu>

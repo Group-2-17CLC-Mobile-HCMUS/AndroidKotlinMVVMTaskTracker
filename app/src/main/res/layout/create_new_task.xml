@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -69,7 +68,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
         <Button
-            android:id="@+id/addSubtaskBtn2"
+            android:id="@+id/add_subtask_btn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +127,8 @@
             android:foregroundTint="#ffffff"
             android:hint="@string/task_name"
             android:inputType="textPersonName"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.416"
             app:layout_constraintStart_toStartOf="parent"
@@ -143,9 +143,10 @@
             android:background="#808080"
             android:gravity="start"
             android:hint="@string/description_hint_text"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
             android:lines="4"
             android:maxLines="4"
-            android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtasksView_create_task" />
 
@@ -158,7 +159,7 @@
             android:background="@drawable/button_background"
             android:text="CANCEL"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descEditText_create_task" />
+            app:layout_constraintTop_toBottomOf="@+id/due_date_edit_text" />
 
         <Button
             android:id="@+id/createTaskBtn"
@@ -169,7 +170,34 @@
             android:background="@drawable/button_background"
             android:text="CREATE"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/due_date_edit_text" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="21dp"
+            android:text="@string/due_date"
+            android:textColor="@color/text_color"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descEditText_create_task" />
+
+        <EditText
+            android:id="@+id/due_date_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="none"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color"
+            android:text="@string/choose_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

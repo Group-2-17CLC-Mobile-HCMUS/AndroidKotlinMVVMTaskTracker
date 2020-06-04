@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private var darkThemeEnable = false
+
     override fun onBackPressed() {
     }
 
@@ -49,15 +52,18 @@ class MainActivity : AppCompatActivity() {
         toolbar.setupWithNavController(navController, appBarConfig)
 
         nav_view.setupWithNavController(navController)
-        nav_view.menu.findItem(R.id.sign_out_item).apply {
-            val s = SpannableString(title)
-            s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
-            title = s
+        nav_view.menu.apply {
+            findItem(R.id.sign_out_item).apply {
+                val s = SpannableString(title)
+                s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
+                title = s
 
-            setOnMenuItemClickListener {
-                signOut()
+                setOnMenuItemClickListener {
+                    signOut()
+                }
             }
         }
+
 
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
@@ -87,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        val navController = findNavController(R.id.nav_host_fragment_container)
 //        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+
         return super.onOptionsItemSelected(item)
     }
 

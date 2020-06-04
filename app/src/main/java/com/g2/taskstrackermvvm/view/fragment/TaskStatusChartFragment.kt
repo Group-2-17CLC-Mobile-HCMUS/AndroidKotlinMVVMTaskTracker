@@ -63,6 +63,17 @@ class TaskStatusChartFragment : Fragment() {
                 val data = PieData(dataset)
                 data.setValueTextSize(12f)
                 status_pie_chart.data = data
+                context?.let { context ->
+                    status_pie_chart.setCenterTextColor(
+                        resources.getColor(
+                            R.color.background_color,
+                            context.theme
+                        )
+                    )
+                }
+                status_pie_chart.setDrawRoundedSlices(true)
+                status_pie_chart.setDrawSlicesUnderHole(true)
+                status_pie_chart.centerText = "Overall"
                 status_pie_chart.invalidate()
 
             }
