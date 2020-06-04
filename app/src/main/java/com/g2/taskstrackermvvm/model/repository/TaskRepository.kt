@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 interface ITaskRepo {
+    fun createTask(newTask: Task)
     fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date)
     fun updateTask(newTask: Task)
     fun getTaskDetail(taskId: String): LiveData<Task>
@@ -30,6 +31,21 @@ class TaskRepositoryImp : ITaskRepo {
 
     private val listTask: MutableLiveData<List<Task>> = MutableLiveData()
     private var isListFetched = false
+
+    override fun createTask(newTask: Task) {
+        val database = Firebase.database
+        val user = FirebaseAuth.getInstance().currentUser
+        val taskRef = database.getReference("tasks")
+
+        if (user != null) {
+            val newTaskId = taskRef.child(user.uid).push().key
+            if (newTaskId != null) {
+                taskRef.child(user.uid).child(newTaskId).setValue(newTask)
+            }
+            newTaskId?.let { taskRef.child(user.uid).child(it).child("subTasks").setValue(newTask.subTasks) }
+            newTaskId?.let { taskRef.child(user.uid).child(it).child("tags").setValue(newTask.tagIds) }
+        }
+    }
 
     override fun addTask(
         title: String,
