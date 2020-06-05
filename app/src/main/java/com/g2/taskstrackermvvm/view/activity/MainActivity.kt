@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.Menu
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.g2.taskstrackermvvm.R
@@ -33,6 +34,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         const val DARK_THEME_BUNDLE_KEY = "com.g2.taskstrackermvvm.view.activity.MainActivity"
+    }
+
+
+
+    override fun onBackPressed() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +61,10 @@ class MainActivity : AppCompatActivity() {
             main_activity_layout
         )
 
-
+        setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController, appBarConfig)
+
         nav_view.setupWithNavController(navController)
-//        nav_view.menu.findItem(R.id.switch_theme_item).apply {
-//            setOnMenuItemClickListener { changeTheme() }
-//        }
         nav_view.menu.apply {
             findItem(R.id.sign_out_item).apply {
                 val s = SpannableString(title)
@@ -71,6 +75,8 @@ class MainActivity : AppCompatActivity() {
                     signOut()
                 }
             }
+        }
+
 
             findItem(R.id.switch_theme_item).apply {
                 val switch = this.actionView.findViewById<SwitchMaterial>(R.id.switch_theme)
@@ -115,9 +121,16 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.nav_host_fragment_container)
+        return NavigationUI.navigateUp(navController, main_activity_layout)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_container)
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+//        val navController = findNavController(R.id.nav_host_fragment_container)
+//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun signOut(): Boolean {
@@ -132,25 +145,8 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    //    private fun ChangeTheme(): Boolean {
-//        val switch = this.findViewById<Switch>(R.id.switch_theme)
-//        darkTheme = !switch.isChecked
-//        switch.isChecked = darkTheme
-//        if (!darkTheme) {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//        } else {
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//        }
-//        return true
-//    }
     fun popToPreviousActivity() {
         finish()
     }
 
 }
-
-
-
-
-
-

@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.view.fragment.SignInFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlin.system.exitProcess
 
 

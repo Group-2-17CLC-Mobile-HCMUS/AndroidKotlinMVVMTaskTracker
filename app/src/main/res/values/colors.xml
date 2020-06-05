@@ -8,4 +8,7 @@
     <color name="colorText">#000000</color>
     <color name="colorGrey">#808080</color>
     <color name="colorRed">#f54242</color>
+    <color name="background_color">#292929</color>
+    <color name="text_color">#ffffff</color>
+    <color name="button_color">#FFA31A</color>
 </resources>
