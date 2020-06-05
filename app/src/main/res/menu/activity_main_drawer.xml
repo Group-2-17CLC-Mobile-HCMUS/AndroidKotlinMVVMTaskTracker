@@ -14,15 +14,17 @@
         <item
             android:id="@+id/chartsFragment"
             android:title="@string/charts_menu_item_title" />
-        <item
-            android:id="@+id/switch_theme_item"
-            android:title=""
-            app:actionLayout="@layout/switch_theme"
-            app:showAsAction="always" />
+
 
     </group>
     <group android:id="@+id/functional_item_group">
-
+        <item
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:id="@+id/switch_theme_item"
+            android:title="Dark Theme"
+            app:actionLayout="@layout/switch_theme"
+            app:showAsAction="always" />
         <item
             android:id="@+id/sign_out_item"
             android:title="@string/sign_out_menu_item_title" />

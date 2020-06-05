@@ -75,10 +75,10 @@ class MainActivity : AppCompatActivity() {
                     signOut()
                 }
             }
-        }
 
 
-            findItem(R.id.switch_theme_item).apply {
+
+        findItem(R.id.switch_theme_item).apply {
                 val switch = this.actionView.findViewById<SwitchMaterial>(R.id.switch_theme)
                 Log.d(
                     "com.g2.taskstrackermvvm.view.activity.MainActivity",
@@ -103,17 +103,6 @@ class MainActivity : AppCompatActivity() {
             navHeader.nav_header_display_name.text = it.displayName
         }
 
-
-//        temp_log_out_btn.setOnClickListener {
-//            AuthUI.getInstance().signOut(this)
-//                .addOnCompleteListener {
-//                    Toast.makeText(this, "Signed Out", Toast.LENGTH_SHORT).show()
-//                    finish()
-//                }
-//                .addOnFailureListener { e ->
-//                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-//                }
-//        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
