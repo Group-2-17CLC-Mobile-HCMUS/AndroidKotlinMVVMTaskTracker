@@ -28,6 +28,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/tag"
             android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusSpinner_create_task" />
 
@@ -40,7 +41,7 @@
             android:layout_marginEnd="8dp"
             android:text="@string/remove"
             android:textColor="@color/colorRed"
-            android:textSize="12sp"
+            android:textSize="@dimen/btnSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
 
@@ -52,6 +53,7 @@
             android:layout_marginTop="64dp"
             android:text="@string/subtask"
             android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
 
@@ -76,7 +78,7 @@
             android:layout_marginEnd="12dp"
             android:text="@string/add"
             android:textColor="@color/colorGreen"
-            android:textSize="12sp"
+            android:textSize="@dimen/btnSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtasksView_create_task" />
 
@@ -89,7 +91,7 @@
             android:layout_marginEnd="104dp"
             android:text="@string/add"
             android:textColor="@color/colorGreen"
-            android:textSize="12sp"
+            android:textSize="@dimen/btnSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
 
@@ -101,16 +103,16 @@
             android:layout_marginTop="16dp"
             android:text="@string/status"
             android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleEditText_create_task" />
 
         <Spinner
             android:id="@+id/statusSpinner_create_task"
             android:layout_width="171dp"
-            android:layout_height="31dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-
             android:textColor="@color/colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.035"
@@ -129,6 +131,7 @@
             android:inputType="textPersonName"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText"
+            android:textSize="@dimen/textSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.416"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +160,8 @@
             android:layout_marginStart="58dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/button_background"
-            android:text="CANCEL"
+            android:text="@string/cancel"
+            android:textSize="@dimen/btnSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/due_date_edit_text" />
 
@@ -168,7 +172,8 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="75dp"
             android:background="@drawable/button_background"
-            android:text="CREATE"
+            android:text="@string/create"
+            android:textSize="@dimen/btnSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/due_date_edit_text" />
 
@@ -180,6 +185,7 @@
             android:layout_marginTop="21dp"
             android:text="@string/due_date"
             android:textColor="@color/text_color"
+            android:textSize="@dimen/textSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descEditText_create_task" />
 

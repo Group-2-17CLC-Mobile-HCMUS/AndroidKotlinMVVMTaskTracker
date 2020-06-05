@@ -4,8 +4,11 @@
     android:id="@+id/subtask_name_edit_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorBackground"
     android:ems="10"
     android:hint="@string/name"
     android:inputType="text"
     android:paddingStart="16dp"
-    android:paddingEnd="16dp" />
+    android:paddingTop="@dimen/globPadding"
+    android:paddingEnd="16dp"
+    android:textColor="@color/colorText" />

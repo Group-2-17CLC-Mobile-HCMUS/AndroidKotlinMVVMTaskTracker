@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
+    android:elevation="4dp"
     app:cardCornerRadius="16dp">
 
     <LinearLayout
@@ -47,6 +48,7 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:paddingBottom="8dp" />
+
         <co.lujun.androidtagview.TagContainerLayout
             android:id="@+id/task_tags_container"
             android:layout_width="match_parent"
@@ -56,7 +58,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </co.lujun.androidtagview.TagContainerLayout>
+            app:layout_constraintTop_toTopOf="parent"></co.lujun.androidtagview.TagContainerLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

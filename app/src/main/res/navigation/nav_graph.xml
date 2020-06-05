@@ -14,13 +14,17 @@
             app:destination="@id/createTaskFragment"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@id/nav_graph" />
         <action
             android:id="@+id/action_homeFragment_to_updateTaskFragment"
             app:destination="@id/updateTaskFragment"
-            app:popUpTo="@id/nav_graph"
-
-            />
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/createTaskFragment"
