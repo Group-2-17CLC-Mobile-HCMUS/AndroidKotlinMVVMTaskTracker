@@ -78,16 +78,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         search_view.setIconifiedByDefault(false)
         search_view.findViewById<TextView>(R.id.search_src_text).apply {
-            setTextColor(resources.getColor(R.color.text_color, context.theme))
+            setTextColor(resources.getColor(R.color.colorText, context.theme))
         }
         search_view.findViewById<ImageView>(R.id.search_button).apply {
-            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+            setColorFilter(resources.getColor(R.color.colorText, context.theme))
         }
         search_view.findViewById<ImageView>(R.id.search_close_btn).apply {
-            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+            setColorFilter(resources.getColor(R.color.colorText, context.theme))
         }
         search_view.findViewById<ImageView>(R.id.search_mag_icon).apply {
-            setColorFilter(resources.getColor(R.color.text_color, context.theme))
+            setColorFilter(resources.getColor(R.color.colorText, context.theme))
         }
 
         search_view.setOnQueryTextListener(object :

@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#292929">
+        android:background="@color/colorBackground">
 
         <co.lujun.androidtagview.TagContainerLayout
             android:id="@+id/task_tags_container_create_task"
@@ -27,7 +27,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:text="@string/tag"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusSpinner_create_task" />
 
@@ -39,7 +39,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:text="@string/remove"
-            android:textColor="#FF0000"
+            android:textColor="@color/colorRed"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
@@ -51,7 +51,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="64dp"
             android:text="@string/subtask"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
-            android:background="#292929"
+            android:background="@color/colorBackground"
             app:layout_constrainedHeight="true"
             app:layout_constraintHeight_max="300dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
             android:text="@string/add"
-            android:textColor="#4CAF50"
+            android:textColor="@color/colorGreen"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtasksView_create_task" />
@@ -88,7 +88,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="104dp"
             android:text="@string/add"
-            android:textColor="#4CAF50"
+            android:textColor="@color/colorGreen"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/task_tags_container_create_task" />
@@ -100,7 +100,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:text="@string/status"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleEditText_create_task" />
 
@@ -111,7 +111,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
 
-            android:textColor="#ffffff"
+            android:textColor="@color/colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.035"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,11 +124,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:ems="10"
-            android:foregroundTint="#ffffff"
+            android:foregroundTint="@color/colorText"
             android:hint="@string/task_name"
             android:inputType="textPersonName"
-            android:textColor="@color/text_color"
-            android:textColorHint="@color/text_color"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.416"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,13 +140,13 @@
             android:layout_height="144dp"
             android:layout_marginStart="22dp"
             android:layout_marginTop="96dp"
-            android:background="#808080"
+            android:background="@color/colorGrey"
             android:gravity="start"
             android:hint="@string/description_hint_text"
-            android:textColor="@color/text_color"
-            android:textColorHint="@color/text_color"
             android:lines="4"
             android:maxLines="4"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtasksView_create_task" />
 
@@ -193,9 +193,9 @@
             android:ems="10"
             android:focusable="false"
             android:inputType="none"
-            android:textColor="@color/text_color"
-            android:textColorHint="@color/text_color"
             android:text="@string/choose_date"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
     </androidx.constraintlayout.widget.ConstraintLayout>
