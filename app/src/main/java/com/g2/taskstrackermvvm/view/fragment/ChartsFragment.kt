@@ -28,7 +28,7 @@ class ChartsFragment : Fragment() {
         spinner?.adapter = activity?.applicationContext?.let {
             ArrayAdapter(
                 it,
-                R.layout.support_simple_spinner_dropdown_item,
+                R.layout.status_spinner_item,
                 type
             )
         } as SpinnerAdapter

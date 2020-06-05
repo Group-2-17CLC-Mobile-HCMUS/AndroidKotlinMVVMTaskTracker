@@ -382,7 +382,7 @@ class UpdateTaskFragment : Fragment() {
                                 if (!isChecked) SubTask.Status.UNFINISHED else SubTask.Status.FINISH
                         })
                     }
-                    visibility = if (isSubtaskRemovable) View.VISIBLE else View.GONE
+                    isClickable = isSubtaskRemovable
                 }
                 subtask_name_text.text = subtaskData[position].name.toEditable()
                 subtask_rm_btn.apply {

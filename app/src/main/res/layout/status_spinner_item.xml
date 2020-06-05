@@ -3,4 +3,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground"
-    android:textColor="@color/colorText" />
+    android:textColor="@color/colorText"
+    android:padding="@dimen/globPadding"/>
