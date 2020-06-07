@@ -35,4 +35,8 @@ class UpdateTaskViewModel(
     fun addSubtask(name: String, taskId: String) = subtaskRepo.addSubTask(name, taskId)
     fun updateSubtask(taskId: String, subtask: SubTask) = subtaskRepo.updateTask(subtask, taskId)
     fun rmSubtask(taskId: String, subtaskId: String) = subtaskRepo.removeSubTask(taskId, subtaskId)
+    fun cleanUp(taskId: String) {
+        taskRepo.clearSingleTask(taskId)
+        subtaskRepo.cleanUp()
+    }
 }

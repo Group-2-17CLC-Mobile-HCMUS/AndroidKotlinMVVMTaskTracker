@@ -7,6 +7,7 @@ import com.g2.taskstrackermvvm.model.SubTask
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -16,6 +17,7 @@ interface ISubTaskRepo {
     fun getListSubTask(taskId: String): LiveData<List<SubTask>>
     fun removeSubTask(taskId: String, subTaskId: String)
     fun updateTask(subtask: SubTask, taskId: String)
+    fun cleanUp()
 }
 
 class SubTaskRepositoryImp : ISubTaskRepo {
@@ -25,6 +27,7 @@ class SubTaskRepositoryImp : ISubTaskRepo {
     }
 
     private val listSubTask: MutableLiveData<List<SubTask>> = MutableLiveData()
+    private val listenerTrackMap: MutableMap<Query, ValueEventListener> = mutableMapOf()
 
     override fun addSubTask(name: String, taskId: String) {
         val database = Firebase.database
@@ -46,28 +49,33 @@ class SubTaskRepositoryImp : ISubTaskRepo {
         val user = FirebaseAuth.getInstance().currentUser
         val list = mutableListOf<SubTask>()
 
-        val taskRef = database.getReference("tasks")
-        val subTaskUidRef = user?.uid?.let { taskRef.child(it).child(taskId) }
-        subTaskUidRef?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                list.clear()
-                for (subTaskSnapshot in dataSnapshot.children) {
-                    val subTask = subTaskSnapshot.getValue(SubTask::class.java)
-                    subTask?.let {
-                        subTaskSnapshot.key?.let { it1 ->
-                            it.id = it1
-                            list.add(it)
+        if (user != null) {
+            val taskRef = database.getReference("tasks")
+            val subTaskUidRef = user.uid.let { taskRef.child(it).child(taskId) }
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    list.clear()
+                    for (subTaskSnapshot in dataSnapshot.children) {
+                        val subTask = subTaskSnapshot.getValue(SubTask::class.java)
+                        subTask?.let {
+                            subTaskSnapshot.key?.let { it1 ->
+                                it.id = it1
+                                list.add(it)
+                            }
                         }
                     }
+                    listSubTask.value = list
                 }
-                listSubTask.value = list
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w(TAG, "db error ${error.toException()}")
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(TAG, "db error ${error.toException()}")
+                }
             }
-        })
+            listenerTrackMap[subTaskUidRef] = listener
+            subTaskUidRef.addValueEventListener(listener)
+        }
+
 
         return listSubTask
     }
@@ -104,6 +112,12 @@ class SubTaskRepositoryImp : ISubTaskRepo {
                     }
                 }
             })
+        }
+    }
+
+    override fun cleanUp() {
+        listenerTrackMap.forEach { (query, listener) ->
+            query.removeEventListener(listener)
         }
     }
 

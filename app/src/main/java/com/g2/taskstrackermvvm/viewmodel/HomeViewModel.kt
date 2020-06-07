@@ -11,45 +11,10 @@ class HomeViewModel(
     private val taskRepo: ITaskRepo
     , private val tagRepo: ITagRepo
 ) : ViewModel() {
+
     private val tasksData = taskRepo.getListTask()
     val tags = tagRepo.getTagsList()
     val tasks: MediatorLiveData<List<Task>> = MediatorLiveData()
-
-    enum class FilterMode {
-        TODO {
-            override fun toTaskStatus(): Task.Status? = Task.Status.Todo
-        },
-        DOING {
-            override fun toTaskStatus(): Task.Status? = Task.Status.Doing
-        },
-        DONE {
-            override fun toTaskStatus(): Task.Status? = Task.Status.Done
-        },
-        NONE {
-            override fun toTaskStatus(): Task.Status? = null
-        };
-
-        abstract fun toTaskStatus(): Task.Status?
-    }
-
-    enum class SortMode {
-        TITLE,
-        DUE
-    }
-
-    enum class SearchMode {
-        TITLE {
-            override fun toString(): String {
-                return "Title"
-            }
-        },
-        TAG {
-            override fun toString(): String {
-                return "Tag"
-            }
-        }
-    }
-
     private var currentFilter = FilterMode.NONE
     private var currentSort = SortMode.DUE
     private var currentSearch = SearchMode.TITLE
@@ -127,12 +92,47 @@ class HomeViewModel(
         taskRepo.updateTask(task)
 
     fun removeTask(task: Task) = taskRepo.removeTask(task)
-
     fun getTagById(id: String): Tag? {
         return tagRepo.getTagById(id)
     }
 
     fun setTag(taskId: String, tagId: String) {
         taskRepo.setTag(taskId, tagId)
+    }
+
+    fun cleanUpTasks() = taskRepo.cleanUp()
+    enum class FilterMode {
+        TODO {
+            override fun toTaskStatus(): Task.Status? = Task.Status.Todo
+        },
+        DOING {
+            override fun toTaskStatus(): Task.Status? = Task.Status.Doing
+        },
+        DONE {
+            override fun toTaskStatus(): Task.Status? = Task.Status.Done
+        },
+        NONE {
+            override fun toTaskStatus(): Task.Status? = null
+        };
+
+        abstract fun toTaskStatus(): Task.Status?
+    }
+
+    enum class SortMode {
+        TITLE,
+        DUE
+    }
+
+    enum class SearchMode {
+        TITLE {
+            override fun toString(): String {
+                return "Title"
+            }
+        },
+        TAG {
+            override fun toString(): String {
+                return "Tag"
+            }
+        }
     }
 }

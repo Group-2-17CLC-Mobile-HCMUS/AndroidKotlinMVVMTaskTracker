@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.subtask_card.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
+
 class UpdateTaskFragment : Fragment() {
 
     private val args: UpdateTaskFragmentArgs by navArgs()
@@ -48,16 +49,18 @@ class UpdateTaskFragment : Fragment() {
     private val viewModel: UpdateTaskViewModel by viewModel()
     private var isEditable: Boolean = false
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.cleanUp(args.taskId)
+    }
+
     private fun rmSubtaskFromTask(id: String) {
         viewModel.rmSubtask(args.taskId, id)
     }
 
+
     private fun updateSubtask(subtask: SubTask) {
         viewModel.updateSubtask(args.taskId, subtask)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
