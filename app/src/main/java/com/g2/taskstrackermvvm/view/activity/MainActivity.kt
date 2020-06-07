@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initTheme(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initTheme(savedInstanceState)
 
         val navController = findNavController(R.id.frag_container)
         val appBarConfig = AppBarConfiguration(
