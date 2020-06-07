@@ -18,7 +18,7 @@ import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.card_task.view.*
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.task_item_recycler_view_home.view.descText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,15 +27,10 @@ class HomeFragment : Fragment() {
     private var data: MutableList<Task> = mutableListOf()
     private var tagsData: MutableList<Tag> = mutableListOf()
     private lateinit var taskAdapter: TaskAdapter
-    private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
     private val searchMode = listOf(
         HomeViewModel.SearchMode.TITLE,
         HomeViewModel.SearchMode.TAG
     )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private fun getTagById(id: String): Tag? {
         return viewModel.getTagById(id)
@@ -70,40 +65,61 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        search_view.setIconifiedByDefault(false)
-        search_view.findViewById<TextView>(R.id.search_src_text).apply {
-            setTextColor(resources.getColor(R.color.colorText, context.theme))
-        }
-        search_view.findViewById<ImageView>(R.id.search_button).apply {
-            setColorFilter(resources.getColor(R.color.colorText, context.theme))
-        }
-        search_view.findViewById<ImageView>(R.id.search_close_btn).apply {
-            setColorFilter(resources.getColor(R.color.colorText, context.theme))
-        }
-        search_view.findViewById<ImageView>(R.id.search_mag_icon).apply {
-            setColorFilter(resources.getColor(R.color.colorText, context.theme))
+        val v = inflater.inflate(R.layout.fragment_home, container, false)
+
+        taskAdapter =
+            TaskAdapter(
+                activity,
+                data,
+                //tagsData,
+                ::updateTaskStatus,
+                ::removeTask,
+                ::getTagById,
+                //::setTag,
+                ::navigateToItemDetail
+            )
+
+        v.taskListRecyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = taskAdapter
         }
 
-        search_view.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.applySearch(searchMode[search_mode_spinner.selectedItemPosition], query)
-                return true
+        v.search_view.apply {
+            setIconifiedByDefault(false)
+            findViewById<TextView>(R.id.search_src_text).apply {
+                setTextColor(resources.getColor(R.color.colorText, context.theme))
             }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.applySearch(searchMode[search_mode_spinner.selectedItemPosition], newText)
-                return true
+            findViewById<ImageView>(R.id.search_button).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
             }
-        })
+            findViewById<ImageView>(R.id.search_close_btn).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
+            }
+            findViewById<ImageView>(R.id.search_mag_icon).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
+            }
+            setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.applySearch(
+                        searchMode[v.search_mode_spinner.selectedItemPosition],
+                        query
+                    )
+                    return true
+                }
 
-        search_mode_spinner.apply {
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.applySearch(
+                        searchMode[v.search_mode_spinner.selectedItemPosition],
+                        newText
+                    )
+                    return true
+                }
+            })
+        }
+
+        v.search_mode_spinner.apply {
             adapter = ArrayAdapter(context, R.layout.status_spinner_item, searchMode)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -116,15 +132,32 @@ class HomeFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    val key = if (search_view.query.isEmpty()) null else search_view.query
+                    val key = if (v.search_view.query.isEmpty()) null else v.search_view.query
                     viewModel.applySearch(searchMode[position], key?.toString())
                 }
             }
         }
 
-        fab.setOnClickListener {
+        v.fab.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_createTaskFragment)
         }
+        // Inflate the layout for this fragment
+        return v
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        viewModel.tasks.observe(viewLifecycleOwner, Observer {
+            data.clear()
+            data.addAll(it)
+            taskAdapter.notifyDataSetChanged()
+        })
+        viewModel.tags.observe(viewLifecycleOwner, Observer {
+            tagsData.clear()
+            tagsData.addAll(it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -169,32 +202,6 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        taskAdapter =
-            TaskAdapter(
-                activity,
-                data,
-                //tagsData,
-                ::updateTaskStatus,
-                ::removeTask,
-                ::getTagById,
-                //::setTag,
-                ::navigateToItemDetail
-            )
-
-        taskListRecyclerView.apply {
-            layoutManager = layoutM
-            adapter = taskAdapter
-        }
-        viewModel.tasks.observe(viewLifecycleOwner, Observer {
-            data.clear()
-            data.addAll(it)
-            taskAdapter.notifyDataSetChanged()
-        })
-        viewModel.tags.observe(viewLifecycleOwner, Observer {
-            tagsData.clear()
-            tagsData.addAll(it)
-        })
     }
 
     class TaskAdapter(

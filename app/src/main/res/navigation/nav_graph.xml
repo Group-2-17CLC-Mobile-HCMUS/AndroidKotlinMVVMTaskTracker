@@ -16,7 +16,7 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_fade_enter"
             app:popExitAnim="@anim/fragment_fade_exit"
-            app:popUpTo="@id/nav_graph" />
+            app:popUpTo="@id/homeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_updateTaskFragment"
             app:destination="@id/updateTaskFragment"
@@ -24,13 +24,17 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_fade_enter"
             app:popExitAnim="@anim/fragment_fade_exit"
-            app:popUpTo="@id/nav_graph" />
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/createTaskFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.CreateTaskFragment"
         android:label="Create new task"
-        tools:layout="@layout/create_new_task" />
+        tools:layout="@layout/create_new_task">
+        <action
+            android:id="@+id/action_createTaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tagsFragment"
         android:name="com.g2.taskstrackermvvm.view.fragment.TagsFragment"
@@ -54,5 +58,8 @@
         <argument
             android:name="taskId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_updateTaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

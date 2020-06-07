@@ -25,6 +25,7 @@ import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.utils.toEditable
 import com.g2.taskstrackermvvm.viewmodel.CreateTaskViewModel
 import kotlinx.android.synthetic.main.create_new_task.*
+import kotlinx.android.synthetic.main.create_new_task.view.*
 import kotlinx.android.synthetic.main.dialog_add_subtask.view.*
 import kotlinx.android.synthetic.main.dialog_select_tag.view.*
 import kotlinx.android.synthetic.main.subtask_card.view.*
@@ -39,7 +40,6 @@ class CreateTaskFragment : Fragment() {
     private val tagsData: MutableList<Tag> = mutableListOf()
     private val selectableTags: MutableList<Tag> = mutableListOf()
     private val bindedTag: MutableList<Tag> = mutableListOf()
-    private var layoutM: RecyclerView.LayoutManager = LinearLayoutManager(activity)
     private val subtasks: MutableList<SubTask> = mutableListOf()
     private lateinit var subtaskAdapter: SubtaskAdapter
     private val selectedDate: Date = Date()
@@ -54,8 +54,8 @@ class CreateTaskFragment : Fragment() {
         subtaskAdapter.notifyDataSetChanged()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -63,7 +63,18 @@ class CreateTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.create_new_task, container, false)
+        val v = inflater.inflate(R.layout.create_new_task, container, false)
+        subtaskAdapter = SubtaskAdapter(
+            subtasks,
+            ::removeSubtask,
+            ::updateSubtaskStatus
+        )
+
+        v.subtasksView_create_task.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = subtaskAdapter
+        }
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -236,16 +247,7 @@ class CreateTaskFragment : Fragment() {
             }
         })
 
-        subtaskAdapter = SubtaskAdapter(
-            subtasks,
-            ::removeSubtask,
-            ::updateSubtaskStatus
-        )
 
-        subtasksView_create_task.apply {
-            layoutManager = layoutM
-            adapter = subtaskAdapter
-        }
 
         createTaskBtn.setOnClickListener {
             if (titleEditText_create_task.text.toString() == "") {
@@ -269,7 +271,7 @@ class CreateTaskFragment : Fragment() {
             }
         }
         cancelCreateTaskBtn.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.action_createTaskFragment_to_homeFragment)
         }
     }
 

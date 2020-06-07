@@ -13,6 +13,7 @@ val appModule = module {
     single<ISubTaskRepo> { SubTaskRepositoryImp() }
     viewModel { TestViewModel(get(), get(), get()) }
 //    viewModel { HomeListViewModel(get()) }
+    viewModel { MainActivityViewModel(get(), get(), get()) }
     viewModel { SignInViewModel(get()) }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { CreateTaskViewModel(get(), get()) }
