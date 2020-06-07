@@ -52,4 +52,7 @@
 
     <string name="light_theme">Dark Theme</string>
     <string name="create">CREATE</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
 </resources>
