@@ -147,10 +147,7 @@ class TaskRepositoryImp : ITaskRepo {
         values.put(CalendarContract.Events.DESCRIPTION, "Group workout")
         values.put(CalendarContract.Events.CALENDAR_ID, calID)
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles")
-        val uri: Uri? = if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_CALENDAR
-            ) != PackageManager.PERMISSION_GRANTED
+        val uri: Unit = if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
         ) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -159,11 +156,13 @@ class TaskRepositoryImp : ITaskRepo {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return
-        }
+
             cr.insert(CalendarContract.Events.CONTENT_URI, values)
 
-// get the event ID that is the last element in the Uri
+
+
+        }
+        // get the event ID that is the last element in the Uri
         val eventID:Long = Long.parseLong(uri?.lastPathSegment)
 //
 // ... do something with event ID
