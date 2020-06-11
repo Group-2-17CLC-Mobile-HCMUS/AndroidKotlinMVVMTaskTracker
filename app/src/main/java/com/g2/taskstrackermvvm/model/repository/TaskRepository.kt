@@ -1,14 +1,10 @@
 package com.g2.taskstrackermvvm.model.repository
 
-import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.provider.CalendarContract
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g2.taskstrackermvvm.model.Task
@@ -18,7 +14,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.net.URI
 import java.util.*
 
 interface ITaskRepo {
@@ -26,7 +21,7 @@ interface ITaskRepo {
     fun getListTask() : LiveData<List<Task>>
     fun setTag(taskId: String, tagId: String)
     fun removeTag(taskId: String, tagId: String)
-    fun exportCalendar(taskID: String)
+    fun exportCalendar(context: Context, taskID: String)
 }
 
 class TaskRepositoryImp : ITaskRepo {
@@ -127,43 +122,43 @@ class TaskRepositoryImp : ITaskRepo {
         }
     }
 
-    override fun exportCalendar(taskID: String) {
-        val calID:Long = 3
-        var startMillis:Long = 0
-        var endMillis:Long = 0
-        val beginTime:Calendar = Calendar.getInstance()
+    override fun exportCalendar(context: Context, taskID: String) {
+        val calID: Long = 3
+        var startMillis: Long = 0
+        var endMillis: Long = 0
+        val beginTime: Calendar = Calendar.getInstance()
         beginTime.set(2012, 9, 14, 7, 30)
         startMillis = beginTime.timeInMillis
-        val endTime:Calendar = Calendar.getInstance()
+        val endTime: Calendar = Calendar.getInstance()
         endTime.set(2012, 9, 14, 8, 45)
         endMillis = endTime.timeInMillis
 
         //val context:Con
-        val cr:ContentResolver = ContentResolver()
-        val values:ContentValues = ContentValues()
+        val cr: ContentResolver = context.contentResolver
+        val values: ContentValues = ContentValues()
         values.put(CalendarContract.Events.DTSTART, startMillis)
         values.put(CalendarContract.Events.DTEND, endMillis)
         values.put(CalendarContract.Events.TITLE, "Jazzercise")
         values.put(CalendarContract.Events.DESCRIPTION, "Group workout")
         values.put(CalendarContract.Events.CALENDAR_ID, calID)
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles")
-        val uri: Unit = if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-            cr.insert(CalendarContract.Events.CONTENT_URI, values)
-
-
-
-        }
-        // get the event ID that is the last element in the Uri
-        val eventID:Long = Long.parseLong(uri?.lastPathSegment)
+//        val uri: Uri? = if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//
+//            cr.insert(CalendarContract.Events.CONTENT_URI, values)
+//
+//
+//
+//        }
+//        // get the event ID that is the last element in the Uri
+//        val eventID:Long = Long.parseLong(uri?.lastPathSegment)
 //
 // ... do something with event ID
 //
