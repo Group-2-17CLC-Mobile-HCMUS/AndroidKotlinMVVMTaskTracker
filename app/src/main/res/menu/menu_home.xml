@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/list_option_item_group">
+        <item
+            android:id="@+id/action_filter"
+            android:title="@string/filter"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item
+                    android:id="@+id/item_filter_none"
+                    android:title="@string/none" />
+                <item
+                    android:id="@+id/item_filter_todo"
+                    android:title="@string/by_todo" />
+                <item
+                    android:id="@+id/item_filter_doing"
+                    android:title="@string/by_doing" />
+                <item
+                    android:id="@+id/item_filter_done"
+                    android:title="@string/by_done" />
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/action_sort"
+            android:title="@string/sort"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item
+                    android:id="@+id/item_sort_title"
+                    android:title="@string/by_title" />
+                <item
+                    android:id="@+id/item_sort_due_date"
+                    android:title="@string/by_due_date" />
+            </menu>
+        </item>
+    </group>
+
+
+</menu>

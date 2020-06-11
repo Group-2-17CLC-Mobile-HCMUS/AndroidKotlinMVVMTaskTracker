@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textSize">18sp</dimen>
+    <dimen name="btnSize">16sp</dimen>
+    <dimen name="innerMargin">8dp</dimen>
+    <dimen name="globPadding">8dp</dimen>
+    <dimen name="update_btn_txt_size">25sp</dimen>
+</resources>

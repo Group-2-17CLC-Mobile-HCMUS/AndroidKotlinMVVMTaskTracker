@@ -6,12 +6,12 @@ import java.util.*
 
 @IgnoreExtraProperties
 data class Task constructor(@get:Exclude var id: String,
-                            val title: String,
-                            val desc: String,
-                            val priority: Priority,
-                            val created: Date,
-                            val dueDate: Date,
-                            val status: Status = Status.Todo,
+                            var title: String,
+                            var desc: String,
+                            var priority: Priority,
+                            var created: Date,
+                            var dueDate: Date,
+                            var status: Status = Status.Todo,
                             @get:Exclude val tagIds: MutableList<String> = mutableListOf(),
                             @get:Exclude val subTasks : MutableList<SubTask> = mutableListOf()
 ) {
@@ -24,6 +24,10 @@ data class Task constructor(@get:Exclude var id: String,
 
     fun addTag(id: String) {
         tagIds.add(id)
+    }
+
+    fun addSubtask(subtask: SubTask) {
+        subTasks.add(subtask)
     }
 
 //
@@ -46,12 +50,5 @@ data class Task constructor(@get:Exclude var id: String,
         Low
     }
 
-    class SubTask(val title: String) {
-        var status: SubTaskStatus = SubTaskStatus.UNFINISHED
-    }
 
-    enum class SubTaskStatus {
-        UNFINISHED,
-        FINISH
-    }
 }

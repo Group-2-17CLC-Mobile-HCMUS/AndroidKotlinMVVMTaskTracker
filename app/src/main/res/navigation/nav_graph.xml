@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_homeFragment_to_createTaskFragment"
+            app:destination="@id/createTaskFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateTaskFragment"
+            app:destination="@id/updateTaskFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTaskFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.CreateTaskFragment"
+        android:label="Create new task"
+        tools:layout="@layout/create_new_task">
+        <action
+            android:id="@+id/action_createTaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tagsFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.TagsFragment"
+        android:label="Tags"
+        tools:layout="@layout/fragment_tags" />
+    <fragment
+        android:id="@+id/updateUserProfileFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.UpdateUserProfileFragment"
+        android:label="Update Profile"
+        tools:layout="@layout/fragment_update_user_profile" />
+    <fragment
+        android:id="@+id/chartsFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.ChartsFragment"
+        android:label="Charts"
+        tools:layout="@layout/report_chart_screen" />
+    <fragment
+        android:id="@+id/updateTaskFragment"
+        android:name="com.g2.taskstrackermvvm.view.fragment.UpdateTaskFragment"
+        android:label="Detail"
+        tools:layout="@layout/fragment_update_task">
+        <argument
+            android:name="taskId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_updateTaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>

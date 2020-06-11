@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/list_option_item_group">
+        <item
+            android:id="@+id/action_tag_filter"
+            android:title="@string/filter"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item
+                    android:id="@+id/no_filter"
+                    android:title="@string/none" />
+                <item
+                    android:id="@+id/red_filter"
+                    android:title="@string/red" />
+                <item
+                    android:id="@+id/blue_filter"
+                    android:title="@string/blue" />
+                <item
+                    android:id="@+id/green_filter"
+                    android:title="@string/green" />
+            </menu>
+        </item>
+    </group>
+
+
+</menu>

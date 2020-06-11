@@ -1,16 +1,31 @@
 package com.g2.taskstrackermvvm.model
 
-data class Tag(val name: String, val color: Color, val id: Int = nextId) {
-    companion object {
-        private var nextId = 0
-    }
+import com.google.firebase.database.Exclude
 
-    fun changName(newName: String) = Tag(newName, color, id)
-    fun changeColor(newColor: Color) = Tag(name, newColor, id)
+data class Tag constructor(
+    @get:Exclude var id: String,
+    var name: String,
+    var color: Color,
+    @get:Exclude val bindedTaskId: MutableList<String> = mutableListOf()
+) {
+
+    constructor() : this("", "", Color.RED, mutableListOf())
+
+    fun addBindedTask(taskId: String) {
+        bindedTaskId.add(taskId)
+    }
 
     enum class Color(val rbg: Int) {
         RED(0xFF0000),
         GREEN(0x00FF00),
         BLUE(0x0000FF)
+    }
+
+    override fun toString(): String {
+        return name
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Tag && other.id == id
     }
 }

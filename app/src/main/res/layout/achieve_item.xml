@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="120dp" android:orientation="vertical" android:stretchColumns="1">
+    <TableRow android:padding="10dp" android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+        <ImageView
+            android:layout_height="100dp"
+            android:layout_width="100dp"
+            android:id="@+id/achieve_img" />
+        <TableLayout android:layout_height="match_parent" android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/achieve_name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="Farmer" />
+
+            <TextView
+                android:id="@+id/points"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="200 Points to open." />
+        </TableLayout>
+    </TableRow>
+
+</TableLayout>

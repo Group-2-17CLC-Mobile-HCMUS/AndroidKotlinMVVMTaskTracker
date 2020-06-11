@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/globPadding">
+
+    <EditText
+        android:id="@+id/tag_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/tag_name_dialog_hint"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorText" />
+
+    <TextView
+        android:id="@+id/choose_color_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:text="@string/choose_a_color_dialog"
+        android:textColor="@color/colorText" />
+
+    <Spinner
+        android:id="@+id/select_color_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
