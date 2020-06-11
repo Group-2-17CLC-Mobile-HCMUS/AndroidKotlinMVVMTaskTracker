@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -15,6 +17,7 @@ import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.viewmodel.TagsViewModel
 import kotlinx.android.synthetic.main.dialog_create_new_tag.view.*
 import kotlinx.android.synthetic.main.fragment_tags.*
+import kotlinx.android.synthetic.main.fragment_tags.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -32,7 +35,39 @@ class TagsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_tags, container, false)
+        val v = inflater.inflate(R.layout.fragment_tags, container, false)
+        v.tag_searchview.apply {
+            setIconifiedByDefault(false)
+            findViewById<TextView>(R.id.search_src_text).apply {
+                setTextColor(resources.getColor(R.color.colorText, context.theme))
+            }
+            findViewById<ImageView>(R.id.search_button).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
+            }
+            findViewById<ImageView>(R.id.search_close_btn).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
+            }
+            findViewById<ImageView>(R.id.search_mag_icon).apply {
+                setColorFilter(resources.getColor(R.color.colorText, context.theme))
+            }
+            setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.applySearch(
+                        query
+                    )
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    viewModel.applySearch(
+                        newText
+                    )
+                    return true
+                }
+            })
+        }
+        return v
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -43,7 +78,22 @@ class TagsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //handle item clicks
         return when (item.itemId) {
-            R.id.action_tag_filter -> true
+            R.id.no_filter -> {
+                viewModel.applyFilter(TagsViewModel.FilterMode.NONE)
+                true
+            }
+            R.id.red_filter -> {
+                viewModel.applyFilter(TagsViewModel.FilterMode.RED)
+                true
+            }
+            R.id.blue_filter -> {
+                viewModel.applyFilter(TagsViewModel.FilterMode.BLUE)
+                true
+            }
+            R.id.green_filter -> {
+                viewModel.applyFilter(TagsViewModel.FilterMode.GREEN)
+                true
+            }
             else -> true
         } || super.onOptionsItemSelected(item)
     }
