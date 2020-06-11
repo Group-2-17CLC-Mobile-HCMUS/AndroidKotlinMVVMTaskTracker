@@ -1,2 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Tasks Tracker</string>
+    <string name="description_hint_text">Mô tả</string>
+    <string name="google_sign_in">Đăng nhập bằng Google</string>
+    <string name="comment_hint_text">Viết bình luận</string>
+    <string name="task_name">Tên công việc</string>
+    <string name="tasks_menu_item_title">Công việc</string>
+    <string name="tags_menu_item_title">Nhãn</string>
+    <string name="charts_menu_item_title">Biểu đồ</string>
+    <string name="sign_out_menu_item_title">Đăng xuất</string>
+    <string name="delete_tags_dialog_title">Xóa</string>
+    <string name="delete_tags_dialog_content">Bạn có chắc muốn xóa không?</string>
+    <string name="delete_tags_dialog_confirm">Xóa</string>
+    <string name="delete_tags_dialog_deny">Xóa</string>
+    <string name="cancel">Hủy</string>
+    <string name="choose_a_color_dialog">Chọn màu</string>
+    <string name="tag_name_dialog_hint">Tên nhãn</string>
+    <string name="create_tag_dialog_title">Tạo nhãn mới</string>
+    <string name="update_tag_dialog_title">Cập nhật nhãn</string>
+    <string name="update_tag_dialog_pos_btn">Cập nhật</string>
+    <string name="update_profile">Cập nhật thông tin cá nhân</string>
+    <string name="update_text">CẬP NHẬT</string>
+    <string name="username">Tên người dùng:</string>
+    <string name="email">Email</string>
+    <string name="dark_theme">Nền tối</string>
+    <string name="filter">Bộ lọc</string>
+    <string name="sort">Sắp xếp</string>
+    <string name="tag">Nhãn:</string>
+    <string name="name">Tên</string>
+    <string name="task_name_2">Tên công việc:</string>
+    <string name="status">Tình trạng:</string>
+    <string name="update">Chế độ cập nhật</string>
+    <string name="add">Thêm</string>
+    <string name="all">Tất cả</string>
+    <string name="by_todo">Cần làm</string>
+    <string name="by_doing">Đang làm</string>
+    <string name="by_done">Đã xong</string>
+    <string name="by_title">Theo tên</string>
+    <string name="by_due_date">Theo ngày hạn</string>
+    <string name="none">Không có</string>
+    <string name="choose_date">Chọn ngày</string>
+    <string name="due_date">Ngày hạn:</string>
+    <string name="light_theme">Nền tối</string>
+    <string name="create">TẠO MỚI</string>
+    <string name="remove">Loại bỏ</string>
+    <string name="subtask">Công việc phụ:</string>
+    <string name="username_hint">Tên đăng nhập</string>
+    <string name="taskListBtn">Danh sách công việc</string>
+    <string name="title_activity_maps">Bản đồ</string>
+    <string name="view">Chế độ xem</string>
+</resources>
