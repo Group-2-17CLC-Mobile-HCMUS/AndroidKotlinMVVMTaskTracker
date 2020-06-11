@@ -1,10 +1,15 @@
 package com.g2.taskstrackermvvm.model.repository
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g2.taskstrackermvvm.model.SubTask
@@ -18,6 +23,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
+
 interface ITaskRepo {
     fun createTask(newTask: Task)
     fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date)
@@ -27,7 +33,7 @@ interface ITaskRepo {
     fun getListTask(): LiveData<List<Task>>
     fun setTag(taskId: String, tagId: String)
     fun removeTag(taskId: String, tagId: String)
-    fun exportCalendar(context: Context, taskID: String)
+    fun exportCalendar(context: Context, task: Task)
     fun removeTask(task: Task)
     fun cleanUp()
 }
@@ -269,15 +275,22 @@ class TaskRepositoryImp : ITaskRepo {
         }
     }
 
-    override fun exportCalendar(context: Context, taskID: String) {
+    override fun exportCalendar(context: Context, task: Task) {
+
+        val createdDate = task.created
+        val dueDate = task.dueDate
+        val title = task.title
+        val description = task.desc
+
+
         val calID: Long = 3
         var startMillis: Long = 0
         var endMillis: Long = 0
         val beginTime: Calendar = Calendar.getInstance()
-        beginTime.set(2012, 9, 14, 7, 30)
+        beginTime.set(createdDate.year, createdDate.month, createdDate.day, createdDate.hours, createdDate.minutes)
         startMillis = beginTime.timeInMillis
         val endTime: Calendar = Calendar.getInstance()
-        endTime.set(2012, 9, 14, 8, 45)
+        endTime.set(dueDate.year, dueDate.month, dueDate.day, dueDate.hours, dueDate.minutes)
         endMillis = endTime.timeInMillis
 
         //val context:Con
@@ -285,31 +298,28 @@ class TaskRepositoryImp : ITaskRepo {
         val values: ContentValues = ContentValues()
         values.put(CalendarContract.Events.DTSTART, startMillis)
         values.put(CalendarContract.Events.DTEND, endMillis)
-        values.put(CalendarContract.Events.TITLE, "Jazzercise")
-        values.put(CalendarContract.Events.DESCRIPTION, "Group workout")
+        values.put(CalendarContract.Events.TITLE, title)
+        values.put(CalendarContract.Events.DESCRIPTION, description)
         values.put(CalendarContract.Events.CALENDAR_ID, calID)
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles")
-//        val uri: Uri? = if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//
-//            cr.insert(CalendarContract.Events.CONTENT_URI, values)
-//
-//
-//
-//        }
-//        // get the event ID that is the last element in the Uri
-//        val eventID:Long = Long.parseLong(uri?.lastPathSegment)
-//
-// ... do something with event ID
-//
-//
+
+
+        val uri: Uri? = if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            cr.insert(Events.CONTENT_URI, values)
+        }
+        else {
+            cr.insert(Events.CONTENT_URI, values)
+        }
 
     }
 
