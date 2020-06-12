@@ -223,22 +223,22 @@ class UpdateTaskFragment : Fragment() {
             val hour = c.get(Calendar.HOUR_OF_DAY)
             val min = c.get(Calendar.MINUTE)
             val sec = c.get(Calendar.SECOND)
-            val selectedDate = Date()
+            val selectedDate = Date(0)
             activity?.let { activity ->
                 DatePickerDialog(activity, { _, year, monthOfYear, dayOfMonth ->
                     selectedDate.apply {
-                        this.year = year
+                        this.year = year - 1900
                         this.month = monthOfYear
                         this.date = dayOfMonth
-                        TimePickerDialog(activity, { _, hourOfDay, min ->
-                            selectedDate.hours = hourOfDay
-                            selectedDate.minutes = min
-                            currentTask?.let { task ->
-                                task.dueDate = selectedDate
-                                viewModel.updateTask(task)
-                            }
-                        }, hour, min, is24HourFormat(activity)).show()
                     }
+                    TimePickerDialog(activity, { _, hourOfDay, min ->
+                        selectedDate.hours = hourOfDay
+                        selectedDate.minutes = min
+                        currentTask?.let { task ->
+                            task.dueDate = selectedDate
+                            viewModel.updateTask(task)
+                        }
+                    }, hour, min, is24HourFormat(activity)).show()
                 }, year, month, day).show()
             }
         }

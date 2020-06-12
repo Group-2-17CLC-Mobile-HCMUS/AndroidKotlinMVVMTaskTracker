@@ -55,4 +55,7 @@
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="green">Green</string>
+    <string name="permission">Permission Alert</string>
+    <string name="permission_req">This feature requite permission to write to calendar, please grant write calendar permission.</string>
+    <string name="permission_req_denied">This feature is not available without permission to write to calendar.</string>
 </resources>

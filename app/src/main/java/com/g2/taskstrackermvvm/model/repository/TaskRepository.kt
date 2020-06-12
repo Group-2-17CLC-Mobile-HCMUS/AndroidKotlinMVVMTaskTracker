@@ -1,15 +1,9 @@
 package com.g2.taskstrackermvvm.model.repository
 
-import android.Manifest
-import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
-import android.net.Uri
+import android.content.Intent
 import android.provider.CalendarContract
-import android.provider.CalendarContract.Events
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.g2.taskstrackermvvm.model.SubTask
@@ -276,50 +270,57 @@ class TaskRepositoryImp : ITaskRepo {
     }
 
     override fun exportCalendar(context: Context, task: Task) {
-
-        val createdDate = task.created
-        val dueDate = task.dueDate
-        val title = task.title
-        val description = task.desc
-
-
-        val calID: Long = 3
-        var startMillis: Long = 0
-        var endMillis: Long = 0
-        val beginTime: Calendar = Calendar.getInstance()
-        beginTime.set(createdDate.year, createdDate.month, createdDate.day, createdDate.hours, createdDate.minutes)
-        startMillis = beginTime.timeInMillis
-        val endTime: Calendar = Calendar.getInstance()
-        endTime.set(dueDate.year, dueDate.month, dueDate.day, dueDate.hours, dueDate.minutes)
-        endMillis = endTime.timeInMillis
-
-        //val context:Con
-        val cr: ContentResolver = context.contentResolver
-        val values: ContentValues = ContentValues()
-        values.put(CalendarContract.Events.DTSTART, startMillis)
-        values.put(CalendarContract.Events.DTEND, endMillis)
-        values.put(CalendarContract.Events.TITLE, title)
-        values.put(CalendarContract.Events.DESCRIPTION, description)
-        values.put(CalendarContract.Events.CALENDAR_ID, calID)
-
-
-        val uri: Uri? = if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.WRITE_CALENDAR
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            cr.insert(Events.CONTENT_URI, values)
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, task.dueDate.time)
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, task.dueDate.time)
+            putExtra(CalendarContract.Events.TITLE, task.title)
+            putExtra(CalendarContract.Events.DESCRIPTION, task.desc)
+            putExtra(
+                CalendarContract.Events.AVAILABILITY,
+                CalendarContract.Events.AVAILABILITY_FREE
+            )
         }
-        else {
-            cr.insert(Events.CONTENT_URI, values)
-        }
+
+        context.startActivity(intent)
+
+//        val createdDate = task.created
+//        val dueDate = task.dueDate
+//        val title = task.title
+//        val description = task.desc
+//
+//        var startMillis: Long = 0L
+//        var endMillis: Long = 0L
+//        val beginTime: Calendar = Calendar.getInstance()
+//        beginTime.set(
+//            createdDate.year,
+//            createdDate.month,
+//            createdDate.day,
+//            createdDate.hours,
+//            createdDate.minutes
+//        )
+//        startMillis = beginTime.timeInMillis
+//        val endTime: Calendar = Calendar.getInstance()
+//        endTime.set(dueDate.year, dueDate.month, dueDate.day, dueDate.hours, dueDate.minutes)
+//        endMillis = endTime.timeInMillis
+//
+//        //val context:Con
+//        val cr: ContentResolver = context.contentResolver
+//        val values = ContentValues()
+//        values.put(Events.CALENDAR_ID, 3)
+//        values.put(Events.DTSTART, task.dueDate.time)
+//        values.put(Events.DTEND, task.dueDate.time + 3_600_000)
+//        values.put(Events.TITLE, title)
+//        values.put(Events.DESCRIPTION, description)
+//        values.put(Events.HAS_ALARM, 1)
+//        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+//
+//        try {
+//            val handler: AsyncQueryHandler = object: AsyncQueryHandler(cr) {}
+//            handler.startInsert(-1, null, Events.CONTENT_URI, values)
+//        } catch (ex: SecurityException) {
+//            Log.e(TAG, "PER DENIED")
+//        }
 
     }
 
