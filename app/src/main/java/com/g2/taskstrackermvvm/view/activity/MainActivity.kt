@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initTheme(savedInstanceState)
+        initLanguage(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -93,6 +95,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            findItem(R.id.change_language_item).apply {
+
+                setOnMenuItemClickListener {
+                    setNewLocale("en")
+                }
+            }
         }
 
 
@@ -133,6 +141,39 @@ class MainActivity : AppCompatActivity() {
 //        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initLanguage(savedInstanceState: Bundle?) {
+        val lingverLang = Lingver.getInstance().getLanguage()
+        val english = Locale(lingverLang).language.equals("en", true)
+
+        if (english) {
+            language.text = resources.getString(R.string.english)
+        } else {
+            language.text = resources.getString(R.string.vi)
+        }
+        language.setOnClickListener {
+            if (english) {
+                setNewLocale("vi")
+                language.text = resources.getString(R.string.vi)
+            } else {
+                setNewLocale("en")
+                language.text = resources.getString(R.string.english)
+            }
+        }
+    }
+
+    private fun setNewLocale(language: String, country: String = "") {
+        Lingver.getInstance().setLocale(this, language, country)
+        Lingver.getInstance().setFollowSystemLocale(this)
+        restart()
+    }
+
+    private fun restart() {
+        val i = Intent(this, MainActivity::class.java)
+        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+
+        Toast.makeText(this, "Activity restarted", Toast.LENGTH_SHORT).show()
     }
 
     private fun signOut(): Boolean {

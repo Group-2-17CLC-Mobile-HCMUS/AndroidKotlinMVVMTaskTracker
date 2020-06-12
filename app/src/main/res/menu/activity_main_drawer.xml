@@ -26,7 +26,11 @@
             app:actionLayout="@layout/switch_theme"
             app:showAsAction="always" />
         <item
+            android:id="@+id/change_language_item"
+            android:title="@string/change_language_item_title" />
+        <item
             android:id="@+id/sign_out_item"
             android:title="@string/sign_out_menu_item_title" />
+
     </group>
 </menu>

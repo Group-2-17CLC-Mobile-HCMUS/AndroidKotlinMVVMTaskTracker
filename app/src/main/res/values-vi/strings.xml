@@ -49,4 +49,8 @@
     <string name="taskListBtn">Danh sách công việc</string>
     <string name="title_activity_maps">Bản đồ</string>
     <string name="view">Chế độ xem</string>
+    <string name="change_language_item_title">Ngôn ngữ</string>
+    <string name="red">Đỏ</string>
+    <string name="blue">Xanh dương</string>
+    <string name="green">Xanh lục</string>
 </resources>
