@@ -49,6 +49,13 @@ class HomeFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
+    private fun exportTaskCalendar(pos: Int) {
+        context?.let {
+            viewModel.exportTaskToCalendar(it, data[pos])
+        }
+    }
+
+
     private fun updateTaskStatus(pos: Int) {
         val targetTask = data[pos]
         when (targetTask.status) {
@@ -77,6 +84,7 @@ class HomeFragment : Fragment() {
                 ::removeTask,
                 ::getTagById,
                 //::setTag,
+                ::exportTaskCalendar,
                 ::navigateToItemDetail
             )
 
@@ -211,6 +219,7 @@ class HomeFragment : Fragment() {
         private val updateTaskStatus: (Int) -> Unit,
         private val removeTask: (Int) -> Unit,
         private val getTag: (String) -> Tag?,
+        private val calendarExport: (Int) -> Unit,
         //private val setTag: (String, String) -> Unit,
         private val navDetail: (String) -> Unit
     ) :
@@ -348,6 +357,10 @@ class HomeFragment : Fragment() {
                         removeTask(position)
                         true
                     }
+                    add("Calendar Export").setOnMenuItemClickListener {
+                        calendarExport(position)
+                        true
+                    }
                 }
             }
         }
@@ -359,5 +372,6 @@ class HomeFragment : Fragment() {
         @JvmStatic
         fun newInstance() =
             HomeFragment()
+
     }
 }

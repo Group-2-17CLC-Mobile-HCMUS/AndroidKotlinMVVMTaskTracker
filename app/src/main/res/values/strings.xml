@@ -58,4 +58,7 @@
     <string name="change_language_item_title">Language</string>
     <string name="lang_english">English</string>
     <string name="lang_vietnamese">Vietnamese</string>
+    <string name="permission">Permission Alert</string>
+    <string name="permission_req">This feature require permission to write to calendar, please grant write calendar permission.</string>
+    <string name="permission_req_denied">This feature is not available without permission to write to calendar.</string>
 </resources>

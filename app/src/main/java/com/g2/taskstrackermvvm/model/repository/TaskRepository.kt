@@ -1,5 +1,8 @@
 package com.g2.taskstrackermvvm.model.repository
 
+import android.content.Context
+import android.content.Intent
+import android.provider.CalendarContract
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +17,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
+
 interface ITaskRepo {
     fun createTask(newTask: Task)
     fun addTask(title: String, desc: String, priority: Task.Priority, created: Date, dueDate: Date)
@@ -23,6 +27,7 @@ interface ITaskRepo {
     fun getListTask(): LiveData<List<Task>>
     fun setTag(taskId: String, tagId: String)
     fun removeTag(taskId: String, tagId: String)
+    fun exportCalendar(context: Context, task: Task)
     fun removeTask(task: Task)
     fun cleanUp()
 }
@@ -262,6 +267,61 @@ class TaskRepositoryImp : ITaskRepo {
                 tagRef.child(tagId).child("tasks").child(task.id).setValue(null)
             }
         }
+    }
+
+    override fun exportCalendar(context: Context, task: Task) {
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, task.dueDate.time)
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, task.dueDate.time)
+            putExtra(CalendarContract.Events.TITLE, task.title)
+            putExtra(CalendarContract.Events.DESCRIPTION, task.desc)
+            putExtra(
+                CalendarContract.Events.AVAILABILITY,
+                CalendarContract.Events.AVAILABILITY_FREE
+            )
+        }
+
+        context.startActivity(intent)
+
+//        val createdDate = task.created
+//        val dueDate = task.dueDate
+//        val title = task.title
+//        val description = task.desc
+//
+//        var startMillis: Long = 0L
+//        var endMillis: Long = 0L
+//        val beginTime: Calendar = Calendar.getInstance()
+//        beginTime.set(
+//            createdDate.year,
+//            createdDate.month,
+//            createdDate.day,
+//            createdDate.hours,
+//            createdDate.minutes
+//        )
+//        startMillis = beginTime.timeInMillis
+//        val endTime: Calendar = Calendar.getInstance()
+//        endTime.set(dueDate.year, dueDate.month, dueDate.day, dueDate.hours, dueDate.minutes)
+//        endMillis = endTime.timeInMillis
+//
+//        //val context:Con
+//        val cr: ContentResolver = context.contentResolver
+//        val values = ContentValues()
+//        values.put(Events.CALENDAR_ID, 3)
+//        values.put(Events.DTSTART, task.dueDate.time)
+//        values.put(Events.DTEND, task.dueDate.time + 3_600_000)
+//        values.put(Events.TITLE, title)
+//        values.put(Events.DESCRIPTION, description)
+//        values.put(Events.HAS_ALARM, 1)
+//        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+//
+//        try {
+//            val handler: AsyncQueryHandler = object: AsyncQueryHandler(cr) {}
+//            handler.startInsert(-1, null, Events.CONTENT_URI, values)
+//        } catch (ex: SecurityException) {
+//            Log.e(TAG, "PER DENIED")
+//        }
+
     }
 
     override fun cleanUp() {

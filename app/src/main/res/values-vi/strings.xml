@@ -55,4 +55,7 @@
     <string name="green">Xanh lục</string>
     <string name="lang_english">Tiếng Anh</string>
     <string name="lang_vietnamese">Tiếng Việt</string>
+    <string name="permission">Cảnh báo quyền</string>
+    <string name="permission_req">Chức năng này cần cấp phép ghi lên lịch, xin hãy cấp quyền thực hiện</string>
+    <string name="permission_req_denied">Chức năng không khả dụng nếu chưa được cho phép ghi lên lịch.</string>
 </resources>

@@ -2,12 +2,12 @@ package com.g2.taskstrackermvvm.view.activity
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         initLanguage(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         val navController = findNavController(R.id.frag_container)
         val appBarConfig = AppBarConfiguration(
@@ -137,12 +136,6 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, main_activity_layout)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment_container)
-//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun initLanguage(savedInstanceState: Bundle?) {
         val lingverLang = Lingver.getInstance().getLanguage()
@@ -183,6 +176,13 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener {
                 Toast.makeText(this, "Signed Out", Toast.LENGTH_SHORT).show()
                 viewModel.cleanUp()
+                val intents = Intent(this, SignInActivity::class.java)
+                intents.addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                            or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            or FLAG_ACTIVITY_CLEAR_TASK
+                )
+                startActivity(intents)
                 finish()
             }
             .addOnFailureListener { e ->

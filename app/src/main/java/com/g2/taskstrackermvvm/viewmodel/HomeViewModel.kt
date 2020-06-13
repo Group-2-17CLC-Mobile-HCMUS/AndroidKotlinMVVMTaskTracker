@@ -1,5 +1,6 @@
 package com.g2.taskstrackermvvm.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.g2.taskstrackermvvm.model.Tag
@@ -32,6 +33,9 @@ class HomeViewModel(
             }
         }
     }
+
+    fun exportTaskToCalendar(context: Context, targetTask: Task) =
+        taskRepo.exportCalendar(context, targetTask)
 
     private fun filter(data: List<Task>, FilterMode: FilterMode): List<Task> {
         return data.filter { task ->
