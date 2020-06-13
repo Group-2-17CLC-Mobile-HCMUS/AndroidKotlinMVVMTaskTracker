@@ -2,7 +2,7 @@
     <string name="app_name">Tasks Tracker</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="taskListBtn">Task List</string>
     <string name="username_hint">Username</string>
@@ -55,7 +55,10 @@
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="green">Green</string>
+    <string name="change_language_item_title">Language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_vietnamese">Vietnamese</string>
     <string name="permission">Permission Alert</string>
-    <string name="permission_req">This feature requite permission to write to calendar, please grant write calendar permission.</string>
+    <string name="permission_req">This feature require permission to write to calendar, please grant write calendar permission.</string>
     <string name="permission_req_denied">This feature is not available without permission to write to calendar.</string>
 </resources>
