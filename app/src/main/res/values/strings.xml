@@ -56,4 +56,6 @@
     <string name="blue">Blue</string>
     <string name="green">Green</string>
     <string name="change_language_item_title">Language</string>
+    <string name="lang_english">English</string>
+    <string name="lang_vietnamese">Vietnamese</string>
 </resources>

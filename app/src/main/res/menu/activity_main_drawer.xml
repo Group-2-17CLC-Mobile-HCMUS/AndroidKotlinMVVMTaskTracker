@@ -27,7 +27,16 @@
             app:showAsAction="always" />
         <item
             android:id="@+id/change_language_item"
-            android:title="@string/change_language_item_title" />
+            android:title="@string/change_language_item_title">
+            <menu>
+                <item
+                    android:id="@+id/item_lang_en"
+                    android:title="@string/lang_english" />
+                <item
+                    android:id="@+id/item_lang_vi"
+                    android:title="@string/lang_vietnamese" />
+            </menu>
+        </item>
         <item
             android:id="@+id/sign_out_item"
             android:title="@string/sign_out_menu_item_title" />

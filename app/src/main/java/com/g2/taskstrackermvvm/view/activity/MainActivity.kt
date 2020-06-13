@@ -21,6 +21,7 @@ import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.viewmodel.MainActivityViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseAuth
+import com.yariksoffice.lingver.Lingver
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -163,10 +164,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setNewLocale(language: String, country: String = "") {
+    private fun setNewLocale(language: String, country: String = ""):Boolean {
         Lingver.getInstance().setLocale(this, language, country)
         Lingver.getInstance().setFollowSystemLocale(this)
         restart()
+        return true
     }
 
     private fun restart() {
