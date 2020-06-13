@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/subtask_name_edit_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,4 +12,6 @@
     android:paddingStart="16dp"
     android:paddingTop="@dimen/globPadding"
     android:paddingEnd="16dp"
-    android:textColor="@color/colorText" />
+    android:textColor="@color/colorText"
+    app:layout_goneMarginEnd="8dp"
+    app:layout_goneMarginStart="8dp" />

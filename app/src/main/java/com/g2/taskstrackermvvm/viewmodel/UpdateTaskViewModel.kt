@@ -26,6 +26,12 @@ class UpdateTaskViewModel(
         }
     }
 
+    fun removeTags(taskId: String, tagIds: List<String>) {
+        tagIds.forEach {
+            taskRepo.removeTag(taskId, it)
+        }
+    }
+
     fun updateTask(task: Task?) {
         task?.let {
             taskRepo.updateTask(task)
