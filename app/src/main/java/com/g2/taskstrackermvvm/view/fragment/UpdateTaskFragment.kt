@@ -119,7 +119,6 @@ class UpdateTaskFragment : Fragment() {
                 LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
 
             val tagsContainer: TagContainerLayout = v.select_tag_container
-            tagsContainer.backgroundColor = Color.WHITE
 
             val tagNames = selectableTags.map { tag -> tag.name }
             val tagColors = selectableTags.map { tag ->
@@ -174,7 +173,7 @@ class UpdateTaskFragment : Fragment() {
                     selectedTag.add(position)
 
                     selected?.setTagBorderColor(
-                        Color.YELLOW
+                        resources.getColor(R.color.colorPurple, context?.theme)
                     )
                 }
 
@@ -188,6 +187,86 @@ class UpdateTaskFragment : Fragment() {
                     viewModel.setTags(
                         args.taskId,
                         selectedTag.map { pos -> selectableTags[pos].id })
+                    dialog.dismiss()
+                }
+                setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                create()
+            }.show()
+        }
+
+        removeTagBtn.setOnClickListener {
+            val v =
+                LayoutInflater.from(context).inflate(R.layout.dialog_select_tag, null)
+
+            val tagsContainer: TagContainerLayout = v.select_tag_container
+            val tagNames = bindedTag.map { tag -> tag.name }
+            val tagColors = bindedTag.map { tag ->
+                when (tag.color) {
+                    Tag.Color.RED -> intArrayOf(
+                        0xffff5131.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.BLUE -> intArrayOf(
+                        0xff768fff.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    Tag.Color.GREEN -> intArrayOf(
+                        0xff5efc82.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                    else -> intArrayOf(
+                        0xffaeaeae.toInt(),
+                        Color.BLACK,
+                        Color.BLACK,
+                        Color.YELLOW
+                    )
+                }
+            }
+
+            tagsContainer.setTags(tagNames, tagColors)
+            val selectedTag: MutableList<Int> = mutableListOf()
+            tagsContainer.setOnTagClickListener(object : TagView.OnTagClickListener {
+                override fun onSelectedTagDrag(position: Int, text: String?) {
+                }
+
+                override fun onTagLongClick(position: Int, text: String?) {
+                }
+
+                override fun onTagClick(position: Int, text: String?) {
+                    val selected = tagsContainer.getTagView(position)
+                    if (position in selectedTag) {
+                        selected?.setTagBorderColor(
+                            Color.BLACK
+                        )
+                        selectedTag.remove(position)
+                        return
+                    }
+
+                    selectedTag.add(position)
+
+                    selected?.setTagBorderColor(
+                        resources.getColor(R.color.colorPurple, context?.theme)
+                    )
+                }
+
+                override fun onTagCrossClick(position: Int) {
+                }
+            })
+            AlertDialog.Builder(context).apply {
+                setView(v)
+                setTitle("Select Tag")
+                setPositiveButton("Remove") { dialog, _ ->
+                    viewModel.removeTags(
+                        args.taskId,
+                        selectedTag.map { pos -> bindedTag[pos].id })
                     dialog.dismiss()
                 }
                 setNegativeButton("Cancel") { dialog, _ ->
