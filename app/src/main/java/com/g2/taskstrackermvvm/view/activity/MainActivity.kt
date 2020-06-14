@@ -25,7 +25,6 @@ import com.yariksoffice.lingver.Lingver
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initTheme(savedInstanceState)
-        initLanguage(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -95,10 +93,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            findItem(R.id.change_language_item).apply {
-
+            findItem(R.id.item_lang_en).apply {
                 setOnMenuItemClickListener {
                     setNewLocale("en")
+                }
+            }
+            findItem(R.id.item_lang_vi).apply {
+                setOnMenuItemClickListener {
+                    setNewLocale("vi")
                 }
             }
         }
@@ -136,39 +138,19 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, main_activity_layout)
     }
 
-
-    private fun initLanguage(savedInstanceState: Bundle?) {
-        val lingverLang = Lingver.getInstance().getLanguage()
-        val english = Locale(lingverLang).language.equals("en", true)
-
-        if (english) {
-            language.text = resources.getString(R.string.english)
-        } else {
-            language.text = resources.getString(R.string.vi)
-        }
-        language.setOnClickListener {
-            if (english) {
-                setNewLocale("vi")
-                language.text = resources.getString(R.string.vi)
-            } else {
-                setNewLocale("en")
-                language.text = resources.getString(R.string.english)
-            }
-        }
-    }
-
-    private fun setNewLocale(language: String, country: String = ""):Boolean {
-        Lingver.getInstance().setLocale(this, language, country)
-        Lingver.getInstance().setFollowSystemLocale(this)
+    private fun setNewLocale(language: String, country: String = ""): Boolean {
+        Lingver.getInstance().setLocale(this, language)
+//        Lingver.getInstance().setFollowSystemLocale(this)
         restart()
         return true
     }
 
     private fun restart() {
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-
-        Toast.makeText(this, "Activity restarted", Toast.LENGTH_SHORT).show()
+//        val i = Intent(this, MainActivity::class.java)
+//        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+//
+//        Toast.makeText(this, "Activity restarted", Toast.LENGTH_SHORT).show()
+        recreate()
     }
 
     private fun signOut(): Boolean {
