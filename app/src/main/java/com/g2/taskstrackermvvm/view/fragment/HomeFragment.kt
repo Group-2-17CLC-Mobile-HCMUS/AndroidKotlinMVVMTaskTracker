@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.g2.taskstrackermvvm.R
@@ -18,11 +19,13 @@ import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.model.Task
 import com.g2.taskstrackermvvm.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.card_task.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.task_item_recycler_view_home.view.descText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
+    private val args: HomeFragmentArgs by navArgs()
     private val viewModel: HomeViewModel by viewModel()
     private var data: MutableList<Task> = mutableListOf()
     private var tagsData: MutableList<Tag> = mutableListOf()
@@ -166,6 +169,11 @@ class HomeFragment : Fragment() {
             tagsData.clear()
             tagsData.addAll(it)
         })
+
+        if (args.searchTag != null) {
+            search_mode_spinner.setSelection(1)
+            search_view.setQuery(args.searchTag, true)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

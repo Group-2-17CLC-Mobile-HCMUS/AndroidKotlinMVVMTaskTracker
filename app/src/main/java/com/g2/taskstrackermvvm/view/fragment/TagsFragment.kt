@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.g2.taskstrackermvvm.R
 import com.g2.taskstrackermvvm.model.Tag
 import com.g2.taskstrackermvvm.viewmodel.TagsViewModel
@@ -158,6 +159,28 @@ class TagsFragment : Fragment() {
             for (i in it.indices) {
                 tags_container.getTagView(i).setOnCreateContextMenuListener { menu, _, _ ->
                     menu.apply {
+                        add("Find tagged Tasks").setOnMenuItemClickListener { _ ->
+                            activity?.let { act ->
+                                val builder = AlertDialog.Builder(act)
+                                builder.apply {
+                                    setTitle("Find all tagged Tasks")
+                                    setMessage("Find all Tasks tagged with this tag?")
+                                    setPositiveButton(R.string.ok) { dialog, which ->
+                                        dialog.dismiss()
+                                        var directions =
+                                            TagsFragmentDirections.actionTagsFragmentToHomeFragment(
+                                                it[i].name
+                                            )
+                                        findNavController().navigate(directions)
+                                    }
+                                    setNegativeButton(R.string.cancel) { dialog, which ->
+                                        dialog.cancel()
+                                    }
+                                    create()
+                                }.show()
+                            }
+                            true
+                        }
                         add("Edit").setOnMenuItemClickListener { _ ->
                             activity?.let { act ->
                                 val builder = AlertDialog.Builder(act)
